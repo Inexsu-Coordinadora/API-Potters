@@ -24,3 +24,18 @@ export async function construirAsignaturasEnrutador(app: FastifyInstance) {
 
   gestionAcademicaEnrutador(app, asignaturaController);
 }
+
+
+import express from "express";
+import enrutadorAsignatura from "./asignaturaRuta";
+import enrutadorPeriodo from "./periodoAcademicoRuta";
+
+const enrutadorGestionAcademica = express.Router();
+
+// Rutas de Asignaturas
+enrutadorGestionAcademica.use("/asignaturas", enrutadorAsignatura);
+
+// Rutas de Periodos Académicos
+enrutadorGestionAcademica.use("/periodos", enrutadorPeriodo);
+
+export default enrutadorGestionAcademica;
