@@ -33,6 +33,7 @@ export class AsignaturasControlador {
     reply: FastifyReply
   ) => {
     try {
+      
       const { idAsignatura } = request.params;
       const AsignaturaEncontrada = await this.AsignaturasCasosUso.obtenerAsignaturasPorId(idAsignatura);
 
@@ -48,7 +49,7 @@ export class AsignaturasControlador {
       });
     } catch (err) {
       return reply.code(500).send({
-        mensaje: "Error al obtener la Asignatura",
+        mensaje: "Error al obtener la Asignatura whc",
         error: err instanceof Error ? err.message : err,
       });
     }
