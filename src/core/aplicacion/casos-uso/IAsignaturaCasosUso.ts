@@ -6,5 +6,5 @@ export interface IAsignaturaCasosUso {
   obtenerAsignaturasPorId(idAsignatura: string): Promise<IAsignatura | null>;
   crearAsignatura(asignatura: AsignaturaDTO): Promise<string>;
   actualizarAsignatura(idAsignatura: string, asignatura: IAsignatura): Promise<IAsignatura | null>;
-  eliminarAsignatura(idAsignatura: string): Promise<void>;
+  eliminarAsignatura(idAsignatura: string): Promise<IAsignatura | null>;
 }
