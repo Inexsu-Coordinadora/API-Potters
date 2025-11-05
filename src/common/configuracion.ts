@@ -11,3 +11,4 @@ export const configuration = {
     nombreDb: process.env.PGDBNAME,
   },
 };
+

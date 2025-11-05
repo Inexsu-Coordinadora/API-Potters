@@ -5,11 +5,11 @@ import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcadem
 export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio {
   async crearPeriodo(datosPeriodo: IPeriodoAcademico): Promise<number> { 
     const columnas = Object.keys(datosPeriodo).map((key) => key.toLowerCase());
-    const parametros: Array<string | number | Date> = Object.values(datosPeriodo);
+    const parametros: (string | number)[] = Object.values(datosPeriodo);
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
     const query = `
-      INSERT INTO PeriodosAcademicos (${columnas.join(", ")})
+      INSERT INTO periodoacademico (${columnas.join(", ")})
       VALUES (${placeholders})
       RETURNING idperiodo;
     `;
@@ -19,7 +19,7 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
   }
 
   async listarPeriodos(limite?: number): Promise<IPeriodoAcademico[]> {
-    let query = "SELECT * FROM PeriodosAcademicos";
+    let query = "SELECT * FROM periodoacademico";
     const valores: number[] = [];
 
     if (limite !== undefined) {
@@ -32,7 +32,7 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
   }
 
   async obtenerPeriodoPorId(idPeriodo: string): Promise<IPeriodoAcademico | null> {
-    const query = "SELECT * FROM PeriodosAcademicos WHERE idPeriodo = $1";
+    const query = "SELECT * FROM periodoacademico WHERE idPeriodo = $1";
     const result = await ejecutarConsulta(query, [idPeriodo]);
     return result.rows[0] || null;
   }
@@ -44,7 +44,7 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     parametros.push(id);
 
     const query = `
-      UPDATE PeriodosAcademicos
+      UPDATE periodoacademico
       SET ${setClause}
       WHERE idPeriodo=$${parametros.length}
       RETURNING *;
@@ -55,7 +55,7 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
   }
 
   async eliminarPeriodo(id: string): Promise<void> {
-    const query = "DELETE FROM PeriodosAcademicos WHERE idPeriodo = $1";
+    const query = "DELETE FROM periodoacademico WHERE idPeriodo = $1";
     await ejecutarConsulta(query, [id]);
   }
 }

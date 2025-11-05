@@ -15,7 +15,8 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
   }
 
   async crearPeriodo(datosPeriodo: PeriodoAcademicoDTO): Promise<number> {
-    return await this.periodoRepositorio.crearPeriodo(datosPeriodo as IPeriodoAcademico);
+    const idNuevoPeriodo = await this.periodoRepositorio.crearPeriodo(datosPeriodo);
+    return idNuevoPeriodo 
   }
 
   async actualizarPeriodo(idPeriodo: string, periodo: IPeriodoAcademico): Promise<IPeriodoAcademico | null> {
