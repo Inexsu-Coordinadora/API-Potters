@@ -1,12 +1,16 @@
 import Fastify from "fastify";
 import { FastifyError } from "fastify";
 import { construirAsignaturasEnrutador } from "./rutas/gestionAcademicaEnrutador";
+import { construirProgramasEnrutador } from "./rutas/gestionProgramaEnRutador";
+import { construirPeriodoAcademicoEnrutador } from "./rutas/gestionPeriodoAcademicoEnrutador"; 
 
 const app = Fastify({ logger: true });
 
 app.register(
   async (appInstance) => {
     construirAsignaturasEnrutador(appInstance);
+    construirProgramasEnrutador(appInstance);
+    construirPeriodoAcademicoEnrutador(appInstance);
   },
   { prefix: "/api/Academium" }
 );
