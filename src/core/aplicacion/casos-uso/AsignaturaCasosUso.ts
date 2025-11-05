@@ -27,7 +27,8 @@ export class AsignaturaCasosUso implements IAsignaturaCasosUso {
     return asignaturaActualizado || null;
   }
 
-  async eliminarAsignatura(idAsignatura: string): Promise<void> {
-    await this.asignaturaRepositorio.eliminarAsignatura(idAsignatura);
+  async eliminarAsignatura(idAsignatura: string): Promise<IAsignatura | null> {
+    const asignaturaObtenido = await this.asignaturaRepositorio.eliminarAsignatura(idAsignatura);
+    return asignaturaObtenido;
   }
 }

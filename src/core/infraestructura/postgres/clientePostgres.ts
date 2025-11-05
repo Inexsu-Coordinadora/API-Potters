@@ -13,7 +13,5 @@ export async function ejecutarConsulta(
   consulta: string,
   parametros?: Array<number | string>
 ) {
-  console.log(consulta,"consulta postgres");
-  console.log(parametros,"parametros postgres");
   return await pool.query(consulta, parametros);
 }
