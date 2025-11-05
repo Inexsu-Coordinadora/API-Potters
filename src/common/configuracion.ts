@@ -8,7 +8,7 @@ export const configuration = {
     puerto: Number(process.env.PGPORT),
     usuario: process.env.PGUSER,
     contrasena: process.env.PGPASSWORD,
-    nombreDb: process.env.PGDATABASE,
+    nombreDb: process.env.PGDBNAME,
   },
 };
 

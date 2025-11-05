@@ -211,53 +211,22 @@ idAsignatura → número entero (por ejemplo: 8)
   "error": "La sintaxis de entrada no es válida para tipo integer: «s»"
 }
 
-🧩 Observaciones y recomendaciones
-
-- Todos los endpoints retornan un objeto JSON como respuesta.
-- En caso de error, se incluye siempre una propiedad "error" para facilitar el diagnóstico.
-- Se recomienda validar en el cliente que los parámetros sean del tipo correcto antes de enviar las solicitudes.
-- Actualmente no hay relaciones entre tablas; en futuras entregas se incluirán claves foráneas y endpoints con JOIN o populate.
-
-🚀 Próximos pasos
-
-- Establecer relaciones entre asignatura, programaacademico y periodoacademico.
-- Implementar la lógica en los casos de uso.
-
 ## ##############################################################################################################
 
 Autor: Juliana Perez Muñoz
 Versión: 1.0
 
-
 📂 Tabla: periodo académico
-
-
 A continuación, se documenta el CRUD completo de la tabla periodo académico.
 
 
-
-
-Campo
-Tipo
-Descripción
-idPeriodo
-serial (PK)
-Identificador único del periodo académico
-semestre
-varchar(10)
-Número o nombre del semestre (por ejemplo, “2025-1”)
-fechaInicio
-date
-Fecha de inicio del periodo académico
-fechaFin
-date
-Fecha de finalización del periodo académico
-estadoPeriodo
-varchar(20)
-Estado actual del periodo (“Activo”, “Finalizado”)
-
-
-
+| **Campo**       | **Tipo**      | **Descripción**                                                         |
+| --------------- | ------------- | ----------------------------------------------------------------------- |
+| `idPeriodo`     | `serial` (PK) | Identificador único del periodo académico.                              |
+| `semestre`      | `varchar(10)` | Número o nombre del semestre (ejemplo: `2025-1`).                       |
+| `fechaInicio`   | `date`        | Fecha en la que inicia el periodo académico.                            |
+| `fechaFin`      | `date`        | Fecha en la que finaliza el periodo académico.                          |
+| `estadoPeriodo` | `varchar(20)` | Estado actual del periodo. Valores comunes: `"Activo"`, `"Finalizado"`. |
 
 
 ⚙️ Endpoints disponibles
@@ -430,10 +399,10 @@ A continuación, se documenta el CRUD completo de la tabla programa.
 | duracionMeses  | smallint      | Duración del programa en meses  
 
 ⚙️ Endpoints disponibles
-La ruta base para este módulo es: http://127.0.0.1:3000/api/Academium/programas
+La ruta base para este módulo es: http://127.0.0.1:3001/api/Academium/programas
 
 
-1️⃣ Crear una asignatura (POST)
+1️⃣ Crear un programa (POST)
 
 
 Endpoint:
@@ -466,7 +435,7 @@ Cuerpo (JSON):
 }
 
 
-2️⃣ Consultar todas las asignaturas (GET)
+2️⃣ Consultar todos los programas (GET)
 
 
 Endpoint:
@@ -574,7 +543,7 @@ idPrograma → número entero (por ejemplo: 1)
 }
 
 
-4️⃣ Actualizar asignatura por ID (PUT)
+4️⃣ Actualizar programa por ID (PUT)
 
 
 Endpoint:
@@ -629,7 +598,7 @@ Cuerpo (JSON):
 }
 
 
-5️⃣ Eliminar asignatura por ID (DELETE)
+5️⃣ Eliminar programa por ID (DELETE)
 
 
 Endpoint:
@@ -665,18 +634,16 @@ idPrograma → número entero (por ejemplo: 10)
   "error": "La sintaxis de entrada no es válida para tipo integer: «s»"
 }
 
+## ##############################################################################################################################
 
 🧩 Observaciones y recomendaciones
-
 
 - Todos los endpoints retornan un objeto JSON como respuesta.
 - En caso de error, se incluye siempre una propiedad "error" para facilitar el diagnóstico.
 - Se recomienda validar en el cliente que los parámetros sean del tipo correcto antes de enviar las solicitudes.
 - Actualmente no hay relaciones entre tablas; en futuras entregas se incluirán claves foráneas y endpoints con JOIN o populate.
 
-
 🚀 Próximos pasos
 
-
 - Establecer relaciones entre asignatura, programaacademico y periodoacademico.
-- Implementar la lógica en los casos de uso. 
+- Implementar la lógica en los casos de uso.
