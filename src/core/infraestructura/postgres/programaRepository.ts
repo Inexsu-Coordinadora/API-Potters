@@ -53,8 +53,9 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
     const result = await ejecutarConsulta(query, parametros);
     return result.rows[0];
  }
-
-   async eliminarPrograma(idPrograma: string): Promise<void> {
-    await ejecutarConsulta("DELETE FROM programaacademico WHERE idPrograma = $1", [idPrograma]);
-   }
+ async eliminarPrograma(idPrograma: string): Promise<IPrograma | null> {
+    const query = "DELETE FROM programaacademico WHERE idPrograma = $1 RETURNING *"
+    const result = await ejecutarConsulta(query, [idPrograma]);
+    return result.rows[0] || null;
+  }
 }

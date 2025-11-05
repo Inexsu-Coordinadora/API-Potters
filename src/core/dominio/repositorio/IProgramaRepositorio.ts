@@ -5,5 +5,5 @@ export interface IProgramaRepositorio {
     listarPrograma(limite?: number): Promise<IPrograma[]>;
     obtenerProgramaPorId(idPrograma: string): Promise<IPrograma | null>;
     actualizarPrograma(id: string, datosPrograma: IPrograma): Promise<IPrograma>;
-    eliminarPrograma(id: string): Promise<void>;
+    eliminarPrograma(id: string): Promise<IPrograma | null>;
 }

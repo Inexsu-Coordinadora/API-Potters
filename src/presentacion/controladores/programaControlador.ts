@@ -5,10 +5,10 @@ import { ProgramaDTO, crearProgramaEsquema } from "../esquemas/programaAcademico
 import { ZodError } from "zod";
 
 export class ProgramasControlador {
-    constructor(private ProgramasCasosUso: IProgramaCasosUso) {}
+    constructor(private ProgramasCasosUso: IProgramaCasosUso) { }
 
     obtenerPrograma = async (
-        request: FastifyRequest<{ Querystring: {limite?: number} }>,
+        request: FastifyRequest<{ Querystring: { limite?: number } }>,
         reply: FastifyReply
     ) => {
         try {
@@ -27,9 +27,9 @@ export class ProgramasControlador {
             });
         }
     };
-    
+
     obtenerProgramaPorId = async (
-        request: FastifyRequest<{ Params: { idPrograma: string} }>,
+        request: FastifyRequest<{ Params: { idPrograma: string } }>,
         reply: FastifyReply
     ) => {
         try {
@@ -37,7 +37,7 @@ export class ProgramasControlador {
             const programaEncontrado = await this.ProgramasCasosUso.obtenerProgramasPorId(idPrograma);
 
             if (!programaEncontrado) {
-                return reply.code(404).send ({
+                return reply.code(404).send({
                     mensaje: "Programa no encontrado",
                 });
             }
@@ -55,7 +55,7 @@ export class ProgramasControlador {
     };
 
     crearPrograma = async (
-        request: FastifyRequest<{ Body: ProgramaDTO}>,
+        request: FastifyRequest<{ Body: ProgramaDTO }>,
         reply: FastifyReply
     ) => {
         try {
@@ -68,7 +68,7 @@ export class ProgramasControlador {
             });
         } catch (err) {
             if (err instanceof ZodError) {
-                return reply.code(400).send ({
+                return reply.code(400).send({
                     mensaje: "Error al crear un nuevo programa",
                     error: err.issues[0]?.message || "Error desconocido",
                 });
@@ -82,49 +82,55 @@ export class ProgramasControlador {
 
 
     actualizarPrograma = async (
-        request: FastifyRequest<{ Params: {idPrograma: string}; Body: IPrograma}>,
-        reply: FastifyReply
-    ) => {
-        try {
-        const { idPrograma } = request.params;
-        const nuevoPrograma = request.body;
-        const programaActualizado = await this.ProgramasCasosUso.actualizarPrograma(
-            idPrograma,
-            nuevoPrograma
-        );
-        
-        if (!programaActualizado) {
-            return reply.code(404).send({
-                mensaje: "Programa no encontrado",
-            });
-        }
-
-        return reply.code(200).send ({
-            mensaje: "Programa actualizado correctamente",
-            programaActualizado: programaActualizado,
-        });
-        } catch (err) {
-            return reply.code(500).send ({
-                mensaje: "Error al actualizar el programa",
-                error: err instanceof Error ? err.message : err,
-            });
-        } 
-    };
-
-    eliminarPrograma = async (
-        request: FastifyRequest<{ Params: {idPrograma: string}}>,
+        request: FastifyRequest<{ Params: { idPrograma: string }; Body: IPrograma }>,
         reply: FastifyReply
     ) => {
         try {
             const { idPrograma } = request.params;
-            await this.ProgramasCasosUso.eliminarPrograma(idPrograma);
+            const nuevoPrograma = request.body;
+            const programaActualizado = await this.ProgramasCasosUso.actualizarPrograma(
+                idPrograma,
+                nuevoPrograma
+            );
+
+            if (!programaActualizado) {
+                return reply.code(404).send({
+                    mensaje: "Programa no encontrado",
+                });
+            }
+
+            return reply.code(200).send({
+                mensaje: "Programa actualizado correctamente",
+                programaActualizado: programaActualizado,
+            });
+        } catch (err) {
+            return reply.code(500).send({
+                mensaje: "Error al actualizar el programa",
+                error: err instanceof Error ? err.message : err,
+            });
+        }
+    };
+
+    eliminarPrograma = async (
+        request: FastifyRequest<{ Params: { idPrograma: string } }>,
+        reply: FastifyReply
+    ) => {
+        try {
+            const { idPrograma } = request.params;
+            const ProgramaEncontrada = await this.ProgramasCasosUso.eliminarPrograma(idPrograma);
+
+            if (!ProgramaEncontrada) {
+                return reply.code(404).send({
+                    mensaje: "Programa no encontrado",
+                });
+            }
 
             return reply.code(200).send({
                 mensaje: "Programa eliminado correctamente",
                 idPrograma: idPrograma,
             });
         } catch (err) {
-            return reply.code(500).send ({
+            return reply.code(500).send({
                 mensaje: "Error al eliminar el programa",
                 error: err instanceof Error ? err.message : err,
             });

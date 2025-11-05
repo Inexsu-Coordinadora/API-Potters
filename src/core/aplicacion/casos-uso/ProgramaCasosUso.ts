@@ -27,8 +27,8 @@ export class ProgramaCasosUso implements IProgramaCasosUso {
         );
         return programaActualizado || null;
     }
-
-    async eliminarPrograma(idPrograma: string): Promise<void> {
-        await this.programaRepositorio.eliminarPrograma(idPrograma);
-    }
+    async eliminarPrograma(idPrograma: string): Promise<IPrograma | null> {
+        const programaObtenido = await this.programaRepositorio.eliminarPrograma(idPrograma);
+        return programaObtenido;
+  }
 }
