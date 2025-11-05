@@ -10,7 +10,7 @@ function gestionAcademicaEnrutador(
     programaController: ProgramasControlador,
 ) {
     app.get("/programas", programaController.obtenerPrograma);
-    app.get("/programas/:IdPrograma", programaController.obtenerProgramaPorId);
+    app.get("/programas/:idPrograma", programaController.obtenerProgramaPorId);
     app.post("/programas", programaController.crearPrograma);
     app.put("/programas/:idPrograma", programaController.actualizarPrograma);
     app.delete("/programas/:idPrograma", programaController.eliminarPrograma);

@@ -29,12 +29,12 @@ export class ProgramasControlador {
     };
     
     obtenerProgramaPorId = async (
-        request: FastifyRequest<{ Params: { idAsignatura: string} }>,
+        request: FastifyRequest<{ Params: { idPrograma: string} }>,
         reply: FastifyReply
     ) => {
         try {
-            const { idAsignatura } = request.params;
-            const programaEncontrado = await this.ProgramasCasosUso.obtenerProgramasPorId(idAsignatura);
+            const { idPrograma } = request.params;
+            const programaEncontrado = await this.ProgramasCasosUso.obtenerProgramasPorId(idPrograma);
 
             if (!programaEncontrado) {
                 return reply.code(404).send ({
@@ -95,7 +95,7 @@ export class ProgramasControlador {
         
         if (!programaActualizado) {
             return reply.code(404).send({
-                mensaje: "Programa no encotrado",
+                mensaje: "Programa no encontrado",
             });
         }
 

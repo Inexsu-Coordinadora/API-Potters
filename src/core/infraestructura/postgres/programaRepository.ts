@@ -9,7 +9,7 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
         const placeholders = columnas.map((_, i ) => `$${i + 1}`).join(",");
 
         const query = `
-            INSERT INTO Programas (${columnas.join(",")})
+            INSERT INTO programaacademico (${columnas.join(",")})
             VALUES (${placeholders})
             RETURNING *  -- aquí Postgres genera el id automaticamente
             `;
@@ -19,7 +19,7 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
     }
 
     async listarPrograma(limite?: number): Promise<IPrograma[]> {
-        let query = `SELECT * FROM Programas`;
+        let query = `SELECT * FROM programaacademico`;
         const valores: number[] = [];
 
         if (limite !== undefined){
@@ -32,7 +32,7 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
     }
 
     async obtenerProgramaPorId(idPrograma: string): Promise<IPrograma | null> {
-        const query = "SELECT * FROM Programas WHERE idPrograma = $1";
+        const query = "SELECT * FROM programaacademico WHERE idprograma = $1";
         const result = await ejecutarConsulta(query, [idPrograma]);
         return result.rows[0] || null;
     }
@@ -44,7 +44,7 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
         parametros.push(id);
 
         const query = `
-        UPDATE Programas
+        UPDATE programaacademico
         SET ${setClause}
         WHERE idPrograma=$${parametros.length}
         RETURNING *;
@@ -55,6 +55,6 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
  }
 
    async eliminarPrograma(idPrograma: string): Promise<void> {
-    await ejecutarConsulta("DELETE FROM Programas WHERE idPrograma = $1", [idPrograma]);
+    await ejecutarConsulta("DELETE FROM programaacademico WHERE idPrograma = $1", [idPrograma]);
    }
 }
