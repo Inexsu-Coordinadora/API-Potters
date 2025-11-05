@@ -5,5 +5,5 @@ export interface IAsignaturaRepositorio {
   listarAsignaturas(limite?: number): Promise<IAsignatura[]>;
   obtenerAsignaturaPorId(idAsignatura: string): Promise<IAsignatura | null>;
   actualizarAsignatura(id: string, datosAsignatura: IAsignatura): Promise<IAsignatura>;
-  eliminarAsignatura(id: string): Promise<void>;
+  eliminarAsignatura(id: string): Promise<IAsignatura | null>;
 }

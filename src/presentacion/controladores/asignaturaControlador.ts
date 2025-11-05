@@ -22,7 +22,7 @@ export class AsignaturasControlador {
       });
     } catch (err) {
       return reply.code(500).send({
-        mensaje: "Error al obtener las Asignaturas",
+        mensaje: "Error al obtener las asignaturas",
         error: err instanceof Error ? err.message : err,
       });
     }
@@ -33,6 +33,7 @@ export class AsignaturasControlador {
     reply: FastifyReply
   ) => {
     try {
+      
       const { idAsignatura } = request.params;
       const AsignaturaEncontrada = await this.AsignaturasCasosUso.obtenerAsignaturasPorId(idAsignatura);
 
@@ -48,7 +49,7 @@ export class AsignaturasControlador {
       });
     } catch (err) {
       return reply.code(500).send({
-        mensaje: "Error al obtener la Asignatura",
+        mensaje: "Error al obtener la asignatura",
         error: err instanceof Error ? err.message : err,
       });
     }
@@ -63,18 +64,18 @@ export class AsignaturasControlador {
       const idNuevaAsignatura = await this.AsignaturasCasosUso.crearAsignatura(nuevaAsignatura);
 
       return reply.code(200).send({
-        mensaje: "La Asignatura se creó correctamente",
+        mensaje: "La Asignatura: " + request.body.nombreAsignatura + " se creó correctamente",
         idNuevoAsignatura: idNuevaAsignatura,
       });
     } catch (err) {
       if (err instanceof ZodError) {
         return reply.code(400).send({
-          mensaje: "Error al crear una nueva Asignatura",
+          mensaje: "Error al crear una nueva asignatura",
           error: err.issues[0]?.message || "Error desconocido",
         });
       }
       return reply.code(500).send({
-        mensaje: "Error al crear una nueva Asignatura",
+        mensaje: "Error al crear una nueva asignatura",
         error: err instanceof Error ? err.message : String(err),
       });
     }
@@ -104,7 +105,7 @@ export class AsignaturasControlador {
       });
     } catch (err) {
       return reply.code(500).send({
-        mensaje: "Error al actualizar la Asignatura",
+        mensaje: "Error al actualizar la asignatura",
         error: err instanceof Error ? err.message : err,
       });
     }
@@ -116,7 +117,13 @@ export class AsignaturasControlador {
   ) => {
     try {
       const { idAsignatura } = request.params;
-      await this.AsignaturasCasosUso.eliminarAsignatura(idAsignatura);
+      const AsignaturaEncontrada = await this.AsignaturasCasosUso.eliminarAsignatura(idAsignatura);
+
+      if (!AsignaturaEncontrada) {
+        return reply.code(404).send({
+          mensaje: "Asignatura no encontrada",
+        });
+      }
 
       return reply.code(200).send({
         mensaje: "Asignatura eliminada correctamente",
