@@ -55,8 +55,8 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
   }
 
   async eliminarAsignatura(idAsignatura: string): Promise<IAsignatura | null> {
-    const query = "DELETE FROM asignatura WHERE idAsignatura = $1";
-    const result = await ejecutarConsulta("DELETE FROM asignatura WHERE idAsignatura = $1 RETURNING *", [idAsignatura]);
+    const query = "DELETE FROM asignatura WHERE idAsignatura = $1 RETURNING *";
+    const result = await ejecutarConsulta(query, [idAsignatura]);
     return result.rows[0] || null;
   }
 }
