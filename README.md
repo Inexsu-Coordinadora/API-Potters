@@ -4,6 +4,7 @@ Grupo: API Potters
 Proyecto: Academium
 Base de datos: PostgreSQL
 Framework: Fastify + Node.js
+LINNK DEL FUNCIONAMIENTO DE LA API EN YOUTUBE: https://youtu.be/yYkec9aRZgY 
 
 🧱 Descripción general:
 En esta primera entrega del proyecto Academium se crearon las tablas principales de la base de datos:
