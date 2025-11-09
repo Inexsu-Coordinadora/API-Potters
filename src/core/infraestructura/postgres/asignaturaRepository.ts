@@ -9,7 +9,7 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
     const query = `
-      INSERT INTO Asignaturas (${columnas.join(", ")})
+      INSERT INTO asignatura (${columnas.join(", ")})
       VALUES (${placeholders})
       RETURNING *  -- aquí Postgres genera el id automáticamente
     `;
@@ -19,7 +19,7 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
   }
 
   async listarAsignaturas(limite?: number): Promise<IAsignatura[]> {
-    let query = "SELECT * FROM Asignaturas";
+    let query = "SELECT * FROM asignatura";
     const valores: number[] = [];
 
     if (limite !== undefined) {
@@ -32,7 +32,7 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
   }
 
   async obtenerAsignaturaPorId(idAsignatura: string): Promise<IAsignatura | null> {
-    const query = "SELECT * FROM Asignaturas WHERE idAsignatura = $1";
+    const query = "SELECT * FROM asignatura WHERE idAsignatura = $1";
     const result = await ejecutarConsulta(query, [idAsignatura]);
     return result.rows[0] || null;
   }
@@ -44,7 +44,7 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
     parametros.push(id);
 
     const query = `
-      UPDATE Asignaturas
+      UPDATE asignatura
       SET ${setClause}
       WHERE idAsignatura=$${parametros.length}
       RETURNING *;
@@ -54,7 +54,9 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
     return result.rows[0];
   }
 
-  async eliminarAsignatura(idAsignatura: string): Promise<void> {
-    await ejecutarConsulta("DELETE FROM Asignaturas WHERE idAsignatura = $1", [idAsignatura]);
+  async eliminarAsignatura(idAsignatura: string): Promise<IAsignatura | null> {
+    const query = "DELETE FROM asignatura WHERE idAsignatura = $1 RETURNING *";
+    const result = await ejecutarConsulta(query, [idAsignatura]);
+    return result.rows[0] || null;
   }
 }
