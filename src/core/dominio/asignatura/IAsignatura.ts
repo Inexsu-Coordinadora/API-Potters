@@ -1,8 +1,7 @@
 export interface IAsignatura {
-  idAsignatura?: string;
+  idAsignatura?: number;
   nombreAsignatura: string;
-  creditos: string;
-  cargaHoraria: string;
-  formatoClase: string;
+  cargaHoraria: number;
+  idFormato: number;
   informacion?: string | null;
 }

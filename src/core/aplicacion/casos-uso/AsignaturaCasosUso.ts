@@ -9,7 +9,7 @@ export class AsignaturaCasosUso implements IAsignaturaCasosUso {
     return await this.asignaturaRepositorio.listarAsignaturas(limite);
   }
 
-  async obtenerAsignaturasPorId(idAsignatura: string): Promise<IAsignatura | null> {
+  async obtenerAsignaturasPorId(idAsignatura: number): Promise<IAsignatura | null> {
     const asignaturaObtenido = await this.asignaturaRepositorio.obtenerAsignaturaPorId(idAsignatura);
     return asignaturaObtenido;
   }
@@ -19,7 +19,7 @@ export class AsignaturaCasosUso implements IAsignaturaCasosUso {
     return idNuevaAsignatura;
   }
 
-  async actualizarAsignatura(idAsignatura: string, asignatura: IAsignatura): Promise<IAsignatura | null> {
+  async actualizarAsignatura(idAsignatura: number, asignatura: IAsignatura): Promise<IAsignatura | null> {
     const asignaturaActualizado = await this.asignaturaRepositorio.actualizarAsignatura(
       idAsignatura,
       asignatura
@@ -27,7 +27,7 @@ export class AsignaturaCasosUso implements IAsignaturaCasosUso {
     return asignaturaActualizado || null;
   }
 
-  async eliminarAsignatura(idAsignatura: string): Promise<IAsignatura | null> {
+  async eliminarAsignatura(idAsignatura: number): Promise<IAsignatura | null> {
     const asignaturaObtenido = await this.asignaturaRepositorio.eliminarAsignatura(idAsignatura);
     return asignaturaObtenido;
   }

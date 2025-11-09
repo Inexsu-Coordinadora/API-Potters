@@ -2,18 +2,16 @@ import { IAsignatura } from "./IAsignatura";
 
 export class asignatura implements IAsignatura {
 
-  idAsignatura?: string;
+  idAsignatura?: number;
   nombreAsignatura: string;
-  creditos: string;
-  cargaHoraria: string;
-  formatoClase: string;
+  cargaHoraria: number;
+  idFormato: number;
   informacion?: string | null;
 
   constructor(datosAsignatura: IAsignatura) {
     this.nombreAsignatura = datosAsignatura.nombreAsignatura;
-    this.creditos = datosAsignatura.creditos;
     this.cargaHoraria = datosAsignatura.cargaHoraria;
-    this.formatoClase = datosAsignatura.formatoClase;
+    this.idFormato = datosAsignatura.idFormato;
     this.informacion = datosAsignatura.informacion ?? null;
   }
 }

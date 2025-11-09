@@ -31,13 +31,13 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
     return result.rows;
   }
 
-  async obtenerAsignaturaPorId(idAsignatura: string): Promise<IAsignatura | null> {
+  async obtenerAsignaturaPorId(idAsignatura: number): Promise<IAsignatura | null> {
     const query = "SELECT * FROM asignatura WHERE idAsignatura = $1";
     const result = await ejecutarConsulta(query, [idAsignatura]);
     return result.rows[0] || null;
   }
 
-  async actualizarAsignatura(id: string, datosAsignatura: IAsignatura): Promise<IAsignatura> {
+  async actualizarAsignatura(id: number, datosAsignatura: IAsignatura): Promise<IAsignatura> {
     const columnas = Object.keys(datosAsignatura).map((key) => key.toLowerCase());
     const parametros = Object.values(datosAsignatura);
     const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
@@ -54,7 +54,7 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
     return result.rows[0];
   }
 
-  async eliminarAsignatura(idAsignatura: string): Promise<IAsignatura | null> {
+  async eliminarAsignatura(idAsignatura: number): Promise<IAsignatura | null> {
     const query = "DELETE FROM asignatura WHERE idAsignatura = $1 RETURNING *";
     const result = await ejecutarConsulta(query, [idAsignatura]);
     return result.rows[0] || null;
