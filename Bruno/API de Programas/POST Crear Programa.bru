@@ -1,0 +1,25 @@
+meta {
+  name: POST Crear Programa
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3001/api/Academium/programas
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "nombrePrograma": "Ingeniera Electrica",
+    "nivelEducativo": "pregado",
+    "modalidad": "presencial",
+    "duracionMeses": "60"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
