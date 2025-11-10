@@ -50,4 +50,3 @@ export const CrearOfertaEsquema = z.object({
 });
 
 export type OfertaDTO = z.infer<typeof CrearOfertaEsquema>;
-

@@ -30,12 +30,11 @@ export class PeriodoAcademicoControlador {
   };
 
   obtenerPeriodoPorId = async (
-    request: FastifyRequest<{ Params: { idPeriodo: string } }>, // <-- El ID de la URL es string
+    request: FastifyRequest<{ Params: { idPeriodo: number } }>, 
     reply: FastifyReply
   ) => {
     try {
-      const { idPeriodo } = request.params; // <-- Se toma como string
-      // Se pasa el ID como string al Caso de Uso (se evita Number(id))
+      const { idPeriodo } = request.params; 
       const periodoEncontrado = await this.PeriodosCasosUso.obtenerPeriodoPorId(idPeriodo); 
 
       if (!periodoEncontrado) {
@@ -61,12 +60,10 @@ export class PeriodoAcademicoControlador {
     reply: FastifyReply
   ) => {
     try {
-      // Validación con Zod
       const nuevoPeriodo = CrearPeriodoAcademicoEsquema.parse(request.body);
-      // La función retorna el ID (que en las correcciones anteriores definimos como number)
       const idNuevoPeriodo = await this.PeriodosCasosUso.crearPeriodo(nuevoPeriodo); 
 
-      return reply.code(201).send({ // Código 201 Created
+      return reply.code(201).send({ 
         mensaje: "El periodo académico se creó correctamente",
         idNuevoPeriodo: idNuevoPeriodo,
       });
@@ -85,16 +82,16 @@ export class PeriodoAcademicoControlador {
   };
 
   actualizarPeriodo = async (
-    // Usa IPeriodoAcademico como tipo de cuerpo para consistencia con la capa de Dominio
-    request: FastifyRequest<{ Params: { idPeriodo: string }; Body: IPeriodoAcademico }>, 
+
+    request: FastifyRequest<{ Params: { idPeriodo: number }; Body: IPeriodoAcademico }>, 
     reply: FastifyReply
   ) => {
     try {
       const { idPeriodo } = request.params;
-      const datosPeriodo = request.body; // No se valida parcialmente, se asume validación en DTO
+      const datosPeriodo = request.body; 
 
       const periodoActualizado = await this.PeriodosCasosUso.actualizarPeriodo(
-        idPeriodo, // Se pasa el ID como string
+        idPeriodo,
         datosPeriodo
       );
 
@@ -117,12 +114,12 @@ export class PeriodoAcademicoControlador {
   };
 
   eliminarPeriodo = async (
-    request: FastifyRequest<{ Params: { idPeriodo: string } }>,
+    request: FastifyRequest<{ Params: { idPeriodo: number } }>,
     reply: FastifyReply
   ) => {
     try {
-      const { idPeriodo } = request.params; // Se toma como string
-      await this.PeriodosCasosUso.eliminarPeriodo(idPeriodo); // Se pasa el ID como string
+      const { idPeriodo } = request.params;
+      await this.PeriodosCasosUso.eliminarPeriodo(idPeriodo);
 
       return reply.code(200).send({
         mensaje: "Periodo académico eliminado correctamente",

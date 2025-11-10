@@ -31,13 +31,13 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     return result.rows;
   }
 
-  async obtenerPeriodoPorId(idPeriodo: string): Promise<IPeriodoAcademico | null> {
+  async obtenerPeriodoPorId(idPeriodo: number): Promise<IPeriodoAcademico | null> {
     const query = "SELECT * FROM periodoacademico WHERE idPeriodo = $1";
     const result = await ejecutarConsulta(query, [idPeriodo]);
     return result.rows[0] || null;
   }
 
-  async actualizarPeriodo(id: string, datosPeriodo: IPeriodoAcademico): Promise<IPeriodoAcademico> {
+  async actualizarPeriodo(id: number, datosPeriodo: IPeriodoAcademico): Promise<IPeriodoAcademico> {
     const columnas = Object.keys(datosPeriodo).map((key) => key.toLowerCase());
     const parametros = Object.values(datosPeriodo);
     const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
@@ -54,7 +54,7 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     return result.rows[0];
   }
 
-  async eliminarPeriodo(id: string): Promise<void> {
+  async eliminarPeriodo(id: number): Promise<void> {
     const query = "DELETE FROM periodoacademico WHERE idPeriodo = $1";
     await ejecutarConsulta(query, [id]);
   }

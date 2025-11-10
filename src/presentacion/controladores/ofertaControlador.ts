@@ -5,8 +5,8 @@ import { OfertaDTO, CrearOfertaEsquema } from "../esquemas/ofertaEsquema";
 import { ZodError } from "zod";
 
 export class OfertaControlador {
-  constructor(private OfertaCasosUso: IOfertaCasosUso) {}
- 
+  constructor(private OfertaCasosUso: IOfertaCasosUso) { }
+
   obtenerOfertas = async (
     request: FastifyRequest<{ Querystring: { limite?: number } }>,
     reply: FastifyReply
@@ -33,7 +33,7 @@ export class OfertaControlador {
     reply: FastifyReply
   ) => {
     try {
-      
+
       const { idOferta } = request.params;
       const OfertaEncontrada = await this.OfertaCasosUso.obtenerOfertaPorId(idOferta);
 
@@ -68,7 +68,28 @@ export class OfertaControlador {
         mensaje: "La oferta se creó correctamente",
         idNuevaOferta: idNuevaOferta,
       });
-    } catch (err) {
+    } catch (err: any) {
+
+      if (err?.message === "No se encontró la asignatura buscada") {
+        return reply.code(404).send({
+          mensaje: "Error al crear una nueva oferta",
+          error: err.message, 
+        });
+      }
+
+      if (err?.message === "No se encontró el programa buscado") {
+        return reply.code(404).send({
+          mensaje: "Error al crear una nueva oferta",
+          error: err.message, 
+        });
+      }
+
+      if (err?.message === "No se encontró el periodo buscado") {
+        return reply.code(404).send({
+          mensaje: "Error al crear una nueva oferta",
+          error: err.message, 
+        });
+      }
 
       if (err instanceof ZodError) {
         return reply.code(400).send({
