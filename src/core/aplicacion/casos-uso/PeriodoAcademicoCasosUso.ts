@@ -10,7 +10,7 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
     return await this.periodoRepositorio.listarPeriodos(limite);
   }
 
-  async obtenerPeriodoPorId(idPeriodo: string): Promise<IPeriodoAcademico | null> {
+  async obtenerPeriodoPorId(idPeriodo: number): Promise<IPeriodoAcademico | null> {
     return await this.periodoRepositorio.obtenerPeriodoPorId(idPeriodo);
   }
 
@@ -19,12 +19,13 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
     return idNuevoPeriodo 
   }
 
-  async actualizarPeriodo(idPeriodo: string, periodo: IPeriodoAcademico): Promise<IPeriodoAcademico | null> {
+  async actualizarPeriodo(idPeriodo: number, periodo: IPeriodoAcademico): Promise<IPeriodoAcademico | null> {
     const periodoActualizado = await this.periodoRepositorio.actualizarPeriodo(idPeriodo, periodo);
     return periodoActualizado || null;
   }
 
-  async eliminarPeriodo(idPeriodo: string): Promise<void> {
-    await this.periodoRepositorio.eliminarPeriodo(idPeriodo);
+  async eliminarPeriodo(idPeriodo: number): Promise<IPeriodoAcademico | null> {
+    const periodoObtenido = await this.periodoRepositorio.eliminarPeriodo(idPeriodo);
+    return periodoObtenido;
   }
 }

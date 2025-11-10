@@ -3,7 +3,8 @@ import { FastifyError } from "fastify";
 import { construirAsignaturasEnrutador } from "./rutas/gestionAcademicaEnrutador";
 import { construirProgramasEnrutador } from "./rutas/gestionProgramaEnRutador";
 import { construirPeriodoAcademicoEnrutador } from "./rutas/gestionPeriodoAcademicoEnrutador"; 
-import { construirOfertasEnrutador} from "./rutas/gestionOfertaEnrutador"; 
+import { construirOfertasEnrutador} from "./rutas/gestionOfertaEnrutador";
+import { construirPlanEstudioControlador } from "./rutas/gestionPlanEstudioEnrutador";
 import { configuration} from "./../common/configuracion"; 
 import { construirPlanEstudioControlador } from "./rutas/gestionPlanEstudioEnrutador";
 
