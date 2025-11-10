@@ -7,5 +7,5 @@ export interface IPeriodoAcademicoRepositorio {
   listarPeriodos(limite?: number): Promise<IPeriodoAcademico[]>;
   obtenerPeriodoPorId(idPeriodo: number): Promise<IPeriodoAcademico | null>;
   actualizarPeriodo(id: number, datosPeriodoAcademico: IPeriodoAcademico): Promise<IPeriodoAcademico>;
-  eliminarPeriodo(id: number): Promise<void>;
+  eliminarPeriodo(id: number): Promise<IPeriodoAcademico | null>;
 }

@@ -6,5 +6,5 @@ export interface IPeriodoAcademicoCasosUso {
   obtenerPeriodoPorId(idPeriodo: number): Promise<IPeriodoAcademico | null>;
   crearPeriodo(periodo: PeriodoAcademicoDTO): Promise<number>;
   actualizarPeriodo(idPeriodo: number, periodo: IPeriodoAcademico): Promise<IPeriodoAcademico | null>;
-  eliminarPeriodo(idPeriodo: number): Promise<void>;
+  eliminarPeriodo(idPeriodo: number): Promise<IPeriodoAcademico | null>;
 }

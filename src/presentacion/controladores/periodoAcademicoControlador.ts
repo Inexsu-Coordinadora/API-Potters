@@ -1,11 +1,11 @@
-import { FastifyRequest, FastifyReply } from "fastify"; 
+import { FastifyRequest, FastifyReply } from "fastify";
 import { IPeriodoAcademico } from "../../core/dominio/periodoAcademico/IPeriodoAcademico";
 import { IPeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/IPeriodoAcademicoCasosUso"; // <-- Usa la interfaz de Casos de Uso
 import { PeriodoAcademicoDTO, CrearPeriodoAcademicoEsquema } from "../esquemas/periodoAcademicoEsquema";
 import { ZodError } from "zod";
 
 export class PeriodoAcademicoControlador {
-  constructor(private PeriodosCasosUso: IPeriodoAcademicoCasosUso) {}
+  constructor(private PeriodosCasosUso: IPeriodoAcademicoCasosUso) { }
 
 
   listarPeriodos = async (
@@ -30,12 +30,12 @@ export class PeriodoAcademicoControlador {
   };
 
   obtenerPeriodoPorId = async (
-    request: FastifyRequest<{ Params: { idPeriodo: number } }>, 
+    request: FastifyRequest<{ Params: { idPeriodo: number } }>,
     reply: FastifyReply
   ) => {
     try {
-      const { idPeriodo } = request.params; 
-      const periodoEncontrado = await this.PeriodosCasosUso.obtenerPeriodoPorId(idPeriodo); 
+      const { idPeriodo } = request.params;
+      const periodoEncontrado = await this.PeriodosCasosUso.obtenerPeriodoPorId(idPeriodo);
 
       if (!periodoEncontrado) {
         return reply.code(404).send({
@@ -61,9 +61,9 @@ export class PeriodoAcademicoControlador {
   ) => {
     try {
       const nuevoPeriodo = CrearPeriodoAcademicoEsquema.parse(request.body);
-      const idNuevoPeriodo = await this.PeriodosCasosUso.crearPeriodo(nuevoPeriodo); 
+      const idNuevoPeriodo = await this.PeriodosCasosUso.crearPeriodo(nuevoPeriodo);
 
-      return reply.code(201).send({ 
+      return reply.code(201).send({
         mensaje: "El periodo académico se creó correctamente",
         idNuevoPeriodo: idNuevoPeriodo,
       });
@@ -83,12 +83,12 @@ export class PeriodoAcademicoControlador {
 
   actualizarPeriodo = async (
 
-    request: FastifyRequest<{ Params: { idPeriodo: number }; Body: IPeriodoAcademico }>, 
+    request: FastifyRequest<{ Params: { idPeriodo: number }; Body: IPeriodoAcademico }>,
     reply: FastifyReply
   ) => {
     try {
       const { idPeriodo } = request.params;
-      const datosPeriodo = request.body; 
+      const datosPeriodo = request.body;
 
       const periodoActualizado = await this.PeriodosCasosUso.actualizarPeriodo(
         idPeriodo,
@@ -119,7 +119,13 @@ export class PeriodoAcademicoControlador {
   ) => {
     try {
       const { idPeriodo } = request.params;
-      await this.PeriodosCasosUso.eliminarPeriodo(idPeriodo);
+      const periodoEncontrado = await this.PeriodosCasosUso.eliminarPeriodo(idPeriodo);
+
+      if (!periodoEncontrado) {
+        return reply.code(404).send({
+          mensaje: "Periodo no encontrado",
+        });
+      }
 
       return reply.code(200).send({
         mensaje: "Periodo académico eliminado correctamente",

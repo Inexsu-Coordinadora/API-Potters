@@ -24,7 +24,8 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
     return periodoActualizado || null;
   }
 
-  async eliminarPeriodo(idPeriodo: number): Promise<void> {
-    await this.periodoRepositorio.eliminarPeriodo(idPeriodo);
+  async eliminarPeriodo(idPeriodo: number): Promise<IPeriodoAcademico | null> {
+    const periodoObtenido = await this.periodoRepositorio.eliminarPeriodo(idPeriodo);
+    return periodoObtenido;
   }
 }

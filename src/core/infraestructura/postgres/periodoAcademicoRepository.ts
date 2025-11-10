@@ -3,7 +3,7 @@ import { ejecutarConsulta } from "./clientePostgres";
 import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcademico";
 
 export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio {
-  async crearPeriodo(datosPeriodo: IPeriodoAcademico): Promise<number> { 
+  async crearPeriodo(datosPeriodo: IPeriodoAcademico): Promise<number> {
     const columnas = Object.keys(datosPeriodo).map((key) => key.toLowerCase());
     const parametros: (string | number)[] = Object.values(datosPeriodo);
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
@@ -54,8 +54,9 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     return result.rows[0];
   }
 
-  async eliminarPeriodo(id: number): Promise<void> {
-    const query = "DELETE FROM periodoacademico WHERE idPeriodo = $1";
-    await ejecutarConsulta(query, [id]);
+  async eliminarPeriodo(id: number): Promise<IPeriodoAcademico | null> {
+    const query = "DELETE FROM periodoacademico WHERE idPeriodo = $1 RETURNING *";
+    const result = await ejecutarConsulta(query, [id]);
+    return result.rows[0] || null;
   }
 }
