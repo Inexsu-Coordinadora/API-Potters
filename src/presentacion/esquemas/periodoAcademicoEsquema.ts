@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const CrearPeriodoAcademicoEsquema = z.object({
   semestre: z
-
     .string()
     .nonempty("El semestre es obligatorio")
     .min(3, "Debe tener al menos 3 caracteres")
