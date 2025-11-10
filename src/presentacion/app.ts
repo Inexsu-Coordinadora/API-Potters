@@ -5,6 +5,7 @@ import { construirProgramasEnrutador } from "./rutas/gestionProgramaEnRutador";
 import { construirPeriodoAcademicoEnrutador } from "./rutas/gestionPeriodoAcademicoEnrutador"; 
 import { construirOfertasEnrutador} from "./rutas/gestionOfertaEnrutador"; 
 import { configuration} from "./../common/configuracion"; 
+import { construirPlanEstudioControlador } from "./rutas/gestionPlanEstudioEnrutador";
 
 const app = Fastify({ logger: true });
 
@@ -14,6 +15,7 @@ app.register(
     construirProgramasEnrutador(appInstance);
     construirPeriodoAcademicoEnrutador(appInstance);
     construirOfertasEnrutador(appInstance);
+    construirPlanEstudioControlador(appInstance);
   },
   { prefix: "/api/Academium" }
 );
