@@ -33,7 +33,7 @@ export const CrearOfertaEsquema = z.object({
   })
 
     .min(1, "El grupo debe ser mayor a 0")
-    .max(50, "El grupo no ser mayor a 50")
+    .max(50, "El grupo no debe ser mayor a 50")
     .int("El grupo debe ser un número entero positivo")
     .positive()
     .describe("Cantidad de grupos por oferta"),

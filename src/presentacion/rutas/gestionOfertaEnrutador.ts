@@ -6,19 +6,11 @@ import { OfertaRepositorio } from "../../core/infraestructura/postgres/ofertaRep
 import { IOfertaCasosUso } from "../../core/aplicacion/casos-uso/IOfertaCasosUso";
 import { IAsignaturaRepositorio } from "../../core/dominio/repositorio/IAsignaturaRepositorio";
 import { AsignaturaRepositorio } from "../../core/infraestructura/postgres/asignaturaRepository";
-import { IAsignaturaCasosUso } from "../../core/aplicacion/casos-uso/IAsignaturaCasosUso";
-import { AsignaturaCasosUso } from "../../core/aplicacion/casos-uso/AsignaturaCasosUso";
-import { AsignaturasControlador } from "../controladores/asignaturaControlador";
 import { IPeriodoAcademicoRepositorio } from "../../core/dominio/repositorio/IPeriodoAcademicoRepositorio";
 import { PeriodoAcademicoRepositorio } from "../../core/infraestructura/postgres/periodoAcademicoRepository";
-import { IPeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/IPeriodoAcademicoCasosUso";
-import { PeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/PeriodoAcademicoCasosUso";
-import { PeriodoAcademicoControlador } from "../controladores/periodoAcademicoControlador";
 import { IProgramaRepositorio } from "../../core/dominio/repositorio/IProgramaRepositorio";
 import { ProgramaRepositorio } from "../../core/infraestructura/postgres/programaRepository";
-import { IProgramaCasosUso } from "../../core/aplicacion/casos-uso/IProgramaCasosUso";
-import { ProgramaCasosUso } from "../../core/aplicacion/casos-uso/ProgramaCasosUso";
-import { ProgramasControlador } from "../controladores/programaControlador";
+
 
 
 function gestionOfertaEnrutador(

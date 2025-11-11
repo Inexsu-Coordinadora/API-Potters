@@ -62,32 +62,25 @@ export class OfertaControlador {
     try {
 
       const nuevaOferta = CrearOfertaEsquema.parse(request.body);
-      const idNuevaOferta = await this.OfertaCasosUso.crearOferta(nuevaOferta);
+      const ofertaCreada = await this.OfertaCasosUso.crearOferta(nuevaOferta);
 
       return reply.code(200).send({
         mensaje: "La oferta se creó correctamente",
-        idNuevaOferta: idNuevaOferta,
+        ofertaCreada: ofertaCreada,
       });
+
     } catch (err: any) {
 
-      if (err?.message === "No se encontró la asignatura buscada") {
-        return reply.code(404).send({
-          mensaje: "Error al crear una nueva oferta",
-          error: err.message, 
-        });
-      }
+      if (err?.message === "Ya existe un grupo matriculado con la misma asignatura, programa y periodo académico" ||
+        err?.message === "No se encontró la asignatura buscada" ||
+        err?.message === "No se encontró el programa buscado" ||
+        err?.message === "No se encontró el periodo buscado" ||
+        err?.message === "El periodo está en preparacion" ||
+        err?.message === "El periodo está cerrado") {
 
-      if (err?.message === "No se encontró el programa buscado") {
         return reply.code(404).send({
           mensaje: "Error al crear una nueva oferta",
-          error: err.message, 
-        });
-      }
-
-      if (err?.message === "No se encontró el periodo buscado") {
-        return reply.code(404).send({
-          mensaje: "Error al crear una nueva oferta",
-          error: err.message, 
+          error: err.message,
         });
       }
 
@@ -97,6 +90,7 @@ export class OfertaControlador {
           error: err.issues[0]?.message || "Error desconocido",
         });
       }
+
       return reply.code(500).send({
         mensaje: "Error al crear una nueva oferta",
         error: err instanceof Error ? err.message : String(err),
@@ -105,12 +99,15 @@ export class OfertaControlador {
   };
 
   actualizarOferta = async (
-    request: FastifyRequest<{ Params: { idOferta: number }; Body: IOferta }>,
+    request: FastifyRequest<{ Params: { idOferta: number }; Body: OfertaDTO }>,
     reply: FastifyReply
   ) => {
     try {
       const { idOferta } = request.params;
-      const nuevaOferta = request.body;
+      //const nuevaOferta = request.body;
+      const nuevaOferta = CrearOfertaEsquema.parse(request.body);
+      console.log("nuevaOferta", nuevaOferta);
+
       const OfertaActualizada = await this.OfertaCasosUso.actualizarOferta(
         idOferta,
         nuevaOferta
@@ -126,7 +123,28 @@ export class OfertaControlador {
         mensaje: "Oferta actualizada correctamente",
         OfertaActualizada: OfertaActualizada,
       });
-    } catch (err) {
+    } catch (err: any) {
+
+      if (err?.message === "Ya existe un grupo matriculado con la misma asignatura, programa y periodo académico" ||
+        err?.message === "No se encontró la asignatura buscada" ||
+        err?.message === "No se encontró el programa buscado" ||
+        err?.message === "No se encontró el periodo buscado" ||
+        err?.message === "El periodo está en preparacion" ||
+        err?.message === "El periodo está cerrado") {
+
+        return reply.code(404).send({
+          mensaje: "Error al actualizar la oferta",
+          error: err.message,
+        });
+      }
+
+        if (err instanceof ZodError) {
+        return reply.code(400).send({
+          mensaje: "Error al crear una nueva oferta",
+          error: err.issues[0]?.message || "Error desconocido",
+        });
+      }
+
       return reply.code(500).send({
         mensaje: "Error al actualizar la oferta",
         error: err instanceof Error ? err.message : err,

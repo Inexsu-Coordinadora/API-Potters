@@ -32,7 +32,7 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
   }
 
   async obtenerPeriodoPorId(idPeriodo: number): Promise<IPeriodoAcademico | null> {
-    const query = "SELECT * FROM periodoacademico WHERE idPeriodo = $1";
+    const query = `SELECT idperiodo, semestre, fechainicio, fechafin, idestado AS "idEstado" FROM periodoacademico WHERE idPeriodo = $1`;
     const result = await ejecutarConsulta(query, [idPeriodo]);
     return result.rows[0] || null;
   }

@@ -1,4 +1,5 @@
 import { IOferta } from "../../dominio/oferta/IOferta";
+import { IOfertaRelacionada } from "../../dominio/oferta/IOfertaRelacionada";
 
 export interface IOfertaRepositorio {
   crearOferta(datosOferta: IOferta): Promise<number>;
@@ -6,5 +7,7 @@ export interface IOfertaRepositorio {
   obtenerOfertaPorId(idOferta: number): Promise<IOferta | null>;
   actualizarOferta(idOferta: number, datosOferta: IOferta): Promise<IOferta>;
   eliminarOferta(idOferta: number): Promise<IOferta | null>;
+  existeOfertaDuplicada(datosOferta: IOferta): Promise<boolean>;
+  obtenerOfertaRelacionada(idOferta: number): Promise<IOfertaRelacionada>;
 }
 

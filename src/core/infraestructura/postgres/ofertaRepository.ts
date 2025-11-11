@@ -1,6 +1,8 @@
 import { IOfertaRepositorio } from "../../dominio/repositorio/IOfertaRepositorio";
 import { ejecutarConsulta } from "./clientePostgres";
 import { IOferta } from "../../dominio/oferta/IOferta";
+import { IOfertaRelacionada } from "../../dominio/oferta/IOfertaRelacionada";
+
 
 export class OfertaRepositorio implements IOfertaRepositorio {
 
@@ -16,7 +18,7 @@ export class OfertaRepositorio implements IOfertaRepositorio {
     `;
 
     const respuesta = await ejecutarConsulta(query, parametros);
-    return respuesta.rows[0].id_oferta;
+    return respuesta.rows[0].idoferta;
   }
 
   async listarOfertas(limite?: number): Promise<IOferta[]> {
@@ -58,6 +60,36 @@ export class OfertaRepositorio implements IOfertaRepositorio {
   async eliminarOferta(idOferta: number): Promise<IOferta | null> {
     const query = "DELETE FROM oferta WHERE idoferta = $1 RETURNING *";
     const result = await ejecutarConsulta(query, [idOferta]);
+    return result.rows[0] || null;
+  }
+
+  async existeOfertaDuplicada(datosOferta: IOferta): Promise<boolean> {
+    const query = `
+    SELECT 1
+    FROM oferta
+    WHERE idprograma = $1
+      AND idperiodo = $2
+      AND idasignatura = $3
+      AND grupo = $4
+    LIMIT 1;
+  `;
+
+    const { idPrograma, idPeriodo, idAsignatura, grupo } = datosOferta;
+    const values = [idPrograma, idPeriodo, idAsignatura, grupo];
+    const result = await ejecutarConsulta(query, values);
+    return (result?.rowCount ?? 0) > 0;
+  }
+
+  async obtenerOfertaRelacionada(idOferta: number): Promise<IOfertaRelacionada> {
+    const query = `
+    SELECT ofer.idoferta, pga.nombreprograma, pra.semestre, asi.nombreasignatura, asi.informacion FROM oferta ofer 
+    INNER JOIN programaacademico pga ON ofer.idprograma = pga.idprograma 
+    INNER JOIN periodoacademico pra ON ofer.idperiodo = pra.idperiodo
+    INNER JOIN asignatura asi ON ofer.idasignatura = asi.idasignatura WHERE ofer.idoferta = $1
+  `;
+
+    const values = [idOferta];
+    const result = await ejecutarConsulta(query, values);
     return result.rows[0] || null;
   }
 }
