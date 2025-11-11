@@ -4,6 +4,9 @@ import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcadem
 
 export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio {
   async crearPeriodo(datosPeriodo: IPeriodoAcademico): Promise<number> {
+    const datosSinId = { ...datosPeriodo };
+    delete (datosSinId as any).idPeriodo;
+
     const columnas = Object.keys(datosPeriodo).map((key) => key.toLowerCase());
     const parametros: (string | number)[] = Object.values(datosPeriodo);
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");

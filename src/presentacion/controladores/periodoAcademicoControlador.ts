@@ -1,11 +1,11 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IPeriodoAcademico } from "../../core/dominio/periodoAcademico/IPeriodoAcademico";
-import { IPeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/IPeriodoAcademicoCasosUso"; // <-- Usa la interfaz de Casos de Uso
+import { IPeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/IPeriodoAcademicoCasosUso";
 import { PeriodoAcademicoDTO, CrearPeriodoAcademicoEsquema } from "../esquemas/periodoAcademicoEsquema";
 import { ZodError } from "zod";
 
 export class PeriodoAcademicoControlador {
-  constructor(private PeriodosCasosUso: IPeriodoAcademicoCasosUso) { }
+  constructor(private periodosCasosUso: IPeriodoAcademicoCasosUso) { }
 
 
   listarPeriodos = async (
@@ -14,7 +14,7 @@ export class PeriodoAcademicoControlador {
   ) => {
     try {
       const { limite } = request.query;
-      const periodosEncontrados = await this.PeriodosCasosUso.obtenerPeriodos(limite); // <-- Usa el Caso de Uso
+      const periodosEncontrados = await this.periodosCasosUso.obtenerPeriodos(limite);
 
       return reply.code(200).send({
         mensaje: "Periodos académicos encontrados correctamente",
@@ -35,7 +35,7 @@ export class PeriodoAcademicoControlador {
   ) => {
     try {
       const { idPeriodo } = request.params;
-      const periodoEncontrado = await this.PeriodosCasosUso.obtenerPeriodoPorId(idPeriodo);
+      const periodoEncontrado = await this.periodosCasosUso.obtenerPeriodoPorId(idPeriodo);
 
       if (!periodoEncontrado) {
         return reply.code(404).send({
@@ -45,7 +45,7 @@ export class PeriodoAcademicoControlador {
 
       return reply.code(200).send({
         mensaje: "Periodo académico encontrado correctamente",
-        periodo: periodoEncontrado,
+        periodoEncontrado,
       });
     } catch (err) {
       return reply.code(500).send({
@@ -61,25 +61,57 @@ export class PeriodoAcademicoControlador {
   ) => {
     try {
       const nuevoPeriodo = CrearPeriodoAcademicoEsquema.parse(request.body);
-      const idNuevoPeriodo = await this.PeriodosCasosUso.crearPeriodo(nuevoPeriodo);
+      const idNuevoPeriodo = await this.periodosCasosUso.crearPeriodo(nuevoPeriodo);
 
       return reply.code(201).send({
         mensaje: "El periodo académico se creó correctamente",
-        idNuevoPeriodo: idNuevoPeriodo,
+        idNuevoPeriodo,
       });
     } catch (err) {
       if (err instanceof ZodError) {
         return reply.code(400).send({
-          mensaje: "Error de validación al crear un nuevo periodo académico",
-          error: err.issues[0]?.message || "Error desconocido",
+          mensaje: "Error de validación en los campos del periodo académico",
+          errores: err.issues.map(issue => ({
+            campo: issue.path.join("."),
+            detalle: issue.message,
+          })),
         });
       }
+
+      if (err instanceof Error) {
+        const mensajeError = err.message.toLowerCase();
+
+        if (mensajeError.includes("fecha")) {
+          return reply.code(400).send({
+            mensaje: "Fecha inválida: la fecha de fin no puede ser menor que la de inicio."
+          });
+        }
+
+        if (mensajeError.includes("solapa")) {
+          return reply.code(409).send({
+            mensaje: "Ya existe un periodo activo que se solapa con las fecha ingresadas."
+          });
+        }
+
+        if (mensajeError.includes("transición")) {
+          return reply.code(400).send({
+            mensaje: "Transición de estado no permitida."
+          });
+        }
+
+        if (mensajeError.includes("duplicate key")) {
+          return reply.code(400).send({
+            mensaje: "Ya existe un periodo con este identificador."
+          });
+        }
+      }
       return reply.code(500).send({
-        mensaje: "Error al crear un nuevo periodo académico",
+        mensaje: "Error al crear un nuevo periodo académico.",
         error: err instanceof Error ? err.message : String(err),
       });
     }
   };
+
 
   actualizarPeriodo = async (
 
@@ -90,7 +122,7 @@ export class PeriodoAcademicoControlador {
       const { idPeriodo } = request.params;
       const datosPeriodo = request.body;
 
-      const periodoActualizado = await this.PeriodosCasosUso.actualizarPeriodo(
+      const periodoActualizado = await this.periodosCasosUso.actualizarPeriodo(
         idPeriodo,
         datosPeriodo
       );
@@ -103,9 +135,27 @@ export class PeriodoAcademicoControlador {
 
       return reply.code(200).send({
         mensaje: "Periodo académico actualizado correctamente",
-        periodoActualizado: periodoActualizado,
+        periodoActualizado,
       });
     } catch (err) {
+      if (err instanceof Error) {
+        if (err.message.includes("fecha")) {
+          return reply.code(400).send({
+            mensaje: "Fecha inválida al intentar actualizar el periodo",
+          });
+        }
+        if (err.message.includes("solapa")) {
+          return reply.code(409).send({
+            mensaje: "No se puede actualizar porque se solapa con otro periodo activo",
+          });
+        }
+        if (err.message.includes("transición")) {
+          return reply.code(400).send({
+            mensaje: "Transición de estado no permitida",
+          });
+        }
+      }
+
       return reply.code(500).send({
         mensaje: "Error al actualizar el periodo académico",
         error: err instanceof Error ? err.message : err,
@@ -119,17 +169,17 @@ export class PeriodoAcademicoControlador {
   ) => {
     try {
       const { idPeriodo } = request.params;
-      const periodoEncontrado = await this.PeriodosCasosUso.eliminarPeriodo(idPeriodo);
+      const periodoEncontrado = await this.periodosCasosUso.eliminarPeriodo(idPeriodo);
 
       if (!periodoEncontrado) {
         return reply.code(404).send({
-          mensaje: "Periodo no encontrado",
+          mensaje: "Periodo académico no encontrado",
         });
       }
 
       return reply.code(200).send({
         mensaje: "Periodo académico eliminado correctamente",
-        idPeriodo: idPeriodo,
+        idPeriodo,
       });
     } catch (err) {
       return reply.code(500).send({
