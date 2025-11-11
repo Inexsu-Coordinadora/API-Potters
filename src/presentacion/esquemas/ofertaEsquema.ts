@@ -43,7 +43,7 @@ export const CrearOfertaEsquema = z.object({
   })
 
     .min(10, "El cupo debe tener al menos 10 estudiantes")
-    .max(200, "El cupo no puede exceder más de 200 caracteres")
+    .max(200, "El cupo no puede exceder más de 200 estudiantes")
     .int("El cupo debe ser un número entero positivo")
     .positive()
     .describe("Cantidad de estudiantes por oferta"),

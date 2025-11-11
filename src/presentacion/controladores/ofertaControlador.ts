@@ -1,10 +1,23 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { IOferta } from "../../core/dominio/oferta/IOferta";
 import { IOfertaCasosUso } from "../../core/aplicacion/casos-uso/IOfertaCasosUso";
 import { OfertaDTO, CrearOfertaEsquema } from "../esquemas/ofertaEsquema";
 import { ZodError } from "zod";
 
 export class OfertaControlador {
+
+  private erroresEsperados404: string[] = [
+    "No se encontró la asignatura",
+    "No se encontró el programa",
+    "No se encontró el periodo",
+  ];
+
+  private erroresEsperados422: string[] = [
+    "Ya existe un grupo matriculado",
+    "El periodo está en preparacion",
+    "El periodo está cerrado"
+  ];
+
+
   constructor(private OfertaCasosUso: IOfertaCasosUso) { }
 
   obtenerOfertas = async (
@@ -71,14 +84,15 @@ export class OfertaControlador {
 
     } catch (err: any) {
 
-      if (err?.message === "Ya existe un grupo matriculado con la misma asignatura, programa y periodo académico" ||
-        err?.message === "No se encontró la asignatura buscada" ||
-        err?.message === "No se encontró el programa buscado" ||
-        err?.message === "No se encontró el periodo buscado" ||
-        err?.message === "El periodo está en preparacion" ||
-        err?.message === "El periodo está cerrado") {
-
+      if (this.erroresEsperados404.some(m => err?.message?.includes(m))) {
         return reply.code(404).send({
+          mensaje: "Error al crear una nueva oferta",
+          error: err.message,
+        });
+      }
+
+      if (this.erroresEsperados422.some(m => err?.message?.includes(m))) {
+        return reply.code(422).send({
           mensaje: "Error al crear una nueva oferta",
           error: err.message,
         });
@@ -104,9 +118,7 @@ export class OfertaControlador {
   ) => {
     try {
       const { idOferta } = request.params;
-      //const nuevaOferta = request.body;
       const nuevaOferta = CrearOfertaEsquema.parse(request.body);
-      console.log("nuevaOferta", nuevaOferta);
 
       const OfertaActualizada = await this.OfertaCasosUso.actualizarOferta(
         idOferta,
@@ -125,22 +137,23 @@ export class OfertaControlador {
       });
     } catch (err: any) {
 
-      if (err?.message === "Ya existe un grupo matriculado con la misma asignatura, programa y periodo académico" ||
-        err?.message === "No se encontró la asignatura buscada" ||
-        err?.message === "No se encontró el programa buscado" ||
-        err?.message === "No se encontró el periodo buscado" ||
-        err?.message === "El periodo está en preparacion" ||
-        err?.message === "El periodo está cerrado") {
-
+      if (this.erroresEsperados404.some(m => err?.message?.includes(m))) {
         return reply.code(404).send({
           mensaje: "Error al actualizar la oferta",
           error: err.message,
         });
       }
 
-        if (err instanceof ZodError) {
+        if (this.erroresEsperados422.some(m => err?.message?.includes(m))) {
+        return reply.code(422).send({
+          mensaje: "Error al actualizar la oferta",
+          error: err.message,
+        });
+      }
+
+      if (err instanceof ZodError) {
         return reply.code(400).send({
-          mensaje: "Error al crear una nueva oferta",
+          mensaje: "Error al actualizar la oferta",
           error: err.issues[0]?.message || "Error desconocido",
         });
       }
