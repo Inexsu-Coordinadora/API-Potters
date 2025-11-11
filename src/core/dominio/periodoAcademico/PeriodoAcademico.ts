@@ -4,8 +4,8 @@ export class PeriodoAcademico implements PeriodoAcademico {
 
   idPeriodo?: number;
   semestre: string;
-  fechaInicio: string | Date;
-  fechaFin: string | Date;
+  fechaInicio: Date;
+  fechaFin: Date;
   idEstado: number;
 
   constructor(datosPeriodoAcademico: IPeriodoAcademico) {

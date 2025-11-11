@@ -67,7 +67,18 @@ export class PeriodoAcademicoControlador {
         mensaje: "El periodo académico se creó correctamente",
         idNuevoPeriodo: idNuevoPeriodo,
       });
-    } catch (err) {
+    } catch (err: any) {
+
+      const mensaje = err?.message ?? "";
+      const mensajeError: Array<string> = mensaje.split(":");
+
+      if (mensaje.includes("fecha traslapada")) {
+        return reply.status(400).send({
+          mensaje: "No se puede crear el periodo académico",
+          error: `Existe un periodo activo que solapa las fechas. ${mensajeError[1]}`
+        });
+      }
+
       if (err instanceof ZodError) {
         return reply.code(400).send({
           mensaje: "Error de validación al crear un nuevo periodo académico",

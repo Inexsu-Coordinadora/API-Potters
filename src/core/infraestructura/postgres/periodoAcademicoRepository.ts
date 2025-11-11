@@ -59,4 +59,28 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     const result = await ejecutarConsulta(query, [id]);
     return result.rows[0] || null;
   }
+
+  async consultarTraslapeFechas(datosPeriodoAcademico: IPeriodoAcademico): Promise<IPeriodoAcademico | null> {
+    const query = `
+      SELECT idperiodo AS "idPeriodo", semestre, fechainicio AS "fechaInicio", fechafin AS "fechaFin", idestado
+      FROM periodoacademico
+      WHERE idestado = 2
+      AND fechainicio <= $2   -- fechainicio del existente es menor o igual que la fechaFin nueva
+      AND fechafin >= $1;     -- fechafin del existente es mayor o igual que la fechaInicio nueva
+  `;
+
+    const { fechaInicio, fechaFin } = datosPeriodoAcademico;
+    const parametros = [
+      fechaInicio instanceof Date ? fechaInicio.toISOString().split("T")[0] : fechaInicio,
+      fechaFin instanceof Date ? fechaFin.toISOString().split("T")[0] : fechaFin
+    ] as [string, string];
+
+    const result = await ejecutarConsulta(query, parametros);
+    if (result.rowCount === 0) {
+      return null;
+    }
+
+    return result.rows[0] as IPeriodoAcademico;
+  }
+
 }

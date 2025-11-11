@@ -1,4 +1,4 @@
-import { IEstadoperiodoacademicoRepositorio } from "../../dominio/repositorio/IestadoperiodoacademicoRepositorio";
+import { IEstadoperiodoacademicoRepositorio } from "../../dominio/repositorio/IEstadoperiodoacademicoRepositorio";
 import { ejecutarConsulta } from "./clientePostgres";
 import { IEstadoperiodoacademico } from "../../dominio/estadoperiodoacademico/Iestadoperiodoacademico";
 

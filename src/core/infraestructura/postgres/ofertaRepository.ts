@@ -3,7 +3,6 @@ import { ejecutarConsulta } from "./clientePostgres";
 import { IOferta } from "../../dominio/oferta/IOferta";
 import { IOfertaRelacionada } from "../../dominio/oferta/IOfertaRelacionada";
 
-
 export class OfertaRepositorio implements IOfertaRepositorio {
 
   async crearOferta(datosOferta: IOferta): Promise<number> {
