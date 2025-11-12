@@ -85,6 +85,7 @@ export class PeriodoAcademicoControlador {
           error: err.issues[0]?.message || "Error desconocido",
         });
       }
+
       return reply.code(500).send({
         mensaje: "Error al crear un nuevo periodo académico",
         error: err instanceof Error ? err.message : String(err),
@@ -94,12 +95,13 @@ export class PeriodoAcademicoControlador {
 
   actualizarPeriodo = async (
 
-    request: FastifyRequest<{ Params: { idPeriodo: number }; Body: IPeriodoAcademico }>,
+    request: FastifyRequest<{ Params: { idPeriodo: number }; Body: PeriodoAcademicoDTO }>,
     reply: FastifyReply
   ) => {
     try {
+
       const { idPeriodo } = request.params;
-      const datosPeriodo = request.body;
+      const datosPeriodo = CrearPeriodoAcademicoEsquema.parse(request.body);
 
       const periodoActualizado = await this.PeriodosCasosUso.actualizarPeriodo(
         idPeriodo,
@@ -108,7 +110,8 @@ export class PeriodoAcademicoControlador {
 
       if (!periodoActualizado) {
         return reply.code(404).send({
-          mensaje: "Periodo académico no encontrado",
+          mensaje: "Error al actualizar el periodo académico",
+          Error: "Periodo académico no encontrado",
         });
       }
 
@@ -116,7 +119,25 @@ export class PeriodoAcademicoControlador {
         mensaje: "Periodo académico actualizado correctamente",
         periodoActualizado: periodoActualizado,
       });
-    } catch (err) {
+    } catch (err: any) {
+
+      const mensaje = err?.message ?? "";
+      const mensajeError: Array<string> = mensaje.split(":");
+
+      if (mensaje.includes("fecha traslapada")) {
+        return reply.status(400).send({
+          mensaje: "No se puede actualizar el periodo académico",
+          error: `Existe un periodo activo que solapa las fechas. ${mensajeError[1]}`
+        });
+      }
+
+      if (err instanceof ZodError) {
+        return reply.code(400).send({
+          mensaje: "Error de validación al actualizar un nuevo periodo académico",
+          error: err.issues[0]?.message || "Error desconocido",
+        });
+      }
+
       return reply.code(500).send({
         mensaje: "Error al actualizar el periodo académico",
         error: err instanceof Error ? err.message : err,

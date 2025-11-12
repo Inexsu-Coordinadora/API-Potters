@@ -65,8 +65,8 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
       SELECT idperiodo AS "idPeriodo", semestre, fechainicio AS "fechaInicio", fechafin AS "fechaFin", idestado
       FROM periodoacademico
       WHERE idestado = 2
-      AND fechainicio <= $2   -- fechainicio del existente es menor o igual que la fechaFin nueva
-      AND fechafin >= $1;     -- fechafin del existente es mayor o igual que la fechaInicio nueva
+      AND fechainicio <= $2 
+      AND fechafin >= $1;    
   `;
 
     const { fechaInicio, fechaFin } = datosPeriodoAcademico;
@@ -79,7 +79,6 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     if (result.rowCount === 0) {
       return null;
     }
-
     return result.rows[0] as IPeriodoAcademico;
   }
 

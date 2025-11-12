@@ -2,6 +2,7 @@ import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcadem
 import { IPeriodoAcademicoRepositorio } from "../../dominio/repositorio/IPeriodoAcademicoRepositorio";
 import { IPeriodoAcademicoCasosUso } from "./IPeriodoAcademicoCasosUso";
 import { PeriodoAcademicoDTO } from "../../../presentacion/esquemas/periodoAcademicoEsquema";
+import { number } from "zod";
 
 export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
   constructor(private periodoRepositorio: IPeriodoAcademicoRepositorio) { }
@@ -25,7 +26,36 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
     return idNuevoPeriodo
   }
 
-  async actualizarPeriodo(idPeriodo: number, periodo: IPeriodoAcademico): Promise<IPeriodoAcademico | null> {
+  async actualizarPeriodo(idPeriodo: number, periodo: PeriodoAcademicoDTO): Promise<IPeriodoAcademico | null> {
+
+    const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(periodo);
+    if (periodoTraslapo) {
+      throw new Error(`Se encontró un periodo activo con una fecha traslapada:idPeriodo ${periodoTraslapo.idPeriodo} periodo desde ${this.formatearFecha(periodoTraslapo.fechaInicio)} hasta ${this.formatearFecha(periodoTraslapo.fechaFin)}`);
+    }
+
+    const periodoConsultado = await this.periodoRepositorio.obtenerPeriodoPorId(idPeriodo);
+    if (periodoConsultado) {
+      const estadoActual = periodoConsultado.idEstado;
+      const nuevoEstado = periodo.idEstado;
+
+      const nombresEstados: Record<number, string> = {
+        1: "Preparación",
+        2: "Activo",
+        3: "Cerrado",
+      };
+
+      const esTransicionValida =
+        (estadoActual === 1 && (nuevoEstado === 1 || nuevoEstado === 2 || nuevoEstado === 3)) || // de preparación
+        (estadoActual === 2 && (nuevoEstado === 2 || nuevoEstado === 3)) ||                      // de activo
+        (estadoActual === 3 && nuevoEstado === 3);                                               // cerrado solo a cerrado (sin cambio)
+
+      if (!esTransicionValida) {
+        throw new Error(
+          `Transición de estado no permitida: no se puede cambiar de ${nombresEstados[estadoActual]} a ${nombresEstados[nuevoEstado]}`
+        );
+      }
+    }
+
     const periodoActualizado = await this.periodoRepositorio.actualizarPeriodo(idPeriodo, periodo);
     return periodoActualizado || null;
   }

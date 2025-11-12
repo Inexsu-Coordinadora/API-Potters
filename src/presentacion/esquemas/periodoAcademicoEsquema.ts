@@ -11,7 +11,7 @@ export const CrearPeriodoAcademicoEsquema = z
     semestre: z
       .string()
       .nonempty("El semestre es obligatorio")
-      .min(3, "Debe tener al menos 3 caracteres")
+      .min(6, "Debe tener al menos 6 caracteres con un formato año-semestre (ej: 2025-2)")
       .max(10, "No puede superar los 10 caracteres"),
 
     fechaInicio: z
@@ -45,6 +45,7 @@ export const CrearPeriodoAcademicoEsquema = z
         message: "El idEstado debe ser un campo obligatorio",
       })
       .min(1, "El idEstado debe ser mayor a 0")
+      .max(3, "El idEstado solo puede ser 1, 2 o 3")
       .int("El idEstado debe ser un número entero")
       .positive()
       .describe("ID del estado en el que se encuentra el periodo"),
