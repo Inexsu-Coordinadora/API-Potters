@@ -1,8 +1,10 @@
 import { IPeriodoAcademicoRepositorio } from "../../dominio/repositorio/IPeriodoAcademicoRepositorio";
 import { ejecutarConsulta } from "./clientePostgres";
 import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcademico";
+import { IPeriodoRelacionado } from "../../dominio/periodoAcademico/IPeriodoRelacionado";
 
 export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio {
+  
   async crearPeriodo(datosPeriodo: IPeriodoAcademico): Promise<number> {
     const columnas = Object.keys(datosPeriodo).map((key) => key.toLowerCase());
     const parametros: (string | number)[] = Object.values(datosPeriodo);
@@ -17,7 +19,7 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     const respuesta = await ejecutarConsulta(query, parametros);
     return respuesta.rows[0].idperiodo;
   }
-
+  
   async listarPeriodos(limite?: number): Promise<IPeriodoAcademico[]> {
     let query = "SELECT * FROM periodoacademico";
     const valores: number[] = [];
@@ -80,6 +82,35 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
       return null;
     }
     return result.rows[0] as IPeriodoAcademico;
+  }
+
+  async obtenerPeriodoRelacionado(idPeriodo: number): Promise<IPeriodoRelacionado> {
+    const query = `
+    SELECT pra.idperiodo,
+    pra.semestre,
+    pra.fechainicio,
+    pra.fechafin,
+    epa.estadoperiodo
+    FROM periodoacademico pra 
+    INNER JOIN estadoperiodoacademico epa ON pra.idestado = epa.idestado
+    WHERE pra.idperiodo = $1
+  `;
+
+    const values = [idPeriodo];
+    const result = await ejecutarConsulta(query, values);
+    const row = result.rows[0];
+
+    // Transformar las fechas al formato YYYY-MM-DD
+    const periodoTransformado = {
+      ...row,
+      fechainicio: row.fechainicio
+        ? new Date(row.fechainicio).toISOString().split("T")[0]
+        : null,
+      fechafin: row.fechafin
+        ? new Date(row.fechafin).toISOString().split("T")[0]
+        : null,
+    };
+    return periodoTransformado;
   }
 
 }

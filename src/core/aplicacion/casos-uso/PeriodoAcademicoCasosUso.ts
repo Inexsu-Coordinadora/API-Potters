@@ -2,7 +2,7 @@ import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcadem
 import { IPeriodoAcademicoRepositorio } from "../../dominio/repositorio/IPeriodoAcademicoRepositorio";
 import { IPeriodoAcademicoCasosUso } from "./IPeriodoAcademicoCasosUso";
 import { PeriodoAcademicoDTO } from "../../../presentacion/esquemas/periodoAcademicoEsquema";
-import { number } from "zod";
+import { IPeriodoRelacionado } from "../../dominio/periodoAcademico/IPeriodoRelacionado";
 
 export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
   constructor(private periodoRepositorio: IPeriodoAcademicoRepositorio) { }
@@ -15,7 +15,7 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
     return await this.periodoRepositorio.obtenerPeriodoPorId(idPeriodo);
   }
 
-  async crearPeriodo(datosPeriodo: PeriodoAcademicoDTO): Promise<number> {
+  async crearPeriodo(datosPeriodo: PeriodoAcademicoDTO): Promise<IPeriodoRelacionado> {
 
     const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(datosPeriodo);
     if (periodoTraslapo) {
@@ -23,10 +23,11 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
     }
 
     const idNuevoPeriodo = await this.periodoRepositorio.crearPeriodo(datosPeriodo);
-    return idNuevoPeriodo
+    const periodoCreado = await this.periodoRepositorio.obtenerPeriodoRelacionado(idNuevoPeriodo)
+    return periodoCreado
   }
 
-  async actualizarPeriodo(idPeriodo: number, periodo: PeriodoAcademicoDTO): Promise<IPeriodoAcademico | null> {
+  async actualizarPeriodo(idPeriodo: number, periodo: PeriodoAcademicoDTO): Promise<IPeriodoRelacionado | null> {
 
     const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(periodo);
     if (periodoTraslapo) {
@@ -56,7 +57,8 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
       }
     }
 
-    const periodoActualizado = await this.periodoRepositorio.actualizarPeriodo(idPeriodo, periodo);
+    await this.periodoRepositorio.actualizarPeriodo(idPeriodo, periodo);
+    const periodoActualizado = await this.periodoRepositorio.obtenerPeriodoRelacionado(idPeriodo)
     return periodoActualizado || null;
   }
 

@@ -94,7 +94,6 @@ export class PeriodoAcademicoControlador {
   };
 
   actualizarPeriodo = async (
-
     request: FastifyRequest<{ Params: { idPeriodo: number }; Body: PeriodoAcademicoDTO }>,
     reply: FastifyReply
   ) => {
@@ -144,6 +143,7 @@ export class PeriodoAcademicoControlador {
       });
     }
   };
+
 
   eliminarPeriodo = async (
     request: FastifyRequest<{ Params: { idPeriodo: number } }>,
