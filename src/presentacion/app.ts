@@ -6,7 +6,6 @@ import { construirPeriodoAcademicoEnrutador } from "./rutas/gestionPeriodoAcadem
 import { construirOfertasEnrutador} from "./rutas/gestionOfertaEnrutador";
 import { construirPlanEstudioControlador } from "./rutas/gestionPlanEstudioEnrutador";
 import { configuration} from "./../common/configuracion"; 
-import { construirPlanEstudioControlador } from "./rutas/gestionPlanEstudioEnrutador";
 
 const app = Fastify({ logger: true });
 
