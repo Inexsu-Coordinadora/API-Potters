@@ -4,11 +4,15 @@ import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcadem
 import { IPeriodoRelacionado } from "../../dominio/periodoAcademico/IPeriodoRelacionado";
 
 export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio {
-  
+
   async crearPeriodo(datosPeriodo: IPeriodoAcademico): Promise<number> {
+
     const columnas = Object.keys(datosPeriodo).map((key) => key.toLowerCase());
     const parametros: (string | number)[] = Object.values(datosPeriodo);
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
+
+    parametros[1] = new Date(datosPeriodo.fechaInicio).toISOString().split("T")[0] || "";
+    parametros[2] = new Date(datosPeriodo.fechaFin).toISOString().split("T")[0] || "";
 
     const query = `
       INSERT INTO periodoacademico (${columnas.join(", ")})
@@ -19,7 +23,7 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     const respuesta = await ejecutarConsulta(query, parametros);
     return respuesta.rows[0].idperiodo;
   }
-  
+
   async listarPeriodos(limite?: number): Promise<IPeriodoAcademico[]> {
     let query = "SELECT * FROM periodoacademico";
     const valores: number[] = [];
@@ -42,6 +46,10 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
   async actualizarPeriodo(id: number, datosPeriodo: IPeriodoAcademico): Promise<IPeriodoAcademico> {
     const columnas = Object.keys(datosPeriodo).map((key) => key.toLowerCase());
     const parametros = Object.values(datosPeriodo);
+
+    parametros[1] = new Date(datosPeriodo.fechaInicio).toISOString().split("T")[0] || "";
+    parametros[2] = new Date(datosPeriodo.fechaFin).toISOString().split("T")[0] || "";
+
     const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
     parametros.push(id);
 
@@ -62,20 +70,36 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     return result.rows[0] || null;
   }
 
-  async consultarTraslapeFechas(datosPeriodoAcademico: IPeriodoAcademico): Promise<IPeriodoAcademico | null> {
-    const query = `
-      SELECT idperiodo AS "idPeriodo", semestre, fechainicio AS "fechaInicio", fechafin AS "fechaFin", idestado
-      FROM periodoacademico
-      WHERE idestado = 2
-      AND fechainicio <= $2 
-      AND fechafin >= $1;    
-  `;
+  async consultarTraslapeFechas(datosPeriodoAcademico: IPeriodoAcademico, idperiodo: number): Promise<IPeriodoAcademico | null> {
 
+    let query = "";
     const { fechaInicio, fechaFin } = datosPeriodoAcademico;
     const parametros = [
       fechaInicio instanceof Date ? fechaInicio.toISOString().split("T")[0] : fechaInicio,
       fechaFin instanceof Date ? fechaFin.toISOString().split("T")[0] : fechaFin
     ] as [string, string];
+
+    if (idperiodo > 0) {
+      query = `
+      SELECT idperiodo AS "idPeriodo", semestre, fechainicio AS "fechaInicio", fechafin AS "fechaFin", idestado
+      FROM periodoacademico
+      WHERE idestado = 2
+      AND fechainicio <= $2 
+      AND idperiodo != $3
+      AND fechafin >= $1;    
+  `;
+      parametros.push(idperiodo.toString());
+    }
+    else {
+
+      query = `
+      SELECT idperiodo AS "idPeriodo", semestre, fechainicio AS "fechaInicio", fechafin AS "fechaFin", idestado
+      FROM periodoacademico
+      WHERE idestado = 2
+      AND fechainicio <= $2 
+      AND fechafin >= $1;   
+  `;
+    }
 
     const result = await ejecutarConsulta(query, parametros);
     if (result.rowCount === 0) {
@@ -100,7 +124,6 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     const result = await ejecutarConsulta(query, values);
     const row = result.rows[0];
 
-    // Transformar las fechas al formato YYYY-MM-DD
     const periodoTransformado = {
       ...row,
       fechainicio: row.fechainicio
@@ -112,5 +135,4 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
     };
     return periodoTransformado;
   }
-
 }

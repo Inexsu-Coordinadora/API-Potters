@@ -17,7 +17,7 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
 
   async crearPeriodo(datosPeriodo: PeriodoAcademicoDTO): Promise<IPeriodoRelacionado> {
 
-    const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(datosPeriodo);
+    const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(datosPeriodo, 0);
     if (periodoTraslapo) {
       throw new Error(`Se encontró un periodo activo con una fecha traslapada:idPeriodo ${periodoTraslapo.idPeriodo} periodo desde ${this.formatearFecha(periodoTraslapo.fechaInicio)} hasta ${this.formatearFecha(periodoTraslapo.fechaFin)}`);
     }
@@ -29,7 +29,7 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
 
   async actualizarPeriodo(idPeriodo: number, periodo: PeriodoAcademicoDTO): Promise<IPeriodoRelacionado | null> {
 
-    const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(periodo);
+    const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(periodo, idPeriodo);
     if (periodoTraslapo) {
       throw new Error(`Se encontró un periodo activo con una fecha traslapada:idPeriodo ${periodoTraslapo.idPeriodo} periodo desde ${this.formatearFecha(periodoTraslapo.fechaInicio)} hasta ${this.formatearFecha(periodoTraslapo.fechaFin)}`);
     }
