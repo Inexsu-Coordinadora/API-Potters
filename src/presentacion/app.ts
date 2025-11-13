@@ -3,6 +3,9 @@ import { FastifyError } from "fastify";
 import { construirAsignaturasEnrutador } from "./rutas/gestionAcademicaEnrutador";
 import { construirProgramasEnrutador } from "./rutas/gestionProgramaEnRutador";
 import { construirPeriodoAcademicoEnrutador } from "./rutas/gestionPeriodoAcademicoEnrutador"; 
+import { construirOfertasEnrutador} from "./rutas/gestionOfertaEnrutador";
+import { construirPlanEstudioControlador } from "./rutas/gestionPlanEstudioEnrutador";
+import { configuration} from "./../common/configuracion"; 
 
 const app = Fastify({ logger: true });
 
@@ -11,13 +14,15 @@ app.register(
     construirAsignaturasEnrutador(appInstance);
     construirProgramasEnrutador(appInstance);
     construirPeriodoAcademicoEnrutador(appInstance);
+    construirOfertasEnrutador(appInstance);
+    construirPlanEstudioControlador(appInstance);
   },
   { prefix: "/api/Academium" }
 );
 
 export const startServer = async (): Promise<void> => {
   try {
-    await app.listen({ port: Number(process.env.PORT) || 3001 });
+    await app.listen({port: configuration.httpPuerto });
     app.log.info("El servidor esta corriendo...");
   } catch (err) {
     app.log.error(`Error al ejecutar el servidor\n ${err}`);

@@ -10,7 +10,7 @@ export class ProgramaCasosUso implements IProgramaCasosUso {
         return await this.programaRepositorio.listarPrograma(limite);
     }
 
-    async obtenerProgramasPorId(idPrograma: string): Promise<IPrograma | null> {
+    async obtenerProgramasPorId(idPrograma: number): Promise<IPrograma | null> {
         const programaObtenido = await this.programaRepositorio.obtenerProgramaPorId(idPrograma);
         return programaObtenido;   
     }
@@ -20,14 +20,14 @@ export class ProgramaCasosUso implements IProgramaCasosUso {
         return idNuevoPrograma;
     }
 
-    async actualizarPrograma(idPrograma: string, programa: IPrograma): Promise<IPrograma | null> {
+    async actualizarPrograma(idPrograma: number, programa: IPrograma): Promise<IPrograma | null> {
         const programaActualizado = await this.programaRepositorio.actualizarPrograma(
             idPrograma,
             programa
         );
         return programaActualizado || null;
     }
-    async eliminarPrograma(idPrograma: string): Promise<IPrograma | null> {
+    async eliminarPrograma(idPrograma: number): Promise<IPrograma | null> {
         const programaObtenido = await this.programaRepositorio.eliminarPrograma(idPrograma);
         return programaObtenido;
   }

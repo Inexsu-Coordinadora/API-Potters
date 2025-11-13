@@ -31,13 +31,13 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
         return result.rows;
     }
 
-    async obtenerProgramaPorId(idPrograma: string): Promise<IPrograma | null> {
+    async obtenerProgramaPorId(idPrograma: number): Promise<IPrograma | null> {
         const query = "SELECT * FROM programaacademico WHERE idprograma = $1";
         const result = await ejecutarConsulta(query, [idPrograma]);
         return result.rows[0] || null;
     }
 
-    async actualizarPrograma(id: string, datosPrograma: IPrograma): Promise<IPrograma> {
+    async actualizarPrograma(id: number, datosPrograma: IPrograma): Promise<IPrograma> {
         const columnas = Object.keys(datosPrograma).map((key) => key.toLowerCase());
         const parametros = Object.values(datosPrograma);
         const setClause = columnas.map((col, i ) => `${col}=$${i + 1}`).join (",");
@@ -53,7 +53,7 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
     const result = await ejecutarConsulta(query, parametros);
     return result.rows[0];
  }
- async eliminarPrograma(idPrograma: string): Promise<IPrograma | null> {
+ async eliminarPrograma(idPrograma: number): Promise<IPrograma | null> {
     const query = "DELETE FROM programaacademico WHERE idPrograma = $1 RETURNING *"
     const result = await ejecutarConsulta(query, [idPrograma]);
     return result.rows[0] || null;
