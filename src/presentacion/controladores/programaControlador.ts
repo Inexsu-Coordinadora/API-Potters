@@ -29,7 +29,7 @@ export class ProgramasControlador {
     };
 
     obtenerProgramaPorId = async (
-        request: FastifyRequest<{ Params: { idPrograma: string } }>,
+        request: FastifyRequest<{ Params: { idPrograma: number } }>,
         reply: FastifyReply
     ) => {
         try {
@@ -82,7 +82,7 @@ export class ProgramasControlador {
 
 
     actualizarPrograma = async (
-        request: FastifyRequest<{ Params: { idPrograma: string }; Body: IPrograma }>,
+        request: FastifyRequest<{ Params: { idPrograma: number }; Body: IPrograma }>,
         reply: FastifyReply
     ) => {
         try {
@@ -112,7 +112,7 @@ export class ProgramasControlador {
     };
 
     eliminarPrograma = async (
-        request: FastifyRequest<{ Params: { idPrograma: string } }>,
+        request: FastifyRequest<{ Params: { idPrograma: number } }>,
         reply: FastifyReply
     ) => {
         try {

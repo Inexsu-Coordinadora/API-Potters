@@ -2,16 +2,16 @@ import { IPeriodoAcademico } from "./IPeriodoAcademico";
 
 export class PeriodoAcademico implements PeriodoAcademico {
 
-  idPeriodo?: string;
+  idPeriodo?: number;
   semestre: string;
-  fechaInicio: string | Date;
-  fechaFin: string | Date;
-  estadoPeriodo: string;
+  fechaInicio: Date;
+  fechaFin: Date;
+  idEstado: number;
 
   constructor(datosPeriodoAcademico: IPeriodoAcademico) {
     this.semestre = datosPeriodoAcademico.semestre;
     this.fechaInicio = datosPeriodoAcademico.fechaInicio;
     this.fechaFin = datosPeriodoAcademico.fechaFin;
-    this.estadoPeriodo= datosPeriodoAcademico.estadoPeriodo;
+    this.idEstado= datosPeriodoAcademico.idEstado;
   }
 }

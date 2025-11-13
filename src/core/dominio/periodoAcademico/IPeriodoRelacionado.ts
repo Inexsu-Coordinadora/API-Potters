@@ -1,7 +1,7 @@
-export interface IPeriodoAcademico {
+export interface IPeriodoRelacionado {
   idPeriodo?: number;
   semestre: string;
   fechaInicio: Date;
   fechaFin: Date;
-  idEstado: number;
+  estadoperiodo: string;
 }
