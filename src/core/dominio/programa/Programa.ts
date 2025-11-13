@@ -2,16 +2,16 @@ import { IPrograma  } from "./IPrograma";
 
 export class programa implements IPrograma {
     
-    idPrograma?: string;
+    idPrograma?: number;
     nombrePrograma: string;
-    nivelEducativo: string;
-    modalidad: string;
-    duracionMeses: string;
+    idNivel: number;
+    idModalidad: number;
+    duracionMeses: number;
 
     constructor(datosPrograma: IPrograma) {
         this.nombrePrograma = datosPrograma.nombrePrograma;
-        this.nivelEducativo = datosPrograma.nivelEducativo;
-        this.modalidad = datosPrograma.modalidad;
+        this.idNivel = datosPrograma.idNivel;
+        this.idModalidad = datosPrograma.idModalidad;
         this.duracionMeses = datosPrograma.duracionMeses;
     }
 }

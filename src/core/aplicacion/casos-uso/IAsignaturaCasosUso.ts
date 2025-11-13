@@ -3,8 +3,8 @@ import { AsignaturaDTO } from "../../../presentacion/esquemas/asignaturaEsquema"
 
 export interface IAsignaturaCasosUso {
   obtenerAsignaturas(limite?: number): Promise<IAsignatura[]>;
-  obtenerAsignaturasPorId(idAsignatura: string): Promise<IAsignatura | null>;
+  obtenerAsignaturasPorId(idAsignatura: number): Promise<IAsignatura | null>;
   crearAsignatura(asignatura: AsignaturaDTO): Promise<string>;
-  actualizarAsignatura(idAsignatura: string, asignatura: IAsignatura): Promise<IAsignatura | null>;
-  eliminarAsignatura(idAsignatura: string): Promise<IAsignatura | null>;
+  actualizarAsignatura(idAsignatura: number, asignatura: IAsignatura): Promise<IAsignatura | null>;
+  eliminarAsignatura(idAsignatura: number): Promise<IAsignatura | null>;
 }

@@ -29,7 +29,7 @@ export class AsignaturasControlador {
   };
 
   obtenerAsignaturaPorId = async (
-    request: FastifyRequest<{ Params: { idAsignatura: string } }>,
+    request: FastifyRequest<{ Params: { idAsignatura: number } }>,
     reply: FastifyReply
   ) => {
     try {
@@ -82,7 +82,7 @@ export class AsignaturasControlador {
   };
 
   actualizarAsignatura = async (
-    request: FastifyRequest<{ Params: { idAsignatura: string }; Body: IAsignatura }>,
+    request: FastifyRequest<{ Params: { idAsignatura: number }; Body: IAsignatura }>,
     reply: FastifyReply
   ) => {
     try {
@@ -112,7 +112,7 @@ export class AsignaturasControlador {
   };
 
   eliminarAsignatura = async (
-    request: FastifyRequest<{ Params: { idAsignatura: string } }>,
+    request: FastifyRequest<{ Params: { idAsignatura: number } }>,
     reply: FastifyReply
   ) => {
     try {

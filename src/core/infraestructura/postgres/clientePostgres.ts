@@ -1,5 +1,6 @@
-import { Pool } from "pg";
+import { Pool, types } from "pg";
 import { configuration } from "../../../common/configuracion";
+types.setTypeParser(1082, val => val);
 
 const pool = new Pool({
   host: configuration.baseDatos.host,
