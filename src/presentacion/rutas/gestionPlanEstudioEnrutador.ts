@@ -4,6 +4,10 @@ import { IPlanEstudioRepositorio } from "../../core/dominio/repositorio/IPlanEst
 import { PlanEstudioCasosUso } from "../../core/aplicacion/casos-uso/PlanEstudioCasosUso";
 import { PlanEstudioRepositorio } from "../../core/infraestructura/postgres/planEstudioRepository";
 import { IPlanEstudioCasosUso } from "../../core/aplicacion/casos-uso/IPlanEstudioCasosUso";
+import { IProgramaRepositorio } from "../../core/dominio/repositorio/IProgramaRepositorio";
+import { IAsignaturaRepositorio } from "../../core/dominio/repositorio/IAsignaturaRepositorio";
+import { ProgramaRepositorio } from "../../core/infraestructura/postgres/programaRepository";
+import { AsignaturaRepositorio } from "../../core/infraestructura/postgres/asignaturaRepository";
 
 function gestionPlanEstudioEnrutador(
     app: FastifyInstance,
@@ -19,7 +23,10 @@ function gestionPlanEstudioEnrutador(
 
 export async function construirPlanEstudioControlador(app: FastifyInstance) {
     const planEstudioRepositorio: IPlanEstudioRepositorio = new PlanEstudioRepositorio();
-    const planEstudioCasosUso: IPlanEstudioCasosUso = new PlanEstudioCasosUso(planEstudioRepositorio);
+    const programaRepositorio: IProgramaRepositorio = new ProgramaRepositorio(); 
+    const asignaturaRepositorio: IAsignaturaRepositorio = new AsignaturaRepositorio(); 
+    const planEstudioCasosUso: IPlanEstudioCasosUso = new PlanEstudioCasosUso(
+        planEstudioRepositorio, programaRepositorio, asignaturaRepositorio );
     const planEstudioControlador = new PlanEstudioControlador(planEstudioCasosUso);
 
     gestionPlanEstudioEnrutador(app, planEstudioControlador);
