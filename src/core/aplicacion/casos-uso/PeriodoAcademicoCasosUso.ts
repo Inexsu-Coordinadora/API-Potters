@@ -2,6 +2,7 @@ import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcadem
 import { IPeriodoAcademicoRepositorio } from "../../dominio/repositorio/IPeriodoAcademicoRepositorio";
 import { IPeriodoAcademicoCasosUso } from "./IPeriodoAcademicoCasosUso";
 import { PeriodoAcademicoDTO } from "../../../presentacion/esquemas/periodoAcademicoEsquema";
+import { IPeriodoRelacionado } from "../../dominio/periodoAcademico/IPeriodoRelacionado";
 
 export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
   constructor(private periodoRepositorio: IPeriodoAcademicoRepositorio) { }
@@ -14,114 +15,63 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
     return await this.periodoRepositorio.obtenerPeriodoPorId(idPeriodo);
   }
 
-  async crearPeriodo(datosPeriodo: PeriodoAcademicoDTO): Promise<number> {
-    const fechaInicio = new Date(datosPeriodo.fechaInicio);
-    const fechaFin = new Date(datosPeriodo.fechaFin);
+  async crearPeriodo(datosPeriodo: PeriodoAcademicoDTO): Promise<IPeriodoRelacionado> {
 
-    if (isNaN(fechaInicio.getTime()) || isNaN(fechaFin.getTime())) {
-      throw new Error("Fecha invalida: formato incorrecto.");
+    const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(datosPeriodo, 0);
+    if (periodoTraslapo) {
+      throw new Error(`Se encontró un periodo activo con una fecha traslapada:idPeriodo ${periodoTraslapo.idPeriodo} periodo desde ${this.formatearFecha(periodoTraslapo.fechaInicio)} hasta ${this.formatearFecha(periodoTraslapo.fechaFin)}`);
     }
 
-    if (fechaFin < fechaInicio) {
-      throw new Error("Fecha invalida: la fecha de fin no puede ser menor que la de inicio.");
+    const idNuevoPeriodo = await this.periodoRepositorio.crearPeriodo(datosPeriodo);
+    const periodoCreado = await this.periodoRepositorio.obtenerPeriodoRelacionado(idNuevoPeriodo)
+    return periodoCreado
+  }
+
+  async actualizarPeriodo(idPeriodo: number, periodo: PeriodoAcademicoDTO): Promise<IPeriodoRelacionado | null> {
+
+    const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(periodo, idPeriodo);
+    if (periodoTraslapo) {
+      throw new Error(`Se encontró un periodo activo con una fecha traslapada:idPeriodo ${periodoTraslapo.idPeriodo} periodo desde ${this.formatearFecha(periodoTraslapo.fechaInicio)} hasta ${this.formatearFecha(periodoTraslapo.fechaFin)}`);
     }
 
-    const estadoFinal = Number(datosPeriodo.idEstado);
+    const periodoConsultado = await this.periodoRepositorio.obtenerPeriodoPorId(idPeriodo);
+    if (periodoConsultado) {
+      const estadoActual = periodoConsultado.idEstado;
+      const nuevoEstado = periodo.idEstado;
 
-    if (estadoFinal === 2) {
-      const todosLosPeriodos = await this.periodoRepositorio.listarPeriodos();
-      const periodosActivos = todosLosPeriodos.filter(p => Number(p.idEstado) === 2);
+      const nombresEstados: Record<number, string> = {
+        1: "Preparación",
+        2: "Activo",
+        3: "Cerrado",
+      };
 
-      const haySolapamiento = periodosActivos.some(periodoActivo => {
-        const inicioExistente = new Date(periodoActivo.fechaInicio as string);
-        const finExistente = new Date(periodoActivo.fechaFin as string);
+      const esTransicionValida =
+        (estadoActual === 1 && (nuevoEstado === 1 || nuevoEstado === 2 || nuevoEstado === 3)) || // de preparación
+        (estadoActual === 2 && (nuevoEstado === 2 || nuevoEstado === 3)) ||                      // de activo
+        (estadoActual === 3 && nuevoEstado === 3);                                               // cerrado solo a cerrado (sin cambio)
 
-        return (
-          fechaInicio.getTime() <= finExistente.getTime() &&
-          fechaFin.getTime() >= inicioExistente.getTime()
+      if (!esTransicionValida) {
+        throw new Error(
+          `Transición de estado no permitida: no se puede cambiar de ${nombresEstados[estadoActual]} a ${nombresEstados[nuevoEstado]}`
         );
-      });
-
-      if (haySolapamiento) {
-        throw new Error("Solapamiento de fechas.");
       }
     }
 
-    if (![1, 2].includes(estadoFinal)) {
-      throw new Error("Transición invalida: no se puede crear un periodo en estado cerrado.");
-    }
-    const idNuevoPeriodo = await this.periodoRepositorio.crearPeriodo(datosPeriodo as IPeriodoAcademico);
-    return idNuevoPeriodo;
+    await this.periodoRepositorio.actualizarPeriodo(idPeriodo, periodo);
+    const periodoActualizado = await this.periodoRepositorio.obtenerPeriodoRelacionado(idPeriodo)
+    return periodoActualizado || null;
   }
-
-async actualizarPeriodo(
-  idPeriodo: number,
-  periodo: Partial<IPeriodoAcademico>
-): Promise<IPeriodoAcademico | null> {
-  const periodoActual = await this.periodoRepositorio.obtenerPeriodoPorId(idPeriodo);
-  if (!periodoActual) {
-    throw new Error("El periodo académico no existe.");
-  }
-
-  const inicioFinal = new Date(periodo.fechaInicio ?? periodoActual.fechaInicio);
-  const finFinal = new Date(periodo.fechaFin ?? periodoActual.fechaFin);
-
-  if (isNaN(inicioFinal.getTime()) || isNaN(finFinal.getTime())) {
-    throw new Error("Fecha invalida: formato incorrecto.");
-  }
-
-  if (finFinal < inicioFinal) {
-    throw new Error("Fecha invalida: la fecha de fin no puede ser menor que la de inicio.");
-  }
-
-  const estadoActualNum = Number(periodoActual.idEstado);
-  const nuevoEstadoNum = Number(periodo.idEstado ?? periodoActual.idEstado);
-
-  if (periodo.idEstado !== undefined) {
-    const transicionesValidas: Record<number, number[]> = {
-      1: [1, 2], // preparación → preparación o activo
-      2: [2, 3], // activo → activo o cerrado
-      3: [3],    // cerrado → cerrado
-    };
-
-    const estadosPermitidos = transicionesValidas[estadoActualNum] || [];
-
-    if (!estadosPermitidos.includes(nuevoEstadoNum)) {
-      throw new Error(`Transición invalida`);
-    }
-  }
-
-  if (nuevoEstadoNum === 2) {
-    const todosLosPeriodos = await this.periodoRepositorio.listarPeriodos();
-    const otrosActivos = todosLosPeriodos.filter(
-      (p) => Number(p.idEstado) === 2 && Number(p.idPeriodo) !== Number(idPeriodo)
-    );
-
-    const haySolapamiento = otrosActivos.some((p) => {
-      const inicioExistente = new Date(p.fechaInicio as string);
-      const finExistente = new Date(p.fechaFin as string);
-
-      return (
-        inicioFinal.getTime() <= finExistente.getTime() &&
-        finFinal.getTime() >= inicioExistente.getTime()
-      );
-    });
-
-    if (haySolapamiento) {
-      throw new Error("Solapamiento de fechas.");
-    }
-  }
-
-  const periodoActualizado = await this.periodoRepositorio.actualizarPeriodo(idPeriodo, {
-    ...periodoActual,
-    ...periodo,
-  });
-
-  return periodoActualizado || null;
-}
 
   async eliminarPeriodo(idPeriodo: number): Promise<IPeriodoAcademico | null> {
     const periodoObtenido = await this.periodoRepositorio.eliminarPeriodo(idPeriodo);
     return periodoObtenido;
+  }
+
+  formatearFecha(fecha: Date | string): string {
+    const f = new Date(fecha);
+    const dia = String(f.getDate()).padStart(2, "0");
+    const mes = String(f.getMonth() + 1).padStart(2, "0");
+    const anio = f.getFullYear();
+    return `${anio}-${mes}-${dia}`;
   }
 }
