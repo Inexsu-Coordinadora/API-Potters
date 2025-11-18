@@ -3,8 +3,8 @@ import { ProgramaDTO } from "../../../presentacion/esquemas/programaAcademicoEsq
 
 export interface IProgramaCasosUso {
     obtenerPrograma(limite?: number): Promise<IPrograma[]>;
-    obtenerProgramasPorId(idPrograma: string): Promise <IPrograma | null>;
+    obtenerProgramasPorId(idPrograma: number): Promise <IPrograma | null>;
     crearPrograma(programa: ProgramaDTO): Promise<string>;
-    actualizarPrograma(idPrograma: string, programa: IPrograma): Promise <IPrograma | null>;
-    eliminarPrograma(idPrograma: string): Promise <IPrograma | null>;
+    actualizarPrograma(idPrograma: number, programa: IPrograma): Promise <IPrograma | null>;
+    eliminarPrograma(idPrograma: number): Promise <IPrograma | null>;
 }

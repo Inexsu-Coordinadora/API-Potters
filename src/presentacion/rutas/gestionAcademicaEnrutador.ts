@@ -5,7 +5,6 @@ import { AsignaturaCasosUso} from "../../core/aplicacion/casos-uso/AsignaturaCas
 import { AsignaturaRepositorio } from "../../core/infraestructura/postgres/asignaturaRepository";
 import { IAsignaturaCasosUso } from "../../core/aplicacion/casos-uso/IAsignaturaCasosUso";
 
-
 function gestionAcademicaEnrutador(
   app: FastifyInstance,
   asignaturaController: AsignaturasControlador,

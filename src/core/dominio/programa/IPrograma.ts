@@ -1,7 +1,7 @@
 export interface IPrograma {
-    idPrograma?: string;
+    idPrograma?: number;
     nombrePrograma: string;
-    nivelEducativo: string;
-    modalidad: string;
-    duracionMeses: string;
+    idNivel: number;
+    idModalidad: number;
+    duracionMeses: number;
 }
