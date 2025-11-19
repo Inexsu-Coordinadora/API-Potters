@@ -5,7 +5,7 @@ import { construirProgramasEnrutador } from "./rutas/gestionProgramaEnRutador";
 import { construirPeriodoAcademicoEnrutador } from "./rutas/gestionPeriodoAcademicoEnrutador"; 
 import { construirOfertasEnrutador} from "./rutas/gestionOfertaEnrutador";
 import { construirPlanEstudioControlador } from "./rutas/gestionPlanEstudioEnrutador";
-import { configuration} from "./../common/configuracion"; 
+import { httpConfig} from "./../config/http"; 
 
 const app = Fastify({ logger: true });
 
@@ -22,7 +22,7 @@ app.register(
 
 export const startServer = async (): Promise<void> => {
   try {
-    await app.listen({port: configuration.httpPuerto });
+    await app.listen({port: httpConfig.puerto });
     app.log.info("El servidor esta corriendo...");
   } catch (err) {
     app.log.error(`Error al ejecutar el servidor\n ${err}`);
