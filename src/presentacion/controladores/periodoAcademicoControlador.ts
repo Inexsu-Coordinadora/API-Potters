@@ -1,5 +1,4 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { IPeriodoAcademico } from "../../core/dominio/periodoAcademico/IPeriodoAcademico";
 import { IPeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/IPeriodoAcademicoCasosUso"; // <-- Usa la interfaz de Casos de Uso
 import { PeriodoAcademicoDTO, CrearPeriodoAcademicoEsquema } from "../esquemas/periodoAcademicoEsquema";
 import { ZodError } from "zod";

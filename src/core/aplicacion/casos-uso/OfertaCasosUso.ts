@@ -5,6 +5,7 @@ import { IPeriodoAcademicoRepositorio } from "../../dominio/repositorio/IPeriodo
 import { IProgramaRepositorio } from "../../dominio/repositorio/IProgramaRepositorio";
 import { IOfertaCasosUso } from "./IOfertaCasosUso";
 import { IOfertaRelacionada } from "../../dominio/oferta/IOfertaRelacionada";
+import { PeriodoAcademico } from "../../dominio/periodoAcademico/PeriodoAcademico";
 
 export class OfertaCasosUso implements IOfertaCasosUso {
   constructor(private ofertaRepositorio: IOfertaRepositorio,
@@ -44,12 +45,11 @@ export class OfertaCasosUso implements IOfertaCasosUso {
       throw new Error("No se encontró el periodo ingresado");
     }
 
-    if (idPeriodo.idEstado === 1) {
-      throw new Error("El periodo está en preparacion");
-    }
+    let objperiodo = new PeriodoAcademico(idPeriodo);
+    let mensajeValidacionEstadoPeriodo = objperiodo.validarEstado();
 
-    if (idPeriodo.idEstado === 3) {
-      throw new Error("El periodo está cerrado");
+    if (!mensajeValidacionEstadoPeriodo.includes("periodo activo")) {
+      throw new Error(mensajeValidacionEstadoPeriodo);
     }
 
     const idNuevaOferta = await this.ofertaRepositorio.crearOferta(datosOferta);
@@ -80,21 +80,20 @@ export class OfertaCasosUso implements IOfertaCasosUso {
       throw new Error("No se encontró el periodo ingresado");
     }
 
-    if (idPeriodo.idEstado === 1) {
-      throw new Error("El periodo está en preparacion");
+    let objperiodo = new PeriodoAcademico(idPeriodo);
+    let mensajeValidacionEstadoPeriodo = objperiodo.validarEstado();
+
+    if (!mensajeValidacionEstadoPeriodo.includes("periodo activo")) {
+      throw new Error(mensajeValidacionEstadoPeriodo);
     }
 
-    if (idPeriodo.idEstado === 3) {
-      throw new Error("El periodo está cerrado");
-    }
-
-      await this.ofertaRepositorio.actualizarOferta(
+    await this.ofertaRepositorio.actualizarOferta(
       idOferta,
       oferta
     );
     const ofertaActualizada = await this.ofertaRepositorio.obtenerOfertaRelacionada(idOferta);
     return ofertaActualizada;
-    
+
   }
 
   async eliminarOferta(idOferta: number): Promise<IOferta | null> {
