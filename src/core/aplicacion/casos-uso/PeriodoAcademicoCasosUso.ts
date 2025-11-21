@@ -3,24 +3,28 @@ import { IPeriodoAcademicoRepositorio } from "../../dominio/repositorio/IPeriodo
 import { IPeriodoAcademicoCasosUso } from "./IPeriodoAcademicoCasosUso";
 import { PeriodoAcademicoDTO } from "../../../presentacion/esquemas/periodoAcademicoEsquema";
 import { IPeriodoRelacionado } from "../../dominio/periodoAcademico/IPeriodoRelacionado";
+import { EntidadNoEncontradaError } from "../../dominio/errores/encontrarError";
+import { ReglaNegocioError } from "../../dominio/errores/reglaNegocioError";
 
 export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
   constructor(private periodoRepositorio: IPeriodoAcademicoRepositorio) { }
 
   async obtenerPeriodos(limite?: number): Promise<IPeriodoAcademico[]> {
-    return await this.periodoRepositorio.listarPeriodos(limite);
+    const lista = await this.periodoRepositorio.listarPeriodos(limite);
+    if (!lista || lista.length == 0) throw new EntidadNoEncontradaError("No se encontró ningún periodo académico");
+    return lista;
   }
 
   async obtenerPeriodoPorId(idPeriodo: number): Promise<IPeriodoAcademico | null> {
-    return await this.periodoRepositorio.obtenerPeriodoPorId(idPeriodo);
+    const periodoObtenido = await this.periodoRepositorio.obtenerPeriodoPorId(idPeriodo);
+    if (!periodoObtenido) throw new EntidadNoEncontradaError("No se encontró ningún periodo académico");
+    return periodoObtenido;
   }
 
   async crearPeriodo(datosPeriodo: PeriodoAcademicoDTO): Promise<IPeriodoRelacionado> {
 
     const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(datosPeriodo, 0);
-    if (periodoTraslapo) {
-      throw new Error(`Se encontró un periodo activo con una fecha traslapada:idPeriodo ${periodoTraslapo.idPeriodo} periodo desde ${this.formatearFecha(periodoTraslapo.fechaInicio)} hasta ${this.formatearFecha(periodoTraslapo.fechaFin)}`);
-    }
+    if (periodoTraslapo) throw new ReglaNegocioError(`Se encontró un periodo activo con una fecha traslapada: idPeriodo ${periodoTraslapo.idPeriodo} periodo desde ${this.formatearFecha(periodoTraslapo.fechaInicio)} hasta ${this.formatearFecha(periodoTraslapo.fechaFin)}`);
 
     const idNuevoPeriodo = await this.periodoRepositorio.crearPeriodo(datosPeriodo);
     const periodoCreado = await this.periodoRepositorio.obtenerPeriodoRelacionado(idNuevoPeriodo)
@@ -30,40 +34,41 @@ export class PeriodoAcademicoCasosUso implements IPeriodoAcademicoCasosUso {
   async actualizarPeriodo(idPeriodo: number, periodo: PeriodoAcademicoDTO): Promise<IPeriodoRelacionado | null> {
 
     const periodoTraslapo = await this.periodoRepositorio.consultarTraslapeFechas(periodo, idPeriodo);
-    if (periodoTraslapo) {
-      throw new Error(`Se encontró un periodo activo con una fecha traslapada:idPeriodo ${periodoTraslapo.idPeriodo} periodo desde ${this.formatearFecha(periodoTraslapo.fechaInicio)} hasta ${this.formatearFecha(periodoTraslapo.fechaFin)}`);
-    }
+    if (periodoTraslapo) throw new ReglaNegocioError(`Se encontró un periodo activo con una fecha traslapada: idPeriodo ${periodoTraslapo.idPeriodo} periodo desde ${this.formatearFecha(periodoTraslapo.fechaInicio)} hasta ${this.formatearFecha(periodoTraslapo.fechaFin)}`);
 
     const periodoConsultado = await this.periodoRepositorio.obtenerPeriodoPorId(idPeriodo);
-    if (periodoConsultado) {
-      const estadoActual = periodoConsultado.idEstado;
-      const nuevoEstado = periodo.idEstado;
+    if (!periodoConsultado) throw new EntidadNoEncontradaError("No se encontró ningún periodo académico");
 
-      const nombresEstados: Record<number, string> = {
-        1: "Preparación",
-        2: "Activo",
-        3: "Cerrado",
-      };
+    const estadoActual = periodoConsultado.idEstado;
+    const nuevoEstado = periodo.idEstado;
 
-      const esTransicionValida =
-        (estadoActual === 1 && (nuevoEstado === 1 || nuevoEstado === 2 || nuevoEstado === 3)) || // de preparación
-        (estadoActual === 2 && (nuevoEstado === 2 || nuevoEstado === 3)) ||                      // de activo
-        (estadoActual === 3 && nuevoEstado === 3);                                               // cerrado solo a cerrado (sin cambio)
+    const nombresEstados: Record<number, string> = {
+      1: "Preparación",
+      2: "Activo",
+      3: "Cerrado",
+    };
 
-      if (!esTransicionValida) {
-        throw new Error(
-          `Transición de estado no permitida: no se puede cambiar de ${nombresEstados[estadoActual]} a ${nombresEstados[nuevoEstado]}`
-        );
-      }
+    const esTransicionValida =
+      (estadoActual === 1 && (nuevoEstado === 1 || nuevoEstado === 2 || nuevoEstado === 3)) || // de preparación
+      (estadoActual === 2 && (nuevoEstado === 2 || nuevoEstado === 3)) ||                      // de activo
+      (estadoActual === 3 && nuevoEstado === 3);                                               // cerrado solo a cerrado (sin cambio)
+
+    if (!esTransicionValida) {
+      throw new ReglaNegocioError(
+        `Transición de estado no permitida: no se puede cambiar de ${nombresEstados[estadoActual]} a ${nombresEstados[nuevoEstado]}`
+      );
     }
 
     await this.periodoRepositorio.actualizarPeriodo(idPeriodo, periodo);
     const periodoActualizado = await this.periodoRepositorio.obtenerPeriodoRelacionado(idPeriodo)
-    return periodoActualizado || null;
+    if (!periodoActualizado) throw new EntidadNoEncontradaError("Hubo un error al encontrar las relaciones del periodo académico");
+
+    return periodoActualizado;
   }
 
   async eliminarPeriodo(idPeriodo: number): Promise<IPeriodoAcademico | null> {
     const periodoObtenido = await this.periodoRepositorio.eliminarPeriodo(idPeriodo);
+    if (!periodoObtenido) throw new EntidadNoEncontradaError("No se encontró ningún periodo académico");
     return periodoObtenido;
   }
 

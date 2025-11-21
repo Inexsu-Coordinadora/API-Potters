@@ -2,7 +2,6 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { IPrograma } from "../../core/dominio/programa/IPrograma";
 import { IProgramaCasosUso } from "../../core/aplicacion/casos-uso/IProgramaCasosUso";
 import { ProgramaDTO, crearProgramaEsquema } from "../esquemas/programaAcademicoEsquema";
-import { ZodError } from "zod";
 
 export class ProgramasControlador {
     constructor(private ProgramasCasosUso: IProgramaCasosUso) { }
@@ -21,10 +20,7 @@ export class ProgramasControlador {
                 ProgramasEncontrados: ProgramasEncontrados.length,
             });
         } catch (err) {
-            return reply.code(500).send({
-                mensaje: "Error al obtener los programas",
-                error: err instanceof Error ? err.message : err,
-            });
+            throw err;
         }
     };
 
@@ -36,21 +32,12 @@ export class ProgramasControlador {
             const { idPrograma } = request.params;
             const programaEncontrado = await this.ProgramasCasosUso.obtenerProgramasPorId(idPrograma);
 
-            if (!programaEncontrado) {
-                return reply.code(404).send({
-                    mensaje: "Programa no encontrado",
-                });
-            }
-
             return reply.code(200).send({
                 mensaje: "Programa encontrado correctamente",
                 Programa: programaEncontrado,
             });
         } catch (err) {
-            return reply.code(500).send({
-                mensaje: "Error al obtener el programa",
-                error: err instanceof Error ? err.message : err,
-            });
+            throw err;
         }
     };
 
@@ -62,24 +49,14 @@ export class ProgramasControlador {
             const nuevoPrograma = crearProgramaEsquema.parse(request.body);
             const idNuevoPrograma = await this.ProgramasCasosUso.crearPrograma(nuevoPrograma);
 
-            return reply.code(200).send({
+            return reply.code(201).send({
                 mensaje: "El programa se creó correctamente",
                 idNuevoPrograma: idNuevoPrograma,
             });
         } catch (err) {
-            if (err instanceof ZodError) {
-                return reply.code(400).send({
-                    mensaje: "Error al crear un nuevo programa",
-                    error: err.issues[0]?.message || "Error desconocido",
-                });
-            }
-            return reply.code(500).send({
-                mensaje: "Error al crear un nuevo programa",
-                error: err instanceof Error ? err.message : String(err),
-            });
+            throw err;
         }
     };
-
 
     actualizarPrograma = async (
         request: FastifyRequest<{ Params: { idPrograma: number }; Body: IPrograma }>,
@@ -93,21 +70,12 @@ export class ProgramasControlador {
                 nuevoPrograma
             );
 
-            if (!programaActualizado) {
-                return reply.code(404).send({
-                    mensaje: "Programa no encontrado",
-                });
-            }
-
             return reply.code(200).send({
                 mensaje: "Programa actualizado correctamente",
                 programaActualizado: programaActualizado,
             });
         } catch (err) {
-            return reply.code(500).send({
-                mensaje: "Error al actualizar el programa",
-                error: err instanceof Error ? err.message : err,
-            });
+            throw err;
         }
     };
 
@@ -119,21 +87,12 @@ export class ProgramasControlador {
             const { idPrograma } = request.params;
             const ProgramaEncontrada = await this.ProgramasCasosUso.eliminarPrograma(idPrograma);
 
-            if (!ProgramaEncontrada) {
-                return reply.code(404).send({
-                    mensaje: "Programa no encontrado",
-                });
-            }
-
             return reply.code(200).send({
                 mensaje: "Programa eliminado correctamente",
                 idPrograma: idPrograma,
             });
         } catch (err) {
-            return reply.code(500).send({
-                mensaje: "Error al eliminar el programa",
-                error: err instanceof Error ? err.message : err,
-            });
+            throw err;
         }
     };
 }

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const CrearAsignaturaEsquema = z.object({
     nombreAsignatura: z
-        .string()
+        .string("Este campo solo recibe letras")
         .nonempty("El nombre de la asignatura es obligatorio")
         .min(3, "Debe tener al menos 3 caracteres")
         .max(100, "No puede superar los 100 caracteres"),
@@ -22,12 +22,13 @@ export const CrearAsignaturaEsquema = z.object({
             message: "El idFormato debe ser un campo obligatorio"
         })
         .min(1, "El idFormato debe ser mayor a 0")
+        .max(3, "El idFormato debe ser 1, 2 o 3")
         .int("El idFormato debe ser un número entero")
         .positive()
         .describe("ID del formato de la asignatura"),
 
     informacion: z
-        .string()
+        .string("Este campo solo recibe letras")
         .max(200, "La información no puede exceder los 200 caracteres")
         .optional()
         .transform((val) => val ?? null),

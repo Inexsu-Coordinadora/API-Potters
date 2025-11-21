@@ -53,7 +53,7 @@ export class OfertaRepositorio implements IOfertaRepositorio {
     `;
 
     const result = await ejecutarConsulta(query, parametros);
-    return result.rows[0];
+    return result.rows[0] ?? null;
   }
 
   async eliminarOferta(idOferta: number): Promise<IOferta | null> {

@@ -2,7 +2,6 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { IAsignatura } from "../../core/dominio/asignatura/IAsignatura";
 import { IAsignaturaCasosUso } from "../../core/aplicacion/casos-uso/IAsignaturaCasosUso";
 import { AsignaturaDTO, CrearAsignaturaEsquema } from "../esquemas/asignaturaEsquema";
-import { ZodError } from "zod";
 
 export class AsignaturasControlador {
   constructor(private AsignaturasCasosUso: IAsignaturaCasosUso) {}
@@ -21,10 +20,7 @@ export class AsignaturasControlador {
         AsignaturasEncontrados: AsignaturasEncontradas.length,
       });
     } catch (err) {
-      return reply.code(500).send({
-        mensaje: "Error al obtener las asignaturas",
-        error: err instanceof Error ? err.message : err,
-      });
+      throw err;
     }
   };
 
@@ -37,21 +33,12 @@ export class AsignaturasControlador {
       const { idAsignatura } = request.params;
       const AsignaturaEncontrada = await this.AsignaturasCasosUso.obtenerAsignaturasPorId(idAsignatura);
 
-      if (!AsignaturaEncontrada) {
-        return reply.code(404).send({
-          mensaje: "Asignatura no encontrada",
-        });
-      }
-
       return reply.code(200).send({
         mensaje: "Asignatura encontrada correctamente",
         Asignatura: AsignaturaEncontrada,
       });
     } catch (err) {
-      return reply.code(500).send({
-        mensaje: "Error al obtener la asignatura",
-        error: err instanceof Error ? err.message : err,
-      });
+      throw err;
     }
   };
 
@@ -63,21 +50,12 @@ export class AsignaturasControlador {
       const nuevaAsignatura = CrearAsignaturaEsquema.parse(request.body);
       const idNuevaAsignatura = await this.AsignaturasCasosUso.crearAsignatura(nuevaAsignatura);
 
-      return reply.code(200).send({
-        mensaje: "La Asignatura: " + request.body.nombreAsignatura + " se creó correctamente",
+      return reply.code(201).send({
+        mensaje: "La asignatura: " + request.body.nombreAsignatura + " se creó correctamente",
         idNuevoAsignatura: idNuevaAsignatura,
       });
     } catch (err) {
-      if (err instanceof ZodError) {
-        return reply.code(400).send({
-          mensaje: "Error al crear una nueva asignatura",
-          error: err.issues[0]?.message || "Error desconocido",
-        });
-      }
-      return reply.code(500).send({
-        mensaje: "Error al crear una nueva asignatura",
-        error: err instanceof Error ? err.message : String(err),
-      });
+      throw err;
     }
   };
 
@@ -93,21 +71,12 @@ export class AsignaturasControlador {
         nuevaAsignatura
       );
 
-      if (!AsignaturaActualizada) {
-        return reply.code(404).send({
-          mensaje: "Asignatura no encontrada",
-        });
-      }
-
       return reply.code(200).send({
         mensaje: "Asignatura actualizada correctamente",
         AsignaturaActualizado: AsignaturaActualizada,
       });
     } catch (err) {
-      return reply.code(500).send({
-        mensaje: "Error al actualizar la asignatura",
-        error: err instanceof Error ? err.message : err,
-      });
+      throw err;
     }
   };
 
@@ -117,23 +86,14 @@ export class AsignaturasControlador {
   ) => {
     try {
       const { idAsignatura } = request.params;
-      const AsignaturaEncontrada = await this.AsignaturasCasosUso.eliminarAsignatura(idAsignatura);
-
-      if (!AsignaturaEncontrada) {
-        return reply.code(404).send({
-          mensaje: "Asignatura no encontrada",
-        });
-      }
+      await this.AsignaturasCasosUso.eliminarAsignatura(idAsignatura);
 
       return reply.code(200).send({
         mensaje: "Asignatura eliminada correctamente",
         idAsignatura: idAsignatura,
       });
     } catch (err) {
-      return reply.code(500).send({
-        mensaje: "Error al eliminar la Asignatura",
-        error: err instanceof Error ? err.message : err,
-      });
+      throw err;
     }
   };
 }

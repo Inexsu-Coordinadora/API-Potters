@@ -6,5 +6,5 @@ export interface IPlanEstudioCasosUso {
     obtenerPlanEstudioPorId(IPlanEstudio: number): Promise<IPlanEstudio | null>;
     crearPlanEstudio(datosPlanEstudio: IPlanEstudio): Promise<IPlanEstudioRelacionado>;
     actualizarPlanEstudio(idPlanEstudio: number, planEstudio: IPlanEstudio): Promise<IPlanEstudioRelacionado | null>
-    eliminiarPlanEstudio(idPlanEstudio: number): Promise <IPlanEstudio | null>;
+    eliminarPlanEstudio(idPlanEstudio: number): Promise <IPlanEstudio | null>;
 }
