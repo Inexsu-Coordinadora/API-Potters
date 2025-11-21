@@ -12,12 +12,12 @@ export class PlanEstudioControlador {
     ) => {
         try {
             const { limite } = request.query;
-            const planEstudioEncontrados = await this.PlanEstudioCasosUso.obtenerPlanEstudio(limite);
+            const planesEstudioEncontrados = await this.PlanEstudioCasosUso.obtenerPlanEstudio(limite);
 
             return reply.code(200).send({
                 mensaje: "Plan de estudio encontrado correctamente",
-                PlanEstudio: planEstudioEncontrados,
-                planEstudioEncontrados: planEstudioEncontrados.length,
+                planesEstudio: planesEstudioEncontrados,
+                planesEstudioEncontrados: planesEstudioEncontrados.length,
             });
         } catch (err) {
             throw err;
@@ -86,7 +86,7 @@ export class PlanEstudioControlador {
     ) => {
         try {
             const { idPlanEstudio } = request.params;
-            const planEstudioEncontrado = await this.PlanEstudioCasosUso.eliminarPlanEstudio(idPlanEstudio);
+            await this.PlanEstudioCasosUso.eliminarPlanEstudio(idPlanEstudio);
 
             return reply.code(200).send({
                 mensaje: "Plan de estudio eliminado correctamente",

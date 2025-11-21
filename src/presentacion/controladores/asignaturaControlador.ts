@@ -12,12 +12,12 @@ export class AsignaturasControlador {
   ) => {
     try {
       const { limite } = request.query;
-      const AsignaturasEncontradas = await this.AsignaturasCasosUso.obtenerAsignaturas(limite);
+      const asignaturasEncontradas = await this.AsignaturasCasosUso.obtenerAsignaturas(limite);
 
       return reply.code(200).send({
         mensaje: "Asignaturas encontradas correctamente",
-        Asignaturas: AsignaturasEncontradas,
-        AsignaturasEncontrados: AsignaturasEncontradas.length,
+        asignaturas: asignaturasEncontradas,
+        asignaturasEncontradas: asignaturasEncontradas.length,
       });
     } catch (err) {
       throw err;
@@ -31,11 +31,11 @@ export class AsignaturasControlador {
     try {
       
       const { idAsignatura } = request.params;
-      const AsignaturaEncontrada = await this.AsignaturasCasosUso.obtenerAsignaturasPorId(idAsignatura);
+      const asignaturaEncontrada = await this.AsignaturasCasosUso.obtenerAsignaturasPorId(idAsignatura);
 
       return reply.code(200).send({
         mensaje: "Asignatura encontrada correctamente",
-        Asignatura: AsignaturaEncontrada,
+        asignatura: asignaturaEncontrada,
       });
     } catch (err) {
       throw err;
@@ -52,7 +52,7 @@ export class AsignaturasControlador {
 
       return reply.code(201).send({
         mensaje: "La asignatura: " + request.body.nombreAsignatura + " se creó correctamente",
-        idNuevoAsignatura: idNuevaAsignatura,
+        idNuevaAsignatura: idNuevaAsignatura,
       });
     } catch (err) {
       throw err;
@@ -67,14 +67,14 @@ export class AsignaturasControlador {
       const { idAsignatura } = request.params;
       const nuevaAsignatura = AsignaturaEsquema.parse(request.body);
 
-      const AsignaturaActualizada = await this.AsignaturasCasosUso.actualizarAsignatura(
+      const asignaturaActualizada = await this.AsignaturasCasosUso.actualizarAsignatura(
         idAsignatura,
         nuevaAsignatura
       );
 
       return reply.code(200).send({
         mensaje: "Asignatura actualizada correctamente",
-        AsignaturaActualizado: AsignaturaActualizada,
+        asignaturaActualizada: asignaturaActualizada,
       });
     } catch (err) {
       throw err;

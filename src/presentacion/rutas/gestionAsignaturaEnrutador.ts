@@ -5,7 +5,7 @@ import { AsignaturaCasosUso} from "../../core/aplicacion/casos-uso/AsignaturaCas
 import { AsignaturaRepositorio } from "../../core/infraestructura/postgres/asignaturaRepository";
 import { IAsignaturaCasosUso } from "../../core/aplicacion/casos-uso/IAsignaturaCasosUso";
 
-function gestionAcademicaEnrutador(
+function gestionAsignaturaEnrutador(
   app: FastifyInstance,
   asignaturaController: AsignaturasControlador,
 ) {
@@ -21,5 +21,5 @@ export async function construirAsignaturasEnrutador(app: FastifyInstance) {
   const asignaturaCasosUso: IAsignaturaCasosUso = new AsignaturaCasosUso(asignaturaRepositorio);
   const asignaturaController = new AsignaturasControlador(asignaturaCasosUso);
 
-  gestionAcademicaEnrutador(app, asignaturaController);
+  gestionAsignaturaEnrutador(app, asignaturaController);
 }

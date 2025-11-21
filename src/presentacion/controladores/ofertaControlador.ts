@@ -12,12 +12,12 @@ export class OfertaControlador {
   ) => {
     try {
       const { limite } = request.query;
-      const OfertasEncontradas = await this.OfertaCasosUso.obtenerOfertas(limite);
+      const ofertasEncontradas = await this.OfertaCasosUso.obtenerOfertas(limite);
 
       return reply.code(200).send({
         mensaje: "Ofertas encontradas correctamente",
-        Ofertas: OfertasEncontradas,
-        OfertasEncontradas: OfertasEncontradas.length,
+        ofertas: ofertasEncontradas,
+        ofertasEncontradas: ofertasEncontradas.length,
       });
 
     } catch (err) {
@@ -32,11 +32,11 @@ export class OfertaControlador {
     try {
 
       const { idOferta } = request.params;
-      const OfertaEncontrada = await this.OfertaCasosUso.obtenerOfertaPorId(idOferta);
+      const ofertaEncontrada = await this.OfertaCasosUso.obtenerOfertaPorId(idOferta);
 
       return reply.code(200).send({
         mensaje: "Oferta encontrada correctamente",
-        Oferta: OfertaEncontrada,
+        oferta: ofertaEncontrada,
       });
 
     } catch (err) {

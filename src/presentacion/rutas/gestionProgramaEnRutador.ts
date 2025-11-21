@@ -5,7 +5,7 @@ import { ProgramaCasosUso } from "../../core/aplicacion/casos-uso/ProgramaCasosU
 import { ProgramaRepositorio } from "../../core/infraestructura/postgres/programaRepository";
 import { IProgramaCasosUso } from "../../core/aplicacion/casos-uso/IProgramaCasosUso";
 
-function gestionAcademicaEnrutador(
+function gestionProgramaEnrutador(
     app: FastifyInstance,
     programaController: ProgramasControlador,
 ) {
@@ -21,5 +21,5 @@ export async function construirProgramasEnrutador(app: FastifyInstance){
     const programaCasosUso: IProgramaCasosUso = new ProgramaCasosUso(programaRepositorio);
     const programaController = new ProgramasControlador(programaCasosUso);
 
-    gestionAcademicaEnrutador(app, programaController);
+    gestionProgramaEnrutador(app, programaController);
 }

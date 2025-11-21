@@ -12,12 +12,12 @@ export class ProgramasControlador {
     ) => {
         try {
             const { limite } = request.query;
-            const ProgramasEncontrados = await this.ProgramasCasosUso.obtenerPrograma(limite);
+            const programasEncontrados = await this.ProgramasCasosUso.obtenerPrograma(limite);
 
             return reply.code(200).send({
                 mensaje: "Programas encontrados correctamente",
-                Programas: ProgramasEncontrados,
-                ProgramasEncontrados: ProgramasEncontrados.length,
+                programas: programasEncontrados,
+                programasEncontrados: programasEncontrados.length,
             });
         } catch (err) {
             throw err;
@@ -34,7 +34,7 @@ export class ProgramasControlador {
 
             return reply.code(200).send({
                 mensaje: "Programa encontrado correctamente",
-                Programa: programaEncontrado,
+                programa: programaEncontrado,
             });
         } catch (err) {
             throw err;
@@ -65,7 +65,7 @@ export class ProgramasControlador {
         try {
             const { idPrograma } = request.params;
             const nuevoPrograma = ProgramaEsquema.parse(request.body);
-            
+
             const programaActualizado = await this.ProgramasCasosUso.actualizarPrograma(
                 idPrograma,
                 nuevoPrograma
@@ -86,7 +86,7 @@ export class ProgramasControlador {
     ) => {
         try {
             const { idPrograma } = request.params;
-            const ProgramaEncontrada = await this.ProgramasCasosUso.eliminarPrograma(idPrograma);
+            await this.ProgramasCasosUso.eliminarPrograma(idPrograma);
 
             return reply.code(200).send({
                 mensaje: "Programa eliminado correctamente",
