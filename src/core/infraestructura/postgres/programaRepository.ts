@@ -3,16 +3,15 @@ import { ejecutarConsulta } from "./clientePostgres";
 import { IPrograma } from "../../dominio/programa/IPrograma";
 
 export class ProgramaRepositorio implements IProgramaRepositorio {
+
     async crearPrograma(datosPrograma: IPrograma): Promise<string> {
-        const columnas = Object.keys(datosPrograma).map((key) => key.toLowerCase());
         const parametros: (string | number)[] = Object.values(datosPrograma);
-        const placeholders = columnas.map((_, i ) => `$${i + 1}`).join(",");
 
         const query = `
-            INSERT INTO programaacademico (${columnas.join(",")})
-            VALUES (${placeholders})
-            RETURNING idprograma AS "idPrograma"
-            `;
+        INSERT INTO programaacademico (nombreprograma, idnivel, idmodalidad, duracionmeses) 
+        VALUES ($1, $2, $3, $4)
+        RETURNING idprograma AS "idPrograma";
+        `;
 
         const respuesta = await ejecutarConsulta(query, parametros);
         return respuesta.rows[0].idPrograma;
@@ -22,7 +21,7 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
         let query = `SELECT * FROM programaacademico`;
         const valores: number[] = [];
 
-        if (limite !== undefined){
+        if (limite !== undefined) {
             query += " LIMIT $1";
             valores.push(limite);
         }
@@ -38,24 +37,22 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
     }
 
     async actualizarPrograma(id: number, datosPrograma: IPrograma): Promise<IPrograma> {
-        const columnas = Object.keys(datosPrograma).map((key) => key.toLowerCase());
         const parametros = Object.values(datosPrograma);
-        const setClause = columnas.map((col, i ) => `${col}=$${i + 1}`).join (",");
         parametros.push(id);
 
         const query = `
-        UPDATE programaacademico
-        SET ${setClause}
-        WHERE idPrograma=$${parametros.length}
-        RETURNING *;
-    `;
+            UPDATE programaacademico SET nombreprograma = $1, idnivel = $2, idmodalidad = $3, duracionmeses = $4
+            WHERE idprograma = $5
+            RETURNING *;
+        `;
 
-    const result = await ejecutarConsulta(query, parametros);
-    return result.rows[0];
- }
- async eliminarPrograma(idPrograma: number): Promise<IPrograma | null> {
-    const query = "DELETE FROM programaacademico WHERE idPrograma = $1 RETURNING *"
-    const result = await ejecutarConsulta(query, [idPrograma]);
-    return result.rows[0] || null;
-  }
+        const result = await ejecutarConsulta(query, parametros);
+        return result.rows[0];
+    }
+    
+    async eliminarPrograma(idPrograma: number): Promise<IPrograma | null> {
+        const query = "DELETE FROM programaacademico WHERE idPrograma = $1 RETURNING *"
+        const result = await ejecutarConsulta(query, [idPrograma]);
+        return result.rows[0] || null;
+    }
 }
