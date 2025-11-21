@@ -11,8 +11,6 @@ import { PeriodoAcademicoRepositorio } from "../../core/infraestructura/postgres
 import { IProgramaRepositorio } from "../../core/dominio/repositorio/IProgramaRepositorio";
 import { ProgramaRepositorio } from "../../core/infraestructura/postgres/programaRepository";
 
-
-
 function gestionOfertaEnrutador(
   app: FastifyInstance,
   ofertaControlador: OfertaControlador,

@@ -6,7 +6,7 @@ const validarFormatoFecha = (valor: string) =>
 const validarRangoAnio = (fecha: Date) =>
   fecha.getFullYear() >= 2010 && fecha.getFullYear() <= 2100;
 
-export const CrearPeriodoAcademicoEsquema = z
+export const PeriodoAcademicoEsquema = z
   .object({
     semestre: z
       .string()
@@ -55,5 +55,5 @@ export const CrearPeriodoAcademicoEsquema = z
     path: ["fechaFin"],
   });
 
-export type PeriodoAcademicoDTO = z.infer<typeof CrearPeriodoAcademicoEsquema>;
+export type PeriodoAcademicoDTO = z.infer<typeof PeriodoAcademicoEsquema>;
 

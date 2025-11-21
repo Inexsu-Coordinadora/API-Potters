@@ -3,15 +3,13 @@ import { ejecutarConsulta } from "./clientePostgres";
 import { IAsignatura } from "../../dominio/asignatura/IAsignatura";
 
 export class AsignaturaRepositorio implements IAsignaturaRepositorio {
-  async crearAsignatura(datosAsignatura: IAsignatura): Promise<string> {
-    const columnas = Object.keys(datosAsignatura).map((key) => key.toLowerCase());
-    const parametros: Array<string | number> = Object.values(datosAsignatura);
-    const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
+  async crearAsignatura(datosAsignatura: IAsignatura): Promise<string> {
+    const parametros: Array<string | number> = Object.values(datosAsignatura);
     const query = `
-      INSERT INTO asignatura (${columnas.join(", ")})
-      VALUES (${placeholders})
-      RETURNING *  -- aquí Postgres genera el id automáticamente
+      INSERT INTO asignatura (nombreasignatura, cargahoraria, idformato, informacion)
+      VALUES ($1, $2, $3, $4)
+      RETURNING idasignatura AS "idAsignatura"
     `;
 
     const respuesta = await ejecutarConsulta(query, parametros);
@@ -38,15 +36,13 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
   }
 
   async actualizarAsignatura(id: number, datosAsignatura: IAsignatura): Promise<IAsignatura> {
-    const columnas = Object.keys(datosAsignatura).map((key) => key.toLowerCase());
     const parametros = Object.values(datosAsignatura);
-    const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
     parametros.push(id);
 
     const query = `
       UPDATE asignatura
-      SET ${setClause}
-      WHERE idAsignatura=$${parametros.length}
+      SET nombreasignatura = $1, cargahoraria = $2, idformato = $3, informacion = $4
+      WHERE idasignatura = $5
       RETURNING *;
     `;
 

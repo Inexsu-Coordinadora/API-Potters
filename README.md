@@ -14,6 +14,11 @@ En esta segunda entrega del proyecto Academium, se amplió la funcionalidad de l
 
 Las tablas creadas en la Entrega 1 (Programa, Asignatura y Periodo Académico) ahora se integran mediante nuevas entidades y relaciones que permiten definir planes de estudio, gestionar periodos académicos con transiciones de estado, y ofrecer asignaturas en cada periodo.
 
+🧱 Objetivo general
+
+Desarrollar e implementar una API académica, que permita gestionar de manera eficiente los procesos administrativos y académicos de una institución educativa, abarcando la creación, consulta, actualización y eliminación de entidades clave como programas académicos, asignaturas, planes de estudio, períodos académicos y ofertas académicas, garantizando la integridad de los datos, la trazabilidad de la información y la correcta transición entre estados.
+
+
 1️⃣ Servicio: Definición de Plan de Estudio (Programa ↔ Asignatura)
 
 Autor: Juliana Perez Muñoz

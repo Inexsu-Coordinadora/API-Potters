@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CrearOfertaEsquema = z.object({
+export const OfertaEsquema = z.object({
   idPrograma: z.coerce.number({
     message: "El idPrograma debe ser un campo obligatorio"
   })
@@ -49,4 +49,4 @@ export const CrearOfertaEsquema = z.object({
     .describe("Cantidad de estudiantes por oferta"),
 });
 
-export type OfertaDTO = z.infer<typeof CrearOfertaEsquema>;
+export type OfertaDTO = z.infer<typeof OfertaEsquema>;

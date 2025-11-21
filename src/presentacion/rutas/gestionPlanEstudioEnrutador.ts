@@ -21,12 +21,12 @@ function gestionPlanEstudioEnrutador(
     app.delete("/planestudio/:idPlanEstudio", planEstudioControlador.eliminarPlanEstudio);
 }
 
-export async function construirPlanEstudioControlador(app: FastifyInstance) {
+export async function construirPlanEstudioEnrutador(app: FastifyInstance) {
     const planEstudioRepositorio: IPlanEstudioRepositorio = new PlanEstudioRepositorio();
-    const programaRepositorio: IProgramaRepositorio = new ProgramaRepositorio(); 
-    const asignaturaRepositorio: IAsignaturaRepositorio = new AsignaturaRepositorio(); 
+    const programaRepositorio: IProgramaRepositorio = new ProgramaRepositorio();
+    const asignaturaRepositorio: IAsignaturaRepositorio = new AsignaturaRepositorio();
     const planEstudioCasosUso: IPlanEstudioCasosUso = new PlanEstudioCasosUso(
-        planEstudioRepositorio, programaRepositorio, asignaturaRepositorio );
+        planEstudioRepositorio, programaRepositorio, asignaturaRepositorio);
     const planEstudioControlador = new PlanEstudioControlador(planEstudioCasosUso);
 
     gestionPlanEstudioEnrutador(app, planEstudioControlador);
