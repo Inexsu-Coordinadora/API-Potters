@@ -2,6 +2,7 @@ import { IPeriodoAcademicoRepositorio } from "../../dominio/repositorio/IPeriodo
 import { ejecutarConsulta } from "./clientePostgres";
 import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcademico";
 import { IPeriodoRelacionado } from "../../dominio/periodoAcademico/IPeriodoRelacionado";
+import { convertirFecha } from "../../../utils/fecha.util";
 
 export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio {
 
@@ -9,8 +10,8 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
 
     const parametros = [
       datosPeriodo.semestre,
-      new Date(datosPeriodo.fechaInicio).toISOString().split("T")[0] || "",
-      new Date(datosPeriodo.fechaFin).toISOString().split("T")[0] || "",
+      convertirFecha(datosPeriodo.fechaInicio),
+      convertirFecha(datosPeriodo.fechaFin),
       datosPeriodo.idEstado
     ];
 
@@ -47,8 +48,8 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
 
     const parametros = [
       datosPeriodo.semestre,
-      new Date(datosPeriodo.fechaInicio).toISOString().split("T")[0] || "",
-      new Date(datosPeriodo.fechaFin).toISOString().split("T")[0] || "",
+      convertirFecha(datosPeriodo.fechaInicio),
+      convertirFecha(datosPeriodo.fechaFin),
       datosPeriodo.idEstado
     ];
     parametros.push(id);
@@ -74,10 +75,11 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
 
     let query = "";
     const { fechaInicio, fechaFin } = datosPeriodoAcademico;
+
     const parametros = [
-      fechaInicio instanceof Date ? fechaInicio.toISOString().split("T")[0] : fechaInicio,
-      fechaFin instanceof Date ? fechaFin.toISOString().split("T")[0] : fechaFin
-    ] as [string, string];
+      convertirFecha(fechaInicio),
+      convertirFecha(fechaFin),
+    ] 
 
     if (idperiodo > 0) {
       query = `
