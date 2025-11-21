@@ -5,7 +5,7 @@ import { construirProgramasEnrutador } from "./rutas/gestionProgramaEnRutador";
 import { construirPeriodoAcademicoEnrutador } from "./rutas/gestionPeriodoAcademicoEnrutador"; 
 import { construirOfertasEnrutador} from "./rutas/gestionOfertaEnrutador";
 import { construirPlanEstudioControlador } from "./rutas/gestionPlanEstudioEnrutador";
-import { httpConfig} from "./../config/http"; 
+import { httpConfig} from "./../config/http";
 
 const app = Fastify({ logger: true });
 
@@ -37,3 +37,5 @@ export const startServer = async (): Promise<void> => {
     throw serverError;
   }
 };
+
+export default app;
