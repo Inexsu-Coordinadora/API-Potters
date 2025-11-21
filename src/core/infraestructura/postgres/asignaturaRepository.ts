@@ -3,6 +3,7 @@ import { ejecutarConsulta } from "./clientePostgres";
 import { IAsignatura } from "../../dominio/asignatura/IAsignatura";
 
 export class AsignaturaRepositorio implements IAsignaturaRepositorio {
+  
   async crearAsignatura(datosAsignatura: IAsignatura): Promise<string> {
     const columnas = Object.keys(datosAsignatura).map((key) => key.toLowerCase());
     const parametros: Array<string | number> = Object.values(datosAsignatura);
@@ -11,7 +12,7 @@ export class AsignaturaRepositorio implements IAsignaturaRepositorio {
     const query = `
       INSERT INTO asignatura (${columnas.join(", ")})
       VALUES (${placeholders})
-      RETURNING *  -- aquí Postgres genera el id automáticamente
+      RETURNING idasignatura AS "idAsignatura"
     `;
 
     const respuesta = await ejecutarConsulta(query, parametros);

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CrearAsignaturaEsquema = z.object({
+export const AsignaturaEsquema = z.object({
     nombreAsignatura: z
         .string("Este campo solo recibe letras")
         .nonempty("El nombre de la asignatura es obligatorio")
@@ -34,5 +34,5 @@ export const CrearAsignaturaEsquema = z.object({
         .transform((val) => val ?? null),
 });
 
-export type AsignaturaDTO = z.infer<typeof CrearAsignaturaEsquema>;
+export type AsignaturaDTO = z.infer<typeof AsignaturaEsquema>;
 

@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IPlanEstudio } from "../../core/dominio/planEstudio/IPlanEstudio";
 import { IPlanEstudioCasosUso } from "../../core/aplicacion/casos-uso/IPlanEstudioCasosUso";
-import { PlanEstudioDTO, CrearPlanEstudioEsquema } from "../esquemas/planEstudioEsquema";
+import { PlanEstudioDTO, PlanEstudioEsquema } from "../esquemas/planEstudioEsquema";
 
 export class PlanEstudioControlador {
     constructor(private PlanEstudioCasosUso: IPlanEstudioCasosUso) { }
@@ -46,7 +46,7 @@ export class PlanEstudioControlador {
         reply: FastifyReply
     ) => {
         try {
-            const nuevoPlanEstudio = CrearPlanEstudioEsquema.parse(request.body);
+            const nuevoPlanEstudio = PlanEstudioEsquema.parse(request.body);
             const idNuevoPlanEstudio = await this.PlanEstudioCasosUso.crearPlanEstudio(nuevoPlanEstudio);
 
             return reply.code(201).send({
@@ -65,7 +65,7 @@ export class PlanEstudioControlador {
     ) => {
         try {
             const { idPlanEstudio } = request.params;
-            const datosValidados = CrearPlanEstudioEsquema.parse(request.body);
+            const datosValidados = PlanEstudioEsquema.parse(request.body);
             const planEstudioActualizado = await this.PlanEstudioCasosUso.actualizarPlanEstudio(
                 idPlanEstudio,
                 datosValidados as IPlanEstudio

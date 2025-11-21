@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IOfertaCasosUso } from "../../core/aplicacion/casos-uso/IOfertaCasosUso";
-import { OfertaDTO, CrearOfertaEsquema } from "../esquemas/ofertaEsquema";
+import { OfertaDTO, OfertaEsquema } from "../esquemas/ofertaEsquema";
 
 export class OfertaControlador {
 
@@ -50,7 +50,7 @@ export class OfertaControlador {
   ) => {
     try {
 
-      const nuevaOferta = CrearOfertaEsquema.parse(request.body);
+      const nuevaOferta = OfertaEsquema.parse(request.body);
       const ofertaCreada = await this.OfertaCasosUso.crearOferta(nuevaOferta);
 
       return reply.code(201).send({
@@ -69,7 +69,7 @@ export class OfertaControlador {
   ) => {
     try {
       const { idOferta } = request.params;
-      const nuevaOferta = CrearOfertaEsquema.parse(request.body);
+      const nuevaOferta = OfertaEsquema.parse(request.body);
 
       const OfertaActualizada = await this.OfertaCasosUso.actualizarOferta(
         idOferta,

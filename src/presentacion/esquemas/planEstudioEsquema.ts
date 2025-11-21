@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CrearPlanEstudioEsquema = z.object({
+export const PlanEstudioEsquema = z.object({
     idPrograma: z.coerce
         .number()
         .int({ message: "El idPrograma debe ser un número entero" })
@@ -30,4 +30,4 @@ export const CrearPlanEstudioEsquema = z.object({
         .describe("Cantidad de créditos asignados a la asignatura"),
 });
 
-export type PlanEstudioDTO = z.infer<typeof CrearPlanEstudioEsquema>;
+export type PlanEstudioDTO = z.infer<typeof PlanEstudioEsquema>;

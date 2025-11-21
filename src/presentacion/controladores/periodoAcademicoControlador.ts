@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IPeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/IPeriodoAcademicoCasosUso"; // <-- Usa la interfaz de Casos de Uso
-import { PeriodoAcademicoDTO, CrearPeriodoAcademicoEsquema } from "../esquemas/periodoAcademicoEsquema";
+import { PeriodoAcademicoDTO, PeriodoAcademicoEsquema } from "../esquemas/periodoAcademicoEsquema";
 
 export class PeriodoAcademicoControlador {
   constructor(private PeriodosCasosUso: IPeriodoAcademicoCasosUso) { }
@@ -45,7 +45,7 @@ export class PeriodoAcademicoControlador {
     reply: FastifyReply
   ) => {
     try {
-      const nuevoPeriodo = CrearPeriodoAcademicoEsquema.parse(request.body);
+      const nuevoPeriodo = PeriodoAcademicoEsquema.parse(request.body);
       const idNuevoPeriodo = await this.PeriodosCasosUso.crearPeriodo(nuevoPeriodo);
 
       return reply.code(201).send({
@@ -64,7 +64,7 @@ export class PeriodoAcademicoControlador {
     try {
 
       const { idPeriodo } = request.params;
-      const datosPeriodo = CrearPeriodoAcademicoEsquema.parse(request.body);
+      const datosPeriodo = PeriodoAcademicoEsquema.parse(request.body);
 
       const periodoActualizado = await this.PeriodosCasosUso.actualizarPeriodo(
         idPeriodo,

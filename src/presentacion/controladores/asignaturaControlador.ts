@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IAsignatura } from "../../core/dominio/asignatura/IAsignatura";
 import { IAsignaturaCasosUso } from "../../core/aplicacion/casos-uso/IAsignaturaCasosUso";
-import { AsignaturaDTO, CrearAsignaturaEsquema } from "../esquemas/asignaturaEsquema";
+import { AsignaturaDTO, AsignaturaEsquema } from "../esquemas/asignaturaEsquema";
 
 export class AsignaturasControlador {
   constructor(private AsignaturasCasosUso: IAsignaturaCasosUso) {}
@@ -47,7 +47,7 @@ export class AsignaturasControlador {
     reply: FastifyReply
   ) => {
     try {
-      const nuevaAsignatura = CrearAsignaturaEsquema.parse(request.body);
+      const nuevaAsignatura = AsignaturaEsquema.parse(request.body);
       const idNuevaAsignatura = await this.AsignaturasCasosUso.crearAsignatura(nuevaAsignatura);
 
       return reply.code(201).send({
@@ -65,7 +65,8 @@ export class AsignaturasControlador {
   ) => {
     try {
       const { idAsignatura } = request.params;
-      const nuevaAsignatura = request.body;
+      const nuevaAsignatura = AsignaturaEsquema.parse(request.body);
+
       const AsignaturaActualizada = await this.AsignaturasCasosUso.actualizarAsignatura(
         idAsignatura,
         nuevaAsignatura

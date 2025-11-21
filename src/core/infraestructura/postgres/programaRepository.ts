@@ -11,7 +11,7 @@ export class ProgramaRepositorio implements IProgramaRepositorio {
         const query = `
             INSERT INTO programaacademico (${columnas.join(",")})
             VALUES (${placeholders})
-            RETURNING *  -- aquí Postgres genera el id automaticamente
+            RETURNING idprograma AS "idPrograma"
             `;
 
         const respuesta = await ejecutarConsulta(query, parametros);

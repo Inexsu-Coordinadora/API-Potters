@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { IPrograma } from "../../core/dominio/programa/IPrograma";
 import { IProgramaCasosUso } from "../../core/aplicacion/casos-uso/IProgramaCasosUso";
-import { ProgramaDTO, crearProgramaEsquema } from "../esquemas/programaAcademicoEsquema";
+import { ProgramaDTO, ProgramaEsquema } from "../esquemas/programaAcademicoEsquema";
 
 export class ProgramasControlador {
     constructor(private ProgramasCasosUso: IProgramaCasosUso) { }
@@ -46,7 +46,7 @@ export class ProgramasControlador {
         reply: FastifyReply
     ) => {
         try {
-            const nuevoPrograma = crearProgramaEsquema.parse(request.body);
+            const nuevoPrograma = ProgramaEsquema.parse(request.body);
             const idNuevoPrograma = await this.ProgramasCasosUso.crearPrograma(nuevoPrograma);
 
             return reply.code(201).send({
@@ -64,7 +64,8 @@ export class ProgramasControlador {
     ) => {
         try {
             const { idPrograma } = request.params;
-            const nuevoPrograma = request.body;
+            const nuevoPrograma = ProgramaEsquema.parse(request.body);
+            
             const programaActualizado = await this.ProgramasCasosUso.actualizarPrograma(
                 idPrograma,
                 nuevoPrograma
