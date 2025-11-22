@@ -36,9 +36,13 @@ const envSchema = z.object({
 const validated = envSchema.safeParse(process.env);
 
 if (!validated.success) {
-    console.error("❌ Error en variables de entorno:");
-    console.error(validated.error.format()); // nueva forma recomendada
-    process.exit(1);
+    console.error(" Error en variables de entorno:");
+    console.error(validated.error.format()); 
+    if (process.env.NODE_ENV !== "test") {
+        process.exit(1);
+    }
 }
 
-export const envEsquema = validated.data;
+export const envEsquema = validated.success
+    ? validated.data
+    : {} as z.infer<typeof envSchema>;

@@ -4,17 +4,28 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev ./src/index.ts",
     "build": "tsc",
-    "start": "node ./dist/index.js",
-    "dev": "tsnd --respawn --clear src/index.ts"
+    "start": "node dist/index.js",
+    "test": "jest --runInBand --detectOpenHandles",
+    "coverage":"jest --coverage",
+    "test:integration": "jest test/integracion --runInBand"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.10.0",
     "@types/pg": "^8.15.6",
+    "@types/supertest": "^6.0.3",
+    "jest": "^30.2.0",
+    "jsdom": "^27.2.0",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.5",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   },

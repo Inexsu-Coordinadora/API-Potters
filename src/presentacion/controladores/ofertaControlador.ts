@@ -3,8 +3,7 @@ import { IOfertaCasosUso } from "../../core/aplicacion/casos-uso/IOfertaCasosUso
 import { OfertaDTO, OfertaEsquema } from "../esquemas/ofertaEsquema";
 
 export class OfertaControlador {
-
-  constructor(private OfertaCasosUso: IOfertaCasosUso) { }
+  constructor(private OfertaCasosUso: IOfertaCasosUso) {}
 
   obtenerOfertas = async (
     request: FastifyRequest<{ Querystring: { limite?: number } }>,
@@ -13,15 +12,13 @@ export class OfertaControlador {
     try {
       const { limite } = request.query;
       const ofertasEncontradas = await this.OfertaCasosUso.obtenerOfertas(limite);
-
       return reply.code(200).send({
         mensaje: "Ofertas encontradas correctamente",
         ofertas: ofertasEncontradas,
         ofertasEncontradas: ofertasEncontradas.length,
       });
-
     } catch (err) {
-     throw err;
+      throw err;
     }
   };
 
@@ -30,17 +27,19 @@ export class OfertaControlador {
     reply: FastifyReply
   ) => {
     try {
-
       const { idOferta } = request.params;
       const ofertaEncontrada = await this.OfertaCasosUso.obtenerOfertaPorId(idOferta);
+
+      if (!ofertaEncontrada) {
+        return reply.code(404).send({ mensaje: "Oferta no encontrada" });
+      }
 
       return reply.code(200).send({
         mensaje: "Oferta encontrada correctamente",
         oferta: ofertaEncontrada,
       });
-
     } catch (err) {
-     throw err;
+      throw err;
     }
   };
 
@@ -49,17 +48,17 @@ export class OfertaControlador {
     reply: FastifyReply
   ) => {
     try {
-
       const nuevaOferta = OfertaEsquema.parse(request.body);
+
+      // Validaciones de existencia de asignatura, periodo y programa
       const ofertaCreada = await this.OfertaCasosUso.crearOferta(nuevaOferta);
 
       return reply.code(201).send({
         mensaje: "La oferta se creó correctamente",
         ofertaCreada: ofertaCreada,
       });
-
     } catch (err) {
-     throw err;
+      throw err;
     }
   };
 
@@ -76,6 +75,10 @@ export class OfertaControlador {
         nuevaOferta
       );
 
+      if (!OfertaActualizada) {
+        return reply.code(404).send({ mensaje: "Oferta no encontrada" });
+      }
+
       return reply.code(200).send({
         mensaje: "Oferta actualizada correctamente",
         OfertaActualizada: OfertaActualizada,
@@ -91,7 +94,12 @@ export class OfertaControlador {
   ) => {
     try {
       const { idOferta } = request.params;
-      await this.OfertaCasosUso.eliminarOferta(idOferta);
+
+      const eliminado = await this.OfertaCasosUso.eliminarOferta(idOferta);
+
+      if (!eliminado) {
+        return reply.code(404).send({ mensaje: "Oferta no encontrada" });
+      }
 
       return reply.code(200).send({
         mensaje: "Oferta eliminada correctamente",

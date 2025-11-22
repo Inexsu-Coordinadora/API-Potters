@@ -16,9 +16,16 @@ function gestionAsignaturaEnrutador(
   app.delete("/asignaturas/:idAsignatura", asignaturaController.eliminarAsignatura);
 }
 
-export async function construirAsignaturasEnrutador(app: FastifyInstance) {
-  const asignaturaRepositorio: IAsignaturaRepositorio = new AsignaturaRepositorio();
-  const asignaturaCasosUso: IAsignaturaCasosUso = new AsignaturaCasosUso(asignaturaRepositorio);
+export async function construirAsignaturasEnrutador(
+  app: FastifyInstance, 
+  repositorioInyectado?: IAsignaturaRepositorio 
+) {
+     const asignaturaRepositorio: IAsignaturaRepositorio =
+    repositorioInyectado ?? new AsignaturaRepositorio();
+
+  const asignaturaCasosUso: IAsignaturaCasosUso =
+    new AsignaturaCasosUso(asignaturaRepositorio);
+
   const asignaturaController = new AsignaturasControlador(asignaturaCasosUso);
 
   gestionAsignaturaEnrutador(app, asignaturaController);
