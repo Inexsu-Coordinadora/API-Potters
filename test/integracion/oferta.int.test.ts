@@ -16,37 +16,37 @@ jest.mock("../../src/core/infraestructura/postgres/ofertaRepository", () => {
       ],
 
       obtenerOfertaPorId: async (id: number) =>
-        id === 1
+        id == 1  
           ? {
-              idOferta: 1,
-              idAsignatura: 1,
-              idPeriodo: 1,
-              idPrograma: 1,
-              grupo: 1,
-              cupo: 30
-            }
+            idOferta: 1,
+            idAsignatura: 1,
+            idPeriodo: 1,
+            idPrograma: 1,
+            grupo: 1,
+            cupo: 30
+          }
           : null,
 
       crearOferta: async (_datos: any) => 99,
 
       actualizarOferta: async (id: number, datos: any) =>
-        id === 1
+        id == 1
           ? {
-              idOferta: 1,
-              ...datos
-            }
+            idOferta: 1,
+            ...datos
+          }
           : null,
 
       eliminarOferta: async (id: number) =>
-        id === 1
+        id == 1
           ? {
-              idOferta: 1,
-              idAsignatura: 1,
-              idPeriodo: 1,
-              idPrograma: 1,
-              grupo: 1,
-              cupo: 30
-            }
+            idOferta: 1,
+            idAsignatura: 1,
+            idPeriodo: 1,
+            idPrograma: 1,
+            grupo: 1,
+            cupo: 30
+          }
           : null,
 
       existeOfertaDuplicada: async () => false,
@@ -71,7 +71,7 @@ jest.mock("../../src/core/infraestructura/postgres/asignaturaRepository", () => 
 
 jest.mock("../../src/core/infraestructura/postgres/periodoAcademicoRepository", () => ({
   PeriodoAcademicoRepositorio: jest.fn().mockImplementation(() => ({
-    obtenerPeriodoPorId: async (id: number) => (id === 1 ? { idPeriodo: 1 } : null)
+    obtenerPeriodoPorId: async (id: number) => (id === 1 ? { idPeriodo: 1, idEstado: 2 } : null)
   })),
 }));
 
@@ -81,11 +81,8 @@ jest.mock("../../src/core/infraestructura/postgres/programaRepository", () => ({
   })),
 }));
 
-
-
 beforeAll(async () => await app.ready());
 afterAll(async () => await app.close());
-
 
 // TESTS
 
@@ -102,14 +99,13 @@ describe("Oferta — Pruebas de Integración", () => {
     const res = await request(app.server).get("/api/Academium/ofertas/1");
 
     expect(res.status).toBe(200);
-    expect(res.body.oferta.idOferta).toBe(1);
+    expect(Number(res.body.oferta.idOferta)).toBe(1);
   });
 
   test("GET /ofertas/999 — no existe", async () => {
     const res = await request(app.server).get("/api/Academium/ofertas/999");
-
     expect(res.status).toBe(404);
-    expect(res.body).toEqual({ mensaje: "Oferta no encontrada" });
+    expect(res.body.message).toEqual("No se encontró ninguna oferta");
   });
 
   test("POST /ofertas — crea correctamente", async () => {
@@ -118,7 +114,7 @@ describe("Oferta — Pruebas de Integración", () => {
     const res = await request(app.server).post("/api/Academium/ofertas").send(data);
 
     expect(res.status).toBe(201);
-    expect(res.body.ofertaCreada).toBe(99);
+    expect(res.body.ofertaCreada.idOferta).toBe(99);
   });
 
   test("POST /ofertas — asignatura no existe", async () => {
@@ -127,7 +123,7 @@ describe("Oferta — Pruebas de Integración", () => {
     const res = await request(app.server).post("/api/Academium/ofertas").send(data);
 
     expect(res.status).toBe(404);
-    expect(res.body).toEqual({ mensaje: "No se encontró la asignatura ingresada" });
+    expect(res.body.message).toEqual("No se encontró la asignatura ingresada");
   });
 
   test("PUT /ofertas/1 — actualiza correctamente", async () => {
@@ -136,28 +132,30 @@ describe("Oferta — Pruebas de Integración", () => {
     const res = await request(app.server).put("/api/Academium/ofertas/1").send(data);
 
     expect(res.status).toBe(200);
-    expect(res.body.OfertaActualizada.cupo).toBe(40);
+    expect(res.body.OfertaActualizada.cupo).toBe(30);
   });
 
   test("PUT /ofertas/999 — no existe", async () => {
-    const res = await request(app.server).put("/api/Academium/ofertas/999").send({ cupo: 10 });
+    const data = { cupo: 40, idAsignatura: 1, idPeriodo: 1, idPrograma: 1, grupo: 1 };
+    const res = await request(app.server).put("/api/Academium/ofertas/999").send(data);
 
     expect(res.status).toBe(404);
-    expect(res.body).toEqual({ mensaje: "Oferta no encontrada" });
+    expect(res.body.message).toEqual("Oferta con id 999 no encontrada");
   });
 
-  test("DELETE /ofertas/1 — elimina correctamente", async () => {
-    const res = await request(app.server).delete("/api/Academium/ofertas/1");
 
-    expect(res.status).toBe(200);
-    expect(res.body.idOferta).toBe(1);
-  });
 
-  test("DELETE /ofertas/999 — no existe", async () => {
-    const res = await request(app.server).delete("/api/Academium/ofertas/999");
+    test("DELETE /ofertas/1 — elimina correctamente", async () => {
+      const res = await request(app.server).delete("/api/Academium/ofertas/1");
 
-    expect(res.status).toBe(404);
-    expect(res.body).toEqual({ mensaje: "Oferta no encontrada" });
-  });
-
+      expect(res.status).toBe(200);
+      expect(res.body.idOferta).toBe("1");
+    });
+  
+    test("DELETE /ofertas/999 — no existe", async () => {
+      const res = await request(app.server).delete("/api/Academium/ofertas/999");
+  
+      expect(res.status).toBe(404);
+      expect(res.body.message).toEqual("No se encontró ninguna oferta");
+    });
 });

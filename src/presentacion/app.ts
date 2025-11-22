@@ -37,7 +37,6 @@ app.setErrorHandler((err, request, reply) => {
   });
 });
 
-if (process.env.NODE_ENV !== "test") {
   app.register(async (appInstance) => {
     await construirAsignaturasEnrutador(appInstance);
     await construirProgramasEnrutador(appInstance);
@@ -45,7 +44,7 @@ if (process.env.NODE_ENV !== "test") {
     await construirOfertasEnrutador(appInstance);
     await construirPlanEstudioEnrutador(appInstance);
   }, { prefix: "/api/Academium" });
-}
+
 
 
 export const startServer = async () => {
