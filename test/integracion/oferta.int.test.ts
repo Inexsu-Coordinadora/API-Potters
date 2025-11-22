@@ -15,8 +15,8 @@ jest.mock("../../src/core/infraestructura/postgres/ofertaRepository", () => {
         },
       ],
 
-      obtenerOfertaPorId: async (id: number) =>
-        id == 1  
+      obtenerOfertaPorId: async (id: string) =>
+        id === "1"  
           ? {
             idOferta: 1,
             idAsignatura: 1,
@@ -29,16 +29,16 @@ jest.mock("../../src/core/infraestructura/postgres/ofertaRepository", () => {
 
       crearOferta: async (_datos: any) => 99,
 
-      actualizarOferta: async (id: number, datos: any) =>
-        id == 1
+      actualizarOferta: async (id: string, datos: any) =>
+        id === "1"
           ? {
             idOferta: 1,
             ...datos
           }
           : null,
 
-      eliminarOferta: async (id: number) =>
-        id == 1
+      eliminarOferta: async (id: string) =>
+        id === "1"
           ? {
             idOferta: 1,
             idAsignatura: 1,
@@ -51,7 +51,7 @@ jest.mock("../../src/core/infraestructura/postgres/ofertaRepository", () => {
 
       existeOfertaDuplicada: async () => false,
 
-      obtenerOfertaRelacionada: async (id: number) => ({
+      obtenerOfertaRelacionada: async (id: string) => ({
         idOferta: id,
         idAsignatura: 1,
         idPeriodo: 1,
@@ -65,19 +65,19 @@ jest.mock("../../src/core/infraestructura/postgres/ofertaRepository", () => {
 
 jest.mock("../../src/core/infraestructura/postgres/asignaturaRepository", () => ({
   AsignaturaRepositorio: jest.fn().mockImplementation(() => ({
-    obtenerAsignaturaPorId: async (id: number) => (id === 1 ? { idAsignatura: 1 } : null)
+    obtenerAsignaturaPorId: async (id: string) => (id === "1" ? { idAsignatura: 1 } : null)
   })),
 }));
 
 jest.mock("../../src/core/infraestructura/postgres/periodoAcademicoRepository", () => ({
   PeriodoAcademicoRepositorio: jest.fn().mockImplementation(() => ({
-    obtenerPeriodoPorId: async (id: number) => (id === 1 ? { idPeriodo: 1, idEstado: 2 } : null)
+    obtenerPeriodoPorId: async (id: string) => (id === "1" ? { idPeriodo: 1, idEstado: 2 } : null)
   })),
 }));
 
 jest.mock("../../src/core/infraestructura/postgres/programaRepository", () => ({
   ProgramaRepositorio: jest.fn().mockImplementation(() => ({
-    obtenerProgramaPorId: async (id: number) => (id === 1 ? { idPrograma: 1 } : null)
+    obtenerProgramaPorId: async (id: string) => (id === "1" ? { idPrograma: 1 } : null)
   })),
 }));
 

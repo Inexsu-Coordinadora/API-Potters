@@ -10,8 +10,8 @@ jest.mock("../../src/core/infraestructura/postgres/programaRepository", () => {
         { idPrograma: 2, nombrePrograma: "Administración" },
       ],
 
-      obtenerProgramaPorId: async (id: number) => {
-        if (id === 1) {
+      obtenerProgramaPorId: async (id: string) => {
+        if (id === "1") {
           return { idPrograma: 1, nombrePrograma: "Ingeniería de Sistemas" };
         }
         return null;
@@ -24,16 +24,16 @@ jest.mock("../../src/core/infraestructura/postgres/programaRepository", () => {
         return 99;
       },
 
-      actualizarPrograma: async (id: number, data: any) => {
-        if (id !== 1) return null;
+      actualizarPrograma: async (id: string, data: any) => {
+        if (id !== "1") return null;
         return {
           idPrograma: 1,
           nombrePrograma: data.nombrePrograma ?? "Ingeniería de Sistemas",
         };
       },
 
-      eliminarPrograma: async (id: number) => {
-        if (id === 1) {
+      eliminarPrograma: async (id: string) => {
+        if (id === "1") {
           return { idPrograma: 1, nombrePrograma: "Ingeniería de Sistemas" };
         }
         return null;
@@ -64,10 +64,10 @@ describe("Programas — Integración", () => {
     expect(res.body.programa.nombrePrograma).toBe("Ingeniería de Sistemas");
   });
 
-  test("GET /programas/999 — no encontrado", async () => {
+ test("GET /programas/999 — no encontrado", async () => {
     const res = await request(app.server).get("/api/Academium/programas/999");
     expect(res.status).toBe(404);
-    expect(res.body.mensaje).toBe("Programa no encontrado");
+    expect(res.body.message).toBe("No se encontró ningún programa académico");
   });
 
   test("POST /programas — crea correctamente", async () => {
@@ -90,10 +90,11 @@ describe("Programas — Integración", () => {
       .post("/api/Academium/programas")
       .send({ nombrePrograma: 123 });
 
-    expect(res.status).toBe(400); // error de Zod
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("message", "Este campo debe contener solamente letras")
   });
 
-  test("PUT /programas/1 — actualiza correctamente", async () => {
+ test("PUT /programas/1 — actualiza correctamente", async () => {
     const res = await request(app.server)
       .put("/api/Academium/programas/1")
       .send({
@@ -113,7 +114,8 @@ describe("Programas — Integración", () => {
     const res = await request(app.server).delete(
       "/api/Academium/programas/1"
     );
+    
     expect(res.status).toBe(200);
-    expect(res.body.idPrograma).toBe(1);
+    expect(res.body.idPrograma).toBe("1");
   });
 });
