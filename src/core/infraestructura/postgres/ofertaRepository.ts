@@ -6,14 +6,12 @@ import { IOfertaRelacionada } from "../../dominio/oferta/IOfertaRelacionada";
 export class OfertaRepositorio implements IOfertaRepositorio {
 
   async crearOferta(datosOferta: IOferta): Promise<number> {
-    const columnas = Object.keys(datosOferta).map((key) => key.toLowerCase());
-    const parametros: Array<string | number> = Object.values(datosOferta);
-    const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
+    const parametros: Array<string | number> = Object.values(datosOferta);
     const query = `
-      INSERT INTO oferta (${columnas.join(", ")})
-      VALUES (${placeholders})
-      RETURNING *
+      INSERT INTO oferta (idprograma, idperiodo, idasignatura, grupo, cupo)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *;
     `;
 
     const respuesta = await ejecutarConsulta(query, parametros);
@@ -40,20 +38,17 @@ export class OfertaRepositorio implements IOfertaRepositorio {
   }
 
   async actualizarOferta(id: number, datosOferta: IOferta): Promise<IOferta> {
-    const columnas = Object.keys(datosOferta).map((key) => key.toLowerCase());
     const parametros = Object.values(datosOferta);
-    const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
     parametros.push(id);
 
     const query = `
-      UPDATE oferta
-      SET ${setClause}
-      WHERE idoferta=$${parametros.length}
+      UPDATE oferta SET idprograma = $1, idperiodo = $2, idasignatura = $3, grupo = $4, cupo = $5
+      WHERE idoferta = $6
       RETURNING *;
     `;
 
     const result = await ejecutarConsulta(query, parametros);
-    return result.rows[0];
+    return result.rows[0] ?? null;
   }
 
   async eliminarOferta(idOferta: number): Promise<IOferta | null> {
@@ -64,9 +59,7 @@ export class OfertaRepositorio implements IOfertaRepositorio {
 
   async existeOfertaDuplicada(datosOferta: IOferta): Promise<boolean> {
     const query = `
-    SELECT 1
-    FROM oferta
-    WHERE idprograma = $1
+    SELECT 1 FROM oferta WHERE idprograma = $1
       AND idperiodo = $2
       AND idasignatura = $3
       AND grupo = $4

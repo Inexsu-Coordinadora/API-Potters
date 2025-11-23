@@ -1,4 +1,4 @@
-import { IEstadoperiodoacademico } from "../estadoperiodoacademico/Iestadoperiodoacademico";
+import { IEstadoperiodoacademico } from "../estadoperiodoacademico/IEstadoperiodoacademico";
 
 export interface IEstadoperiodoacademicoRepositorio {
   obtenerEstadoPorId(idEstado: number): Promise<IEstadoperiodoacademico | null>;

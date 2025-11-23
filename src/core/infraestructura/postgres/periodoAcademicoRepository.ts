@@ -2,23 +2,24 @@ import { IPeriodoAcademicoRepositorio } from "../../dominio/repositorio/IPeriodo
 import { ejecutarConsulta } from "./clientePostgres";
 import { IPeriodoAcademico } from "../../dominio/periodoAcademico/IPeriodoAcademico";
 import { IPeriodoRelacionado } from "../../dominio/periodoAcademico/IPeriodoRelacionado";
+import { convertirFecha } from "../../../utils/fecha.util";
 
 export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio {
 
   async crearPeriodo(datosPeriodo: IPeriodoAcademico): Promise<number> {
 
-    const columnas = Object.keys(datosPeriodo).map((key) => key.toLowerCase());
-    const parametros: (string | number)[] = Object.values(datosPeriodo);
-    const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
-
-    parametros[1] = new Date(datosPeriodo.fechaInicio).toISOString().split("T")[0] || "";
-    parametros[2] = new Date(datosPeriodo.fechaFin).toISOString().split("T")[0] || "";
+    const parametros = [
+      datosPeriodo.semestre,
+      convertirFecha(datosPeriodo.fechaInicio),
+      convertirFecha(datosPeriodo.fechaFin),
+      datosPeriodo.idEstado
+    ];
 
     const query = `
-      INSERT INTO periodoacademico (${columnas.join(", ")})
-      VALUES (${placeholders})
-      RETURNING idperiodo;
-    `;
+          INSERT INTO periodoacademico (semestre, fechainicio, fechafin, idestado)
+          VALUES ($1, $2, $3, $4)
+          RETURNING idperiodo;
+        `;
 
     const respuesta = await ejecutarConsulta(query, parametros);
     return respuesta.rows[0].idperiodo;
@@ -44,19 +45,19 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
   }
 
   async actualizarPeriodo(id: number, datosPeriodo: IPeriodoAcademico): Promise<IPeriodoAcademico> {
-    const columnas = Object.keys(datosPeriodo).map((key) => key.toLowerCase());
-    const parametros = Object.values(datosPeriodo);
 
-    parametros[1] = new Date(datosPeriodo.fechaInicio).toISOString().split("T")[0] || "";
-    parametros[2] = new Date(datosPeriodo.fechaFin).toISOString().split("T")[0] || "";
-
-    const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
+    const parametros = [
+      datosPeriodo.semestre,
+      convertirFecha(datosPeriodo.fechaInicio),
+      convertirFecha(datosPeriodo.fechaFin),
+      datosPeriodo.idEstado
+    ];
     parametros.push(id);
 
     const query = `
       UPDATE periodoacademico
-      SET ${setClause}
-      WHERE idPeriodo=$${parametros.length}
+      SET semestre = $1, fechainicio = $2, fechafin = $3, idestado = $4
+      WHERE idperiodo = $5
       RETURNING *;
     `;
 
@@ -74,10 +75,11 @@ export class PeriodoAcademicoRepositorio implements IPeriodoAcademicoRepositorio
 
     let query = "";
     const { fechaInicio, fechaFin } = datosPeriodoAcademico;
+
     const parametros = [
-      fechaInicio instanceof Date ? fechaInicio.toISOString().split("T")[0] : fechaInicio,
-      fechaFin instanceof Date ? fechaFin.toISOString().split("T")[0] : fechaFin
-    ] as [string, string];
+      convertirFecha(fechaInicio),
+      convertirFecha(fechaFin),
+    ] 
 
     if (idperiodo > 0) {
       query = `

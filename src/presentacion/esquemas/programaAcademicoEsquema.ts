@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-export const crearProgramaEsquema = z.object({
+export const ProgramaEsquema = z.object({
     nombrePrograma: z
-        .string()
+        .string("Este campo debe contener solamente letras")
         .nonempty("El nombre del programa es obligatorio")
         .min(3, "Debe tener al menos 3 caracteres")
         .max(100, "No puede superar los 100 caracteres"),
@@ -36,4 +36,4 @@ export const crearProgramaEsquema = z.object({
         .describe("Duración en meses del programa académico"),
 });
 
-export type ProgramaDTO = z.infer<typeof crearProgramaEsquema>
+export type ProgramaDTO = z.infer<typeof ProgramaEsquema>

@@ -1,6 +1,6 @@
 import { IEstadoperiodoacademicoRepositorio } from "../../dominio/repositorio/IEstadoperiodoacademicoRepositorio";
 import { ejecutarConsulta } from "./clientePostgres";
-import { IEstadoperiodoacademico } from "../../dominio/estadoperiodoacademico/Iestadoperiodoacademico";
+import { IEstadoperiodoacademico } from "../../dominio/estadoperiodoacademico/IEstadoperiodoacademico";
 
 export class EstadoperiodoacademicoRepositorio implements IEstadoperiodoacademicoRepositorio {
   async obtenerEstadoPorId(idEstado: number): Promise<IEstadoperiodoacademico | null> {

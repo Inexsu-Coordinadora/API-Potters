@@ -5,8 +5,7 @@ import { PeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/Period
 import { IPeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/IPeriodoAcademicoCasosUso";
 import { IPeriodoAcademicoRepositorio } from "../../core/dominio/repositorio/IPeriodoAcademicoRepositorio";
 
-
-function gestionAcademicaEnrutador(
+function gestionPeriodoEnrutador(
   app: FastifyInstance,
   periodoAcademicoController: PeriodoAcademicoControlador,
 ) {
@@ -22,5 +21,5 @@ export async function construirPeriodoAcademicoEnrutador(app: FastifyInstance) {
   const periodoAcademicoCasosUso: IPeriodoAcademicoCasosUso = new PeriodoAcademicoCasosUso(periodoAcademicoRepositorio);
   const periodoAcademicoController = new PeriodoAcademicoControlador(periodoAcademicoCasosUso);
 
-  gestionAcademicaEnrutador(app, periodoAcademicoController);
+  gestionPeriodoEnrutador(app, periodoAcademicoController);
 }

@@ -5,6 +5,9 @@ import { IPeriodoAcademicoRepositorio } from "../../dominio/repositorio/IPeriodo
 import { IProgramaRepositorio } from "../../dominio/repositorio/IProgramaRepositorio";
 import { IOfertaCasosUso } from "./IOfertaCasosUso";
 import { IOfertaRelacionada } from "../../dominio/oferta/IOfertaRelacionada";
+import { PeriodoAcademico } from "../../dominio/periodoAcademico/PeriodoAcademico";
+import { EntidadNoEncontradaError } from "../../dominio/errores/encontrarError";
+import { ReglaNegocioError } from "../../dominio/errores/reglaNegocioError";
 
 export class OfertaCasosUso implements IOfertaCasosUso {
   constructor(private ofertaRepositorio: IOfertaRepositorio,
@@ -13,44 +16,36 @@ export class OfertaCasosUso implements IOfertaCasosUso {
     private periodoRepositorio: IPeriodoAcademicoRepositorio) { }
 
   async obtenerOfertas(limite?: number): Promise<IOferta[]> {
-    return await this.ofertaRepositorio.listarOfertas(limite);
+
+    const lista = await this.ofertaRepositorio.listarOfertas(limite);
+    if (!lista || lista.length == 0) throw new EntidadNoEncontradaError("No se encontró ninguna oferta");
+    return lista;
   }
 
   async obtenerOfertaPorId(idOferta: number): Promise<IOferta | null> {
     const ofertaObtenida = await this.ofertaRepositorio.obtenerOfertaPorId(idOferta);
+    if (!ofertaObtenida) throw new EntidadNoEncontradaError("No se encontró ninguna oferta");
     return ofertaObtenida;
   }
 
   async crearOferta(datosOferta: IOferta): Promise<IOfertaRelacionada | null> {
 
     const registroExistente = await this.ofertaRepositorio.existeOfertaDuplicada(datosOferta);
-    const idAsignatura = await this.asignaturaRepositorio.obtenerAsignaturaPorId(datosOferta.idAsignatura);
-    const idPrograma = await this.programaRepositorio.obtenerProgramaPorId(datosOferta.idPrograma);
-    const idPeriodo = await this.periodoRepositorio.obtenerPeriodoPorId(datosOferta.idPeriodo);
+    const asignatura = await this.asignaturaRepositorio.obtenerAsignaturaPorId(datosOferta.idAsignatura);
+    const programa = await this.programaRepositorio.obtenerProgramaPorId(datosOferta.idPrograma);
+    const periodo = await this.periodoRepositorio.obtenerPeriodoPorId(datosOferta.idPeriodo);
 
-    if (registroExistente) {
-      throw new Error("Ya existe un grupo matriculado con la misma asignatura, programa y periodo académico");
-    }
+    if (registroExistente) throw new ReglaNegocioError("Ya existe un grupo matriculado con la misma asignatura, programa y periodo académico");
+    if (!asignatura) throw new EntidadNoEncontradaError("No se encontró la asignatura ingresada");
 
-    if (idAsignatura === null) {
-      throw new Error("No se encontró la asignatura ingresada");
-    }
+    if (registroExistente) throw new ReglaNegocioError("Ya existe un grupo matriculado con la misma asignatura, programa y periodo académico");
+    if (!asignatura) throw new EntidadNoEncontradaError("No se encontró la asignatura ingresada");
+    if (!programa)  throw new EntidadNoEncontradaError("No se encontró el programa ingresado");
+    if (!periodo) throw new EntidadNoEncontradaError("No se encontró el periodo ingresado");
 
-    if (idPrograma === null) {
-      throw new Error("No se encontró el programa ingresado");
-    }
-
-    if (idPeriodo === null) {
-      throw new Error("No se encontró el periodo ingresado");
-    }
-
-    if (idPeriodo.idEstado === 1) {
-      throw new Error("El periodo está en preparacion");
-    }
-
-    if (idPeriodo.idEstado === 3) {
-      throw new Error("El periodo está cerrado");
-    }
+    let objperiodo = new PeriodoAcademico(periodo);
+    let mensajeValidacionEstadoPeriodo = objperiodo.validarEstado();
+    if (!mensajeValidacionEstadoPeriodo.includes("periodo activo")) throw new ReglaNegocioError(mensajeValidacionEstadoPeriodo);
 
     const idNuevaOferta = await this.ofertaRepositorio.crearOferta(datosOferta);
     const ofertaCreada = await this.ofertaRepositorio.obtenerOfertaRelacionada(idNuevaOferta);
@@ -60,45 +55,31 @@ export class OfertaCasosUso implements IOfertaCasosUso {
   async actualizarOferta(idOferta: number, oferta: IOferta): Promise<IOfertaRelacionada | null> {
 
     const registroExistente = await this.ofertaRepositorio.existeOfertaDuplicada(oferta);
-    const idAsignatura = await this.asignaturaRepositorio.obtenerAsignaturaPorId(oferta.idAsignatura);
-    const idPrograma = await this.programaRepositorio.obtenerProgramaPorId(oferta.idPrograma);
-    const idPeriodo = await this.periodoRepositorio.obtenerPeriodoPorId(oferta.idPeriodo);
+    const asignatura = await this.asignaturaRepositorio.obtenerAsignaturaPorId(oferta.idAsignatura);
+    const programa = await this.programaRepositorio.obtenerProgramaPorId(oferta.idPrograma);
+    const periodo = await this.periodoRepositorio.obtenerPeriodoPorId(oferta.idPeriodo);
 
-    if (registroExistente) {
-      throw new Error("Ya existe un grupo matriculado con la misma asignatura, programa y periodo académico");
-    }
+    if (registroExistente) throw new ReglaNegocioError("Ya existe un grupo matriculado con la misma asignatura, programa y periodo académico");
+    if (!asignatura) throw new EntidadNoEncontradaError("No se encontró la asignatura ingresada");
+    if (!programa) throw new EntidadNoEncontradaError("No se encontró el programa ingresado");
+    if (!periodo) throw new EntidadNoEncontradaError("No se encontró el periodo ingresado");
 
-    if (idAsignatura === null) {
-      throw new Error("No se encontró la asignatura ingresada");
-    }
+    const objperiodo = new PeriodoAcademico(periodo);
+    const mensajeValidacionEstadoPeriodo = objperiodo.validarEstado();
+    if (!mensajeValidacionEstadoPeriodo.includes("periodo activo")) throw new ReglaNegocioError(mensajeValidacionEstadoPeriodo);
 
-    if (idPrograma === null) {
-      throw new Error("No se encontró el programa ingresado");
-    }
+    const updated = await this.ofertaRepositorio.actualizarOferta(idOferta, oferta);
+    if (!updated) throw new EntidadNoEncontradaError(`Oferta con id ${idOferta} no encontrada`);
 
-    if (idPeriodo === null) {
-      throw new Error("No se encontró el periodo ingresado");
-    }
-
-    if (idPeriodo.idEstado === 1) {
-      throw new Error("El periodo está en preparacion");
-    }
-
-    if (idPeriodo.idEstado === 3) {
-      throw new Error("El periodo está cerrado");
-    }
-
-      await this.ofertaRepositorio.actualizarOferta(
-      idOferta,
-      oferta
-    );
     const ofertaActualizada = await this.ofertaRepositorio.obtenerOfertaRelacionada(idOferta);
+    if (!ofertaActualizada) throw new Error("Error inesperado al obtener la oferta actualizada");
+
     return ofertaActualizada;
-    
   }
 
   async eliminarOferta(idOferta: number): Promise<IOferta | null> {
     const ofertaObtenida = await this.ofertaRepositorio.eliminarOferta(idOferta);
+    if (!ofertaObtenida) throw new EntidadNoEncontradaError("No se encontró ninguna oferta");
     return ofertaObtenida;
   }
 }

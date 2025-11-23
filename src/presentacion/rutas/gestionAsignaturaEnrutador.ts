@@ -5,7 +5,7 @@ import { AsignaturaCasosUso} from "../../core/aplicacion/casos-uso/AsignaturaCas
 import { AsignaturaRepositorio } from "../../core/infraestructura/postgres/asignaturaRepository";
 import { IAsignaturaCasosUso } from "../../core/aplicacion/casos-uso/IAsignaturaCasosUso";
 
-function gestionAcademicaEnrutador(
+function gestionAsignaturaEnrutador(
   app: FastifyInstance,
   asignaturaController: AsignaturasControlador,
 ) {
@@ -16,10 +16,17 @@ function gestionAcademicaEnrutador(
   app.delete("/asignaturas/:idAsignatura", asignaturaController.eliminarAsignatura);
 }
 
-export async function construirAsignaturasEnrutador(app: FastifyInstance) {
-  const asignaturaRepositorio: IAsignaturaRepositorio = new AsignaturaRepositorio();
-  const asignaturaCasosUso: IAsignaturaCasosUso = new AsignaturaCasosUso(asignaturaRepositorio);
+export async function construirAsignaturasEnrutador(
+  app: FastifyInstance, 
+  repositorioInyectado?: IAsignaturaRepositorio 
+) {
+     const asignaturaRepositorio: IAsignaturaRepositorio =
+    repositorioInyectado ?? new AsignaturaRepositorio();
+
+  const asignaturaCasosUso: IAsignaturaCasosUso =
+    new AsignaturaCasosUso(asignaturaRepositorio);
+
   const asignaturaController = new AsignaturasControlador(asignaturaCasosUso);
 
-  gestionAcademicaEnrutador(app, asignaturaController);
+  gestionAsignaturaEnrutador(app, asignaturaController);
 }
