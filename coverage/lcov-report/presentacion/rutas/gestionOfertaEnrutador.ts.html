@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.84% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/19</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.84% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/19</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -101,41 +101,41 @@
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
 <a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { FastifyInstance } from "fastify";
 import { OfertaControlador } from "../controladores/ofertaControlador";
@@ -150,29 +150,29 @@ import { PeriodoAcademicoRepositorio } from "../../core/infraestructura/postgres
 import { IProgramaRepositorio } from "../../core/dominio/repositorio/IProgramaRepositorio";
 import { ProgramaRepositorio } from "../../core/infraestructura/postgres/programaRepository";
 &nbsp;
-function <span class="fstat-no" title="function not covered" >gestionOfertaEnrutador(</span>
+function gestionOfertaEnrutador(
   app: FastifyInstance,
   ofertaControlador: OfertaControlador,
 ) {
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  app.get("/ofertas", ofertaControlador.obtenerOfertas);</span>
-<span class="cstat-no" title="statement not covered" >  app.get("/ofertas/:idOferta", ofertaControlador.obtenerOfertaPorId);</span>
-<span class="cstat-no" title="statement not covered" >  app.post("/ofertas", ofertaControlador.crearOferta);</span>
-<span class="cstat-no" title="statement not covered" >  app.put("/ofertas/:idOferta", ofertaControlador.actualizarOferta);</span>
-<span class="cstat-no" title="statement not covered" >  app.delete("/ofertas/:idOferta", ofertaControlador.eliminarOferta);</span>
+  app.get("/ofertas", ofertaControlador.obtenerOfertas);
+  app.get("/ofertas/:idOferta", ofertaControlador.obtenerOfertaPorId);
+  app.post("/ofertas", ofertaControlador.crearOferta);
+  app.put("/ofertas/:idOferta", ofertaControlador.actualizarOferta);
+  app.delete("/ofertas/:idOferta", ofertaControlador.eliminarOferta);
 }
 &nbsp;
-export async function <span class="fstat-no" title="function not covered" >construirOfertasEnrutador(</span>app: FastifyInstance) {
+export async function construirOfertasEnrutador(app: FastifyInstance) {
 &nbsp;
-  const asignaturaRepositorio: IAsignaturaRepositorio = <span class="cstat-no" title="statement not covered" >new AsignaturaRepositorio();</span>
-  const programaRepositorio: IProgramaRepositorio = <span class="cstat-no" title="statement not covered" >new ProgramaRepositorio();</span>
-  const periodoAcademicoRepositorio: IPeriodoAcademicoRepositorio = <span class="cstat-no" title="statement not covered" >new PeriodoAcademicoRepositorio();</span>
+  const asignaturaRepositorio: IAsignaturaRepositorio = new AsignaturaRepositorio();
+  const programaRepositorio: IProgramaRepositorio = new ProgramaRepositorio();
+  const periodoAcademicoRepositorio: IPeriodoAcademicoRepositorio = new PeriodoAcademicoRepositorio();
 &nbsp;
-  const ofertaRepositorio: IOfertaRepositorio = <span class="cstat-no" title="statement not covered" >new OfertaRepositorio();</span>
-  const ofertaCasosUso: IOfertaCasosUso = <span class="cstat-no" title="statement not covered" >new OfertaCasosUso(ofertaRepositorio, asignaturaRepositorio, programaRepositorio, periodoAcademicoRepositorio);</span>
-  const ofertaControlador = <span class="cstat-no" title="statement not covered" >new OfertaControlador(ofertaCasosUso);</span>
+  const ofertaRepositorio: IOfertaRepositorio = new OfertaRepositorio();
+  const ofertaCasosUso: IOfertaCasosUso = new OfertaCasosUso(ofertaRepositorio, asignaturaRepositorio, programaRepositorio, periodoAcademicoRepositorio);
+  const ofertaControlador = new OfertaControlador(ofertaCasosUso);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  gestionOfertaEnrutador(app, ofertaControlador);</span>
+  gestionOfertaEnrutador(app, ofertaControlador);
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -181,7 +181,7 @@ export async function <span class="fstat-no" title="function not covered" >const
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-22T17:35:24.958Z
+                at 2025-11-23T02:05:57.260Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -7,9 +7,11 @@
     "dev": "ts-node-dev ./src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "jest --runInBand --detectOpenHandles",
     "coverage":"jest --coverage",
-    "test:integration": "jest test/integracion --runInBand"
+
+    "test": "jest",
+    "unit-test": "jest --testPathPatterns unit",
+    "integration-test": "jest --testPathPatterns integracion"
   },
   "keywords": [],
   "author": "",

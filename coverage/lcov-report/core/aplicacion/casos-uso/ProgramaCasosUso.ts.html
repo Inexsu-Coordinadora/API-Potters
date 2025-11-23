@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">9.52% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/21</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.76% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -111,39 +111,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ProgramaDTO } from "../../../presentacion/esquemas/programaAcademicoEsquema";
 import { EntidadNoEncontradaError } from "../../dominio/errores/encontrarError";
@@ -152,39 +152,39 @@ import { IProgramaRepositorio } from "../../dominio/repositorio/IProgramaReposit
 import { IProgramaCasosUso } from "./IProgramaCasosUso";
 &nbsp;
 export class ProgramaCasosUso implements IProgramaCasosUso {
-<span class="fstat-no" title="function not covered" >    constructor(private <span class="cstat-no" title="statement not covered" >p</span>rogramaRepositorio: IProgramaRepositorio)</span> { }
+    constructor(private programaRepositorio: IProgramaRepositorio) { }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    async </span>obtenerPrograma(limite?: number): Promise&lt;IPrograma[]&gt; {
-        const lista = <span class="cstat-no" title="statement not covered" >await this.programaRepositorio.listarPrograma(limite);</span>
-<span class="cstat-no" title="statement not covered" >        if (!lista || lista.length == 0) <span class="cstat-no" title="statement not covered" >throw new EntidadNoEncontradaError("No se encontró ningún programa académico");</span></span>
-<span class="cstat-no" title="statement not covered" >        return lista;</span>
+    async obtenerPrograma(limite?: number): Promise&lt;IPrograma[]&gt; {
+        const lista = await this.programaRepositorio.listarPrograma(limite);
+        if (!lista || lista.length == 0) throw new EntidadNoEncontradaError("No se encontró ningún programa académico");
+        return lista;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    async </span>obtenerProgramasPorId(idPrograma: number): Promise&lt;IPrograma | null&gt; {
-        const programaObtenido = <span class="cstat-no" title="statement not covered" >await this.programaRepositorio.obtenerProgramaPorId(idPrograma);</span>
-<span class="cstat-no" title="statement not covered" >        if (!programaObtenido) <span class="cstat-no" title="statement not covered" >throw new EntidadNoEncontradaError("No se encontró ningún programa académico");</span></span>
-<span class="cstat-no" title="statement not covered" >        return programaObtenido;</span>
+    async obtenerProgramasPorId(idPrograma: number): Promise&lt;IPrograma | null&gt; {
+        const programaObtenido = await this.programaRepositorio.obtenerProgramaPorId(idPrograma);
+        if (!programaObtenido) throw new EntidadNoEncontradaError("No se encontró ningún programa académico");
+        return programaObtenido;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    async </span>crearPrograma(datosPrograma: ProgramaDTO): Promise&lt;string&gt; {
-        const idNuevoPrograma = <span class="cstat-no" title="statement not covered" >await this.programaRepositorio.crearPrograma(datosPrograma);</span>
-<span class="cstat-no" title="statement not covered" >        return idNuevoPrograma;</span>
+    async crearPrograma(datosPrograma: ProgramaDTO): Promise&lt;string&gt; {
+        const idNuevoPrograma = await this.programaRepositorio.crearPrograma(datosPrograma);
+        return idNuevoPrograma;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    async </span>actualizarPrograma(idPrograma: number, programa: IPrograma): Promise&lt;IPrograma | null&gt; {
-        const programaActualizado = <span class="cstat-no" title="statement not covered" >await this.programaRepositorio.actualizarPrograma(</span>
+    async actualizarPrograma(idPrograma: number, programa: IPrograma): Promise&lt;IPrograma | null&gt; {
+        const programaActualizado = await this.programaRepositorio.actualizarPrograma(
             idPrograma,
             programa
         );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (!programaActualizado) <span class="cstat-no" title="statement not covered" >throw new EntidadNoEncontradaError(`Programa académico con id ${idPrograma} no encontrado`);</span></span>
-<span class="cstat-no" title="statement not covered" >        return programaActualizado;</span>
+        if (!programaActualizado) throw new EntidadNoEncontradaError(`Programa académico con id ${idPrograma} no encontrado`);
+        return programaActualizado;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    async </span>eliminarPrograma(idPrograma: number): Promise&lt;IPrograma | null&gt; {
-        const programaObtenido = <span class="cstat-no" title="statement not covered" >await this.programaRepositorio.eliminarPrograma(idPrograma);</span>
-<span class="cstat-no" title="statement not covered" >        if (!programaObtenido) <span class="cstat-no" title="statement not covered" >throw new EntidadNoEncontradaError("No se encontró ningún programa académico");</span></span>
-<span class="cstat-no" title="statement not covered" >        return programaObtenido;</span>
+    async eliminarPrograma(idPrograma: number): Promise&lt;IPrograma | null&gt; {
+        const programaObtenido = await this.programaRepositorio.eliminarPrograma(idPrograma);
+        if (!programaObtenido) throw new EntidadNoEncontradaError("No se encontró ningún programa académico");
+        return programaObtenido;
     }
 }</pre></td></tr></table></pre>
 
@@ -193,7 +193,7 @@ export class ProgramaCasosUso implements IProgramaCasosUso {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-22T17:35:24.958Z
+                at 2025-11-23T02:05:57.260Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

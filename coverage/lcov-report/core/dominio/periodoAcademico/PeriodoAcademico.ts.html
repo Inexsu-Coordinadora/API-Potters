@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.28% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/14</span>
+                <span class='fraction'>12/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>3/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.28% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/14</span>
+                <span class='fraction'>12/14</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -112,29 +112,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { IPeriodoAcademico } from "./IPeriodoAcademico";
@@ -148,30 +148,30 @@ export class PeriodoAcademico implements IPeriodoAcademico {
   fechaFin: Date;
   idEstado: number;
 &nbsp;
-<span class="fstat-no" title="function not covered" >  constructor(d</span>atosPeriodoAcademico: IPeriodoAcademico) {
-<span class="cstat-no" title="statement not covered" >    this.semestre = datosPeriodoAcademico.semestre;</span>
-<span class="cstat-no" title="statement not covered" >    this.fechaInicio = datosPeriodoAcademico.fechaInicio;</span>
-<span class="cstat-no" title="statement not covered" >    this.fechaFin = datosPeriodoAcademico.fechaFin;</span>
-<span class="cstat-no" title="statement not covered" >    this.idEstado = datosPeriodoAcademico.idEstado;</span>
+  constructor(datosPeriodoAcademico: IPeriodoAcademico) {
+    this.semestre = datosPeriodoAcademico.semestre;
+    this.fechaInicio = datosPeriodoAcademico.fechaInicio;
+    this.fechaFin = datosPeriodoAcademico.fechaFin;
+    this.idEstado = datosPeriodoAcademico.idEstado;
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  validarEstado(</span>): string {
+  validarEstado(): string {
 &nbsp;
-    let mensaje = <span class="cstat-no" title="statement not covered" >"";</span>
+    let mensaje = "";
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.idEstado === estadoPeriodoAcademico.preparacion) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.idEstado === estadoPeriodoAcademico.preparacion) {
 <span class="cstat-no" title="statement not covered" >      mensaje = "El periodo está en preparacion";</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.idEstado === estadoPeriodoAcademico.cerrado) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.idEstado === estadoPeriodoAcademico.cerrado) {
 <span class="cstat-no" title="statement not covered" >      mensaje = "El periodo está cerrado";</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.idEstado === estadoPeriodoAcademico.activo) {</span>
-<span class="cstat-no" title="statement not covered" >      mensaje = "periodo activo";</span>
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (this.idEstado === estadoPeriodoAcademico.activo) {
+      mensaje = "periodo activo";
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return mensaje;</span>
+    return mensaje;
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -181,7 +181,7 @@ export class PeriodoAcademico implements IPeriodoAcademico {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-22T17:35:24.958Z
+                at 2025-11-23T02:05:57.260Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

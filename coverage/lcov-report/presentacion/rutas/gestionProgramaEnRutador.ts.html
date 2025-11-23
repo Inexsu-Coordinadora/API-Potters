@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.76% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.76% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -88,29 +88,29 @@
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { FastifyInstance } from "fastify";
 import { ProgramasControlador } from "../controladores/programaControlador";
 import { IProgramaRepositorio } from "../../core/dominio/repositorio/IProgramaRepositorio";
@@ -118,23 +118,23 @@ import { ProgramaCasosUso } from "../../core/aplicacion/casos-uso/ProgramaCasosU
 import { ProgramaRepositorio } from "../../core/infraestructura/postgres/programaRepository";
 import { IProgramaCasosUso } from "../../core/aplicacion/casos-uso/IProgramaCasosUso";
 &nbsp;
-function <span class="fstat-no" title="function not covered" >gestionProgramaEnrutador(</span>
+function gestionProgramaEnrutador(
     app: FastifyInstance,
     programaController: ProgramasControlador,
 ) {
-<span class="cstat-no" title="statement not covered" >    app.get("/programas", programaController.obtenerPrograma);</span>
-<span class="cstat-no" title="statement not covered" >    app.get("/programas/:idPrograma", programaController.obtenerProgramaPorId);</span>
-<span class="cstat-no" title="statement not covered" >    app.post("/programas", programaController.crearPrograma);</span>
-<span class="cstat-no" title="statement not covered" >    app.put("/programas/:idPrograma", programaController.actualizarPrograma);</span>
-<span class="cstat-no" title="statement not covered" >    app.delete("/programas/:idPrograma", programaController.eliminarPrograma);</span>
+    app.get("/programas", programaController.obtenerPrograma);
+    app.get("/programas/:idPrograma", programaController.obtenerProgramaPorId);
+    app.post("/programas", programaController.crearPrograma);
+    app.put("/programas/:idPrograma", programaController.actualizarPrograma);
+    app.delete("/programas/:idPrograma", programaController.eliminarPrograma);
 }
 &nbsp;
-export async function <span class="fstat-no" title="function not covered" >construirProgramasEnrutador(</span>app: FastifyInstance){
-    const programaRepositorio: IProgramaRepositorio = <span class="cstat-no" title="statement not covered" >new ProgramaRepositorio();</span>
-    const programaCasosUso: IProgramaCasosUso = <span class="cstat-no" title="statement not covered" >new ProgramaCasosUso(programaRepositorio);</span>
-    const programaController = <span class="cstat-no" title="statement not covered" >new ProgramasControlador(programaCasosUso);</span>
+export async function construirProgramasEnrutador(app: FastifyInstance){
+    const programaRepositorio: IProgramaRepositorio = new ProgramaRepositorio();
+    const programaCasosUso: IProgramaCasosUso = new ProgramaCasosUso(programaRepositorio);
+    const programaController = new ProgramasControlador(programaCasosUso);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    gestionProgramaEnrutador(app, programaController);</span>
+    gestionProgramaEnrutador(app, programaController);
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -142,7 +142,7 @@ export async function <span class="fstat-no" title="function not covered" >const
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-22T17:35:24.958Z
+                at 2025-11-23T02:05:57.260Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

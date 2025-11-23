@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">35.29% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">35.29% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -96,37 +96,37 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { FastifyInstance } from "fastify";
 import { PlanEstudioControlador } from "../controladores/planEstudioControlador";
 import { IPlanEstudioRepositorio } from "../../core/dominio/repositorio/IPlanEstudioRepositorio";
@@ -138,27 +138,27 @@ import { IAsignaturaRepositorio } from "../../core/dominio/repositorio/IAsignatu
 import { ProgramaRepositorio } from "../../core/infraestructura/postgres/programaRepository";
 import { AsignaturaRepositorio } from "../../core/infraestructura/postgres/asignaturaRepository";
 &nbsp;
-function <span class="fstat-no" title="function not covered" >gestionPlanEstudioEnrutador(</span>
+function gestionPlanEstudioEnrutador(
     app: FastifyInstance,
     planEstudioControlador: PlanEstudioControlador,
 ) {
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    app.get("/planestudio", planEstudioControlador.obtenerPlanEstudio);</span>
-<span class="cstat-no" title="statement not covered" >    app.get("/planestudio/:idPlanEstudio", planEstudioControlador.obtenerPlanEstudioPorId);</span>
-<span class="cstat-no" title="statement not covered" >    app.post("/planestudio", planEstudioControlador.crearPlanEstudio);</span>
-<span class="cstat-no" title="statement not covered" >    app.put("/planestudio/:idPlanEstudio", planEstudioControlador.actualizarPlanEstudio);</span>
-<span class="cstat-no" title="statement not covered" >    app.delete("/planestudio/:idPlanEstudio", planEstudioControlador.eliminarPlanEstudio);</span>
+    app.get("/planestudio", planEstudioControlador.obtenerPlanEstudio);
+    app.get("/planestudio/:idPlanEstudio", planEstudioControlador.obtenerPlanEstudioPorId);
+    app.post("/planestudio", planEstudioControlador.crearPlanEstudio);
+    app.put("/planestudio/:idPlanEstudio", planEstudioControlador.actualizarPlanEstudio);
+    app.delete("/planestudio/:idPlanEstudio", planEstudioControlador.eliminarPlanEstudio);
 }
 &nbsp;
-export async function <span class="fstat-no" title="function not covered" >construirPlanEstudioEnrutador(</span>app: FastifyInstance) {
-    const planEstudioRepositorio: IPlanEstudioRepositorio = <span class="cstat-no" title="statement not covered" >new PlanEstudioRepositorio();</span>
-    const programaRepositorio: IProgramaRepositorio = <span class="cstat-no" title="statement not covered" >new ProgramaRepositorio();</span>
-    const asignaturaRepositorio: IAsignaturaRepositorio = <span class="cstat-no" title="statement not covered" >new AsignaturaRepositorio();</span>
-    const planEstudioCasosUso: IPlanEstudioCasosUso = <span class="cstat-no" title="statement not covered" >new PlanEstudioCasosUso(</span>
+export async function construirPlanEstudioEnrutador(app: FastifyInstance) {
+    const planEstudioRepositorio: IPlanEstudioRepositorio = new PlanEstudioRepositorio();
+    const programaRepositorio: IProgramaRepositorio = new ProgramaRepositorio();
+    const asignaturaRepositorio: IAsignaturaRepositorio = new AsignaturaRepositorio();
+    const planEstudioCasosUso: IPlanEstudioCasosUso = new PlanEstudioCasosUso(
         planEstudioRepositorio, programaRepositorio, asignaturaRepositorio);
-    const planEstudioControlador = <span class="cstat-no" title="statement not covered" >new PlanEstudioControlador(planEstudioCasosUso);</span>
+    const planEstudioControlador = new PlanEstudioControlador(planEstudioCasosUso);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    gestionPlanEstudioEnrutador(app, planEstudioControlador);</span>
+    gestionPlanEstudioEnrutador(app, planEstudioControlador);
 }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -166,7 +166,7 @@ export async function <span class="fstat-no" title="function not covered" >const
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-22T17:35:24.958Z
+                at 2025-11-23T02:05:57.260Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

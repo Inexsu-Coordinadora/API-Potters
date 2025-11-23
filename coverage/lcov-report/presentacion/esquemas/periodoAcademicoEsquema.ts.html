@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.36% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">36.36% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -125,10 +125,10 @@
 <a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">64x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">60x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -143,8 +143,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">30x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -156,8 +156,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">30x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -174,7 +174,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">30x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,11 +183,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { z } from "zod";
 &nbsp;
-const validarFormatoFecha = <span class="fstat-no" title="function not covered" >(v</span>alor: string) =&gt;
-<span class="cstat-no" title="statement not covered" >  /^\d{4}-\d{2}-\d{2}$/.test(valor);</span> // AAAA-MM-DD
+const validarFormatoFecha = (valor: string) =&gt;
+  /^\d{4}-\d{2}-\d{2}$/.test(valor); // AAAA-MM-DD
 &nbsp;
-const validarRangoAnio = <span class="fstat-no" title="function not covered" >(f</span>echa: Date) =&gt;
-<span class="cstat-no" title="statement not covered" >  fecha.getFullYear() &gt;= 2010 &amp;&amp; fecha.getFullYear() &lt;= 2100;</span>
+const validarRangoAnio = (fecha: Date) =&gt;
+  fecha.getFullYear() &gt;= 2010 &amp;&amp; fecha.getFullYear() &lt;= 2100;
 &nbsp;
 export const PeriodoAcademicoEsquema = z
   .object({
@@ -202,8 +202,8 @@ export const PeriodoAcademicoEsquema = z
       .refine(validarFormatoFecha, {
         message: "El formato de la fecha de inicio es inválido. Debe ser AAAA-MM-DD",
       })
-      .transform(<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >new Date(v))</span>
-      .refine(<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >!isNaN(v.getTime()),</span> {
+      .transform((v) =&gt; new Date(v))
+      .refine((v) =&gt; !isNaN(v.getTime()), {
         message: "La fecha de inicio no es válida en el calendario",
       })
       .refine(validarRangoAnio, {
@@ -215,8 +215,8 @@ export const PeriodoAcademicoEsquema = z
       .refine(validarFormatoFecha, {
         message: "El formato de la fecha de finalización es inválido. Debe ser AAAA-MM-DD",
       })
-      .transform(<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >new Date(v))</span>
-      .refine(<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >!isNaN(v.getTime()),</span> {
+      .transform((v) =&gt; new Date(v))
+      .refine((v) =&gt; !isNaN(v.getTime()), {
         message: "La fecha de finalización no es válida en el calendario",
       })
       .refine(validarRangoAnio, {
@@ -233,7 +233,7 @@ export const PeriodoAcademicoEsquema = z
       .positive()
       .describe("ID del estado en el que se encuentra el periodo"),
   })
-  .refine(<span class="fstat-no" title="function not covered" >(d</span>ata) =&gt; <span class="cstat-no" title="statement not covered" >data.fechaInicio &lt;= data.fechaFin,</span> {
+  .refine((data) =&gt; data.fechaInicio &lt;= data.fechaFin, {
     message: "La fecha de inicio no puede ser mayor que la fecha de fin",
     path: ["fechaFin"],
   });
@@ -247,7 +247,7 @@ export type PeriodoAcademicoDTO = z.infer&lt;typeof PeriodoAcademicoEsquema&gt;;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-22T17:35:24.958Z
+                at 2025-11-23T02:05:57.260Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

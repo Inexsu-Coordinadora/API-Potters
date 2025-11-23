@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.76% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30.76% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/13</span>
+                <span class='fraction'>13/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -89,9 +89,9 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -99,19 +99,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { FastifyInstance } from "fastify";
 import { PeriodoAcademicoControlador } from "../controladores/periodoAcademicoControlador";
@@ -120,23 +120,23 @@ import { PeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/Period
 import { IPeriodoAcademicoCasosUso } from "../../core/aplicacion/casos-uso/IPeriodoAcademicoCasosUso";
 import { IPeriodoAcademicoRepositorio } from "../../core/dominio/repositorio/IPeriodoAcademicoRepositorio";
 &nbsp;
-function <span class="fstat-no" title="function not covered" >gestionPeriodoEnrutador(</span>
+function gestionPeriodoEnrutador(
   app: FastifyInstance,
   periodoAcademicoController: PeriodoAcademicoControlador,
 ) {
-<span class="cstat-no" title="statement not covered" >  app.get("/periodoacademico", periodoAcademicoController.listarPeriodos);</span>
-<span class="cstat-no" title="statement not covered" >  app.get("/periodoacademico/:idPeriodo", periodoAcademicoController.obtenerPeriodoPorId);</span>
-<span class="cstat-no" title="statement not covered" >  app.post("/periodoacademico", periodoAcademicoController.crearPeriodo);</span>
-<span class="cstat-no" title="statement not covered" >  app.put("/periodoacademico/:idPeriodo", periodoAcademicoController.actualizarPeriodo);</span>
-<span class="cstat-no" title="statement not covered" >  app.delete("/periodoacademico/:idPeriodo", periodoAcademicoController.eliminarPeriodo);</span>
+  app.get("/periodoacademico", periodoAcademicoController.listarPeriodos);
+  app.get("/periodoacademico/:idPeriodo", periodoAcademicoController.obtenerPeriodoPorId);
+  app.post("/periodoacademico", periodoAcademicoController.crearPeriodo);
+  app.put("/periodoacademico/:idPeriodo", periodoAcademicoController.actualizarPeriodo);
+  app.delete("/periodoacademico/:idPeriodo", periodoAcademicoController.eliminarPeriodo);
 }
 &nbsp;
-export async function <span class="fstat-no" title="function not covered" >construirPeriodoAcademicoEnrutador(</span>app: FastifyInstance) {
-  const periodoAcademicoRepositorio: IPeriodoAcademicoRepositorio = <span class="cstat-no" title="statement not covered" >new PeriodoAcademicoRepositorio();</span>
-  const periodoAcademicoCasosUso: IPeriodoAcademicoCasosUso = <span class="cstat-no" title="statement not covered" >new PeriodoAcademicoCasosUso(periodoAcademicoRepositorio);</span>
-  const periodoAcademicoController = <span class="cstat-no" title="statement not covered" >new PeriodoAcademicoControlador(periodoAcademicoCasosUso);</span>
+export async function construirPeriodoAcademicoEnrutador(app: FastifyInstance) {
+  const periodoAcademicoRepositorio: IPeriodoAcademicoRepositorio = new PeriodoAcademicoRepositorio();
+  const periodoAcademicoCasosUso: IPeriodoAcademicoCasosUso = new PeriodoAcademicoCasosUso(periodoAcademicoRepositorio);
+  const periodoAcademicoController = new PeriodoAcademicoControlador(periodoAcademicoCasosUso);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  gestionPeriodoEnrutador(app, periodoAcademicoController);</span>
+  gestionPeriodoEnrutador(app, periodoAcademicoController);
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -145,7 +145,7 @@ export async function <span class="fstat-no" title="function not covered" >const
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-22T17:35:24.958Z
+                at 2025-11-23T02:05:57.260Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
